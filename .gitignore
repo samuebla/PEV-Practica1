@@ -30,6 +30,9 @@ local.properties
 # PDT-specific (PHP Development Tools)
 .buildpath
 
+#dependencies
+.classpath
+
 # sbteclipse plugin
 .target
 
