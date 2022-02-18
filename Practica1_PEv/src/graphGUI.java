@@ -2,6 +2,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import javax.swing.JFrame;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
@@ -16,8 +19,9 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Combo;
+import org.math.plot.*;
 
-public class PruebaInterfaz extends Composite {
+public class graphGUI extends Composite {
 	private Text text;
 	private Text text_1;
 	private Text text_2;
@@ -27,7 +31,7 @@ public class PruebaInterfaz extends Composite {
 		Shell shell = new Shell(display);
 		shell.setLayout(new GridLayout(1, false));
 
-//		PruebaInterfaz ayMisChiles = new PruebaInterfaz(shell,SWT.NONE);
+		graphGUI ayMisChiles = new graphGUI(shell,SWT.NONE);
 
 		shell.pack();
 		shell.open();
@@ -38,12 +42,29 @@ public class PruebaInterfaz extends Composite {
 		display.dispose();
 	}
 	
+	public static void createInterface() {
+		// define your data
+		double[] generaciones = { 1, 2, 3, 4, 5, 6, 7, 8, 9 ,10 };
+		double[] fitness = { 12, 25, 32, 45, 65, 67 , 70, 72, 73, 76};
+		// create your PlotPanel (you can use it as a JPanel)
+		Plot2DPanel plot = new Plot2DPanel();
+		// define the legend position
+		plot.addLegend("SOUTH");
+		// add a line plot to the PlotPanel
+		plot.addLinePlot("EVOLUCIÓN", generaciones, fitness);
+		// put the PlotPanel in a JFrame like a JPanel
+		JFrame frame = new JFrame("a plot panel");
+		frame.setSize(600, 600);
+		frame.setContentPane(plot);
+		frame.setVisible(true);
+	}
+	
 	/**
 	 * Create the composite.
 	 * @param parent
 	 * @param style
 	 */
-	public PruebaInterfaz(Composite parent, int style) {
+	public graphGUI(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new GridLayout(3, false));
 		
