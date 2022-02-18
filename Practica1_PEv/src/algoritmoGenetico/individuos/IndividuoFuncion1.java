@@ -24,7 +24,7 @@ public class IndividuoFuncion1 extends Individuo<Boolean> {
 	}
 	
 	public double getFenotipo(String v) {
-		return Double.longBitsToDouble(new BigInteger(v, 2).longValue());;
+		return Double.longBitsToDouble(new BigInteger(v, 2).longValue());
 	}
 	
 	
