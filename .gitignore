@@ -31,7 +31,7 @@ local.properties
 .buildpath
 
 #dependencies
-.classpath
+*.classpath
 
 # sbteclipse plugin
 .target
