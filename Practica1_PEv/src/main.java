@@ -14,6 +14,7 @@ public class main {
 		Shell shell = new Shell(display);
 		shell.setLayout(new GridLayout(1, false));
 
+		createInterface();
 		graphGUI graph = new graphGUI(shell,SWT.NONE);
 
 		shell.pack();
@@ -25,7 +26,6 @@ public class main {
 		display.dispose();
 		
 		
-//		createInterface();
 	}
 	
 	
