@@ -1,6 +1,8 @@
 package launcher;
 
 import graph.*;
+import Interface.*;
+
 
 public class Main {
 
@@ -10,7 +12,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		LinePlotExample line = new LinePlotExample();
+//		LinePlotExample line = new LinePlotExample();
 		
 	}
 
