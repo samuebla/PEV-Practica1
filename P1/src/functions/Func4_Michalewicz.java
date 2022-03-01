@@ -3,9 +3,9 @@ package functions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Function4 extends Function {
+public class Func4_Michalewicz extends Function {
 
-	public Function4(){
+	public Func4_Michalewicz(){
 		intervalo = new ArrayList();
 		intervalo.add(0.0);
 		intervalo.add(Math.PI);

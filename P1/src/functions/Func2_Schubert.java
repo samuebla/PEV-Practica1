@@ -3,9 +3,9 @@ package functions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Function2 extends Function {
+public class Func2_Schubert extends Function {
 
-	public Function2(){
+	public Func2_Schubert(){
 		intervalo = new ArrayList();
 		intervalo.add(-10.0);
 		intervalo.add(10.0);

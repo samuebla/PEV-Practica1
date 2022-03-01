@@ -3,9 +3,9 @@ package functions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Function3 extends Function {
+public class Func3_EggHolder extends Function {
 	
-	public Function3(){
+	public Func3_EggHolder(){
 		intervalo = new ArrayList();
 		intervalo.add(-512.0);
 		intervalo.add(512.0);
