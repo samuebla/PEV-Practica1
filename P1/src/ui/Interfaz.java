@@ -4,6 +4,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 
+import javax.swing.JFrame;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
@@ -30,6 +32,7 @@ public class Interfaz extends Composite {
 	 */
 	public Interfaz(Composite parent, int style) {
 		super(parent, style);
+		
 		setLayout(new GridLayout(3, false));
 		
 		Label lblMarika = new Label(this, SWT.NONE);

@@ -19,19 +19,19 @@ public class Main {
 		// TODO Auto-generated method stub
 		LinePlotExample line = new LinePlotExample();
 		
-//		Display display = new Display();
-//		Shell shell = new Shell(display);
-//		shell.setLayout(new GridLayout(1, false));
-//
-//		Interfaz graph = new Interfaz(shell,SWT.NONE);
-//
-//		shell.pack();
-//		shell.open();
-//		while (!shell.isDisposed()) {
-//			if (!display.readAndDispatch())
-//				display.sleep();
-//		}
-//		display.dispose();
+		Display display = new Display();
+		Shell shell = new Shell(display);
+		shell.setLayout(new GridLayout(1, false));
+
+		Interfaz graph = new Interfaz(shell,SWT.NONE);
+
+		shell.pack();
+		shell.open();
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+		display.dispose();
 	}
 
 }
