@@ -23,6 +23,7 @@ public class SelectionTorneo extends Selection {
 		//o de 3 en funcion del tamaño de la poblacion
 		if(poblation.size() > 10) tamTorneo = 3;
 		
+		//El proeso se repite N veces
 		for(int i = 0; i < n; i++){
 			
 			List<Individual> seleccionados = new ArrayList();
@@ -37,6 +38,7 @@ public class SelectionTorneo extends Selection {
 				if(ind.getFitnessAdaptado() > mejor.getFitnessAdaptado())
 					mejor = ind;
 			
+			//Nos quedamos en el mejor de cada vuelta
 			poblacionSeleccionada.add(mejor);
 		}
 	}

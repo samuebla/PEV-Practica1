@@ -23,6 +23,9 @@ public class Individual {
 		
 	}
 	
+	public List<Gen> getGenes() {return genes;}
+
+	
 	public double getFitnessAdaptado() {
 		return fitnessAdaptado;
 	}
