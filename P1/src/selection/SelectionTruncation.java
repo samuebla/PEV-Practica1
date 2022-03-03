@@ -5,7 +5,7 @@ import java.util.List;
 
 import individual.Individual;
 
-public class SelectionTruncamiento extends Selection {
+public class SelectionTruncation extends Selection {
 
 	//Seleccion por truncamiento:
 	

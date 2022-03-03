@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import individual.Individual;
 
-public class SelectionTorneo extends Selection {	
+public class SelectionTournament extends Selection {	
 
 	//Seleccion por torneo:
 	//Seleccion determinística (Siempre se coge el mejor)

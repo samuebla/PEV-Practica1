@@ -26,6 +26,7 @@ public class GeneticAlgorithm {
 			if(elitism_)
 				extractElite();
 			Select();
+			System.out.println("evolute");
 			Reproduce();
 			Mutate();
 			if(elitism_)
