@@ -2,13 +2,13 @@ package mutations;
 
 import java.util.List;
 
-import individual.Individual;
+import individual.Chromosome;
 
 public abstract class MutationAlgorithm {
 
-	protected List<Individual> mPoblation;
+	protected List<Chromosome> mPoblation;
 	
-	public abstract void mutar(List<Individual> poblation, List<Double> params);
+	public abstract void mutar(List<Chromosome> poblation, List<Double> params);
 	
-	public List<Individual> getPobMutada() { return mPoblation; }	
+	public List<Chromosome> getPobMutada() { return mPoblation; }	
 }

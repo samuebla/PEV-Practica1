@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import individual.Individual;
+import individual.Chromosome;
 
 public class SelectionTournament extends Selection {	
 
@@ -12,9 +12,9 @@ public class SelectionTournament extends Selection {
 	//Seleccion determinística (Siempre se coge el mejor)
 	
 	@Override
-	public void selection(List<Individual> poblation, Object param) {
+	public void selection(List<Chromosome> poblation, Object param) {
 
-		poblacionSeleccionada = new ArrayList<Individual>();
+		poblacionSeleccionada = new ArrayList<Chromosome>();
 		int n = (int) param;
 		
 		//Se coge el mejor de los individuos de un conjunto de 2 elementos
@@ -26,15 +26,15 @@ public class SelectionTournament extends Selection {
 		//El proeso se repite N veces
 		for(int i = 0; i < n; i++){
 			
-			List<Individual> seleccionados = new ArrayList();
+			List<Chromosome> seleccionados = new ArrayList();
 			
 			//Añadimos los individuos a la lista
 			for(int j = 1; j < tamTorneo; j++)
 				seleccionados.add(poblation.get(ThreadLocalRandom.current().nextInt(0,poblation.size())));
 			
 			//Y nos quedamos con el mejor de la muestra
-			Individual mejor = seleccionados.get(0);
-			for(Individual ind : seleccionados)
+			Chromosome mejor = seleccionados.get(0);
+			for(Chromosome ind : seleccionados)
 				if(ind.getFitnessAdaptado() > mejor.getFitnessAdaptado())
 					mejor = ind;
 			

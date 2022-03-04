@@ -1,19 +1,19 @@
 package selection;
 
 import java.util.List;
-import individual.Individual;
+import individual.Chromosome;
 
 //DONE
 public abstract class Selection {
 
 	//Lista de individuos que seleccionamos
-	List<Individual> poblacionSeleccionada;
+	List<Chromosome> poblacionSeleccionada;
 	
 
-	public List<Individual> getPobSeleccionada() {
+	public List<Chromosome> getPobSeleccionada() {
 		return poblacionSeleccionada;
 	}
 
-	public abstract void selection(List<Individual> poblation, Object param);
+	public abstract void selection(List<Chromosome> poblation, Object param);
 
 }

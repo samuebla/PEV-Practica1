@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import genetics.Gen;
-import individual.Individual;
+import individual.Chromosome;
 
 public class BasicMutation extends MutationAlgorithm {
 
 	@Override
-	public void mutar(List<Individual> poblation, List<Double> params) {
+	public void mutar(List<Chromosome> poblation, List<Double> params) {
 
 		//Coges la probabilidad de mutar (5% aprox)
 		double probabilidad = params.get(0);
@@ -19,7 +19,7 @@ public class BasicMutation extends MutationAlgorithm {
 		
 		//NO ENTIENDO MUY BIEN POR QUE HACEMOS ESTO CON SOLO TAM 5, IGUAL LITERALMENTE NO HACE FALTA 
 		if(params.size() == 5) {
-			for(Individual individuo : poblation){
+			for(Chromosome individuo : poblation){
 				double min1 = params.get(3);
 				double max1 = params.get(4);
 				
@@ -39,7 +39,7 @@ public class BasicMutation extends MutationAlgorithm {
 		}
 		else {
 			//Lo mismo pero con toda la poblacion
-			for(Individual individuo : poblation){
+			for(Chromosome individuo : poblation){
 				
 				for(Gen gen : individuo.getGenes()){
 					double random = ThreadLocalRandom.current().nextDouble(0, 1);

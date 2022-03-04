@@ -3,7 +3,7 @@ package selection;
 import java.util.ArrayList;
 import java.util.List;
 
-import individual.Individual;
+import individual.Chromosome;
 
 public class SelectionTruncation extends Selection {
 
@@ -11,7 +11,7 @@ public class SelectionTruncation extends Selection {
 	
 	//Param es el porcentaje de truncamiento ( Probabilidad del 50% [0.5] o del 10% [0.1] )
 	@Override
-	public void selection(List<Individual> poblation, Object param) {
+	public void selection(List<Chromosome> poblation, Object param) {
 
 		//Revisar esta variable
 		double aElegir = (double) param;
