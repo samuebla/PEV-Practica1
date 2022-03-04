@@ -40,7 +40,7 @@ public class Interface extends JFrame {
 	JComboBox functionDropdown;
 	JSpinner spinnerNumGenerations;
 	JSpinner spinnerSizePopulation;
-	
+	JComboBox selectionDropdown;
 	
 	/**
 	 * Create the frame.
@@ -279,9 +279,9 @@ public class Interface extends JFrame {
 							.addComponent(panelMathPlot, GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
 							.addContainerGap())))
 		);
-		JComboBox selectionDropdown = new JComboBox();
+		selectionDropdown = new JComboBox();
 		selectionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		selectionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Aleatorio", "Torneo Determinista", "Ranking"}));
+		selectionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Aleatorio", "Torneo Determinista", "Restos", "Truncamiento", "Estocástico Universal"}));
 		
 		JLabel selectionLabel = new JLabel("Selection Type");
 		selectionLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
@@ -341,6 +341,11 @@ public class Interface extends JFrame {
 	
 	private void getFunctionType() {
 		int index = functionDropdown.getSelectedIndex();
+		f_type = FunctionType.values()[index];
+	}
+	
+	private void getSelectionType() {
+		int index = selectionDropdown.getSelectedIndex();
 		f_type = FunctionType.values()[index];
 	}
 }
