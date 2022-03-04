@@ -37,8 +37,9 @@ public class Interface extends JFrame {
 	
 	JSlider sliderElitism;
 	JCheckBox elitismCheckBox;
-	
-	
+	JComboBox functionDropdown;
+	JSpinner spinnerNumGenerations;
+	JSpinner spinnerSizePopulation;
 	
 	
 	/**
@@ -137,7 +138,7 @@ public class Interface extends JFrame {
 		JLabel generationsLabel = new JLabel("# Generations");
 		generationsLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
-		JSpinner spinnerNumGenerations = new JSpinner();
+		spinnerNumGenerations = new JSpinner();
 		spinnerNumGenerations.setModel(new SpinnerNumberModel(100, 10, 100, 1));
 		GroupLayout gl_generationsPanel = new GroupLayout(generationsPanel);
 		gl_generationsPanel.setHorizontalGroup(
@@ -167,9 +168,12 @@ public class Interface extends JFrame {
 		JLabel functionLabel = new JLabel("Function Type");
 		functionLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
-		JComboBox functionDropdown = new JComboBox();
+		functionDropdown = new JComboBox();
 		functionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		
 		functionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Function 1", "Function 2 Schubert", "Function 3 EggHolder", "Function 4 Michalewicz"}));
+		
 		GroupLayout gl_functionPanel = new GroupLayout(functionPanel);
 		gl_functionPanel.setHorizontalGroup(
 			gl_functionPanel.createParallelGroup(Alignment.TRAILING)
@@ -198,7 +202,7 @@ public class Interface extends JFrame {
 		JLabel sizeLabel = new JLabel("Size Population");
 		sizeLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
-		JSpinner spinnerSizePopulation = new JSpinner();
+		spinnerSizePopulation = new JSpinner();
 		spinnerSizePopulation.setModel(new SpinnerNumberModel(100, 10, 100, 1));
 		GroupLayout gl_sizePanel = new GroupLayout(sizePanel);
 		gl_sizePanel.setHorizontalGroup(
@@ -326,15 +330,17 @@ public class Interface extends JFrame {
 	}
 	
 	private void processData() {
-		
 		elitism = this.elitismCheckBox.isSelected(); 
 		eliPercentage =	((int)this.sliderElitism.getValue())/100;
+		
+		
 		getFunctionType();
 		gA = new GeneticAlgorithm();
 		gA.Evolute(f_type, numGenerations, elitism, eliPercentage);
 	}
 	
 	private void getFunctionType() {
-		f_type = null;
+		int index = functionDropdown.getSelectedIndex();
+		f_type = FunctionType.values()[index];
 	}
 }
