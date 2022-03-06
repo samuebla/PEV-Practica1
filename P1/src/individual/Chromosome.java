@@ -1,5 +1,6 @@
 package individual;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import genetics.Gen;
@@ -19,6 +20,22 @@ public class Chromosome {
 		
 	private double probSeleccion;
 	
+	public Chromosome(Chromosome nCrom){
+		this.acumulado = nCrom.getAcumulado();
+		this.fitness = nCrom.getFitness();
+		this.fitnessAdaptado = nCrom.getFitnessAdaptado();
+		this.probSeleccion = nCrom.getProbSeleccion();
+		this.genes = new ArrayList<>();
+		
+//		for(Gen g : nCrom.getGenes()){
+//			if(g instanceof GenBinario)
+//				this.genes.add(new GenBinario((GenBinario)g));
+//			else if(g instanceof GenReal)
+//				this.genes.add(new GenReal((GenReal)g));
+//			else if(g instanceof GenEntero)
+//				this.genes.add(new GenEntero((GenEntero)g));
+//		}
+	}
 		
 	public Chromosome() {
 		
@@ -32,6 +49,14 @@ public class Chromosome {
 	
 	public double getAcumulado() {
 		return acumulado;
+	}
+	
+	public double getFitness() {
+		return fitness;
+	}
+	
+	public double getProbSeleccion() {
+		return probSeleccion;
 	}
 	
 	//Revisar esto
@@ -50,4 +75,12 @@ public class Chromosome {
 	public List<Object> getAlelos() {
 		
 	}
+	
+	public List<Double> getFenotipo(){
+		
+	}
+	public List<Double> getGenotipo(){
+		
+	}
+	
 }

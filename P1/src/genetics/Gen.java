@@ -40,4 +40,9 @@ public abstract class Gen {
 		//No se muy bien que hace esto
 		if(this.getFenotipo() < this.min || this.getFenotipo() > this.max) this.neg = !this.neg;
 	}
+	
+	
+	public void setGenotipo(double ay) {
+		
+	}
 }
