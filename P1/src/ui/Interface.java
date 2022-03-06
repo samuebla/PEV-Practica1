@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -13,16 +14,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 
 import org.math.plot.Plot2DPanel;
 
 import geneticAlgorithm.GeneticAlgorithm;
-import utils.FunctionType;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JSlider;
+import utils.*;
+import javax.swing.SpinnerModel;
 
 public class Interface extends JFrame {
 
@@ -31,16 +32,28 @@ public class Interface extends JFrame {
 	private JLabel parametersLabel;
 	private GeneticAlgorithm gA;
 	private FunctionType f_type;
-	private int numGenerations; 
-	private boolean elitism;
-	private double eliPercentage;
-	
-	JSlider sliderElitism;
+	private SelectionType s_type;
+	private MutationType m_type;
+	private CrossType c_type;
 	JCheckBox elitismCheckBox;
 	JComboBox functionDropdown;
 	JSpinner spinnerNumGenerations;
 	JSpinner spinnerSizePopulation;
-	JComboBox selectionDropdown;
+	JComboBox selectionDropdown; 
+	JComboBox crossDropdown;
+	JComboBox mutationDropdown;
+	JSpinner elitismSpinner;
+	JSpinner crossSpinner;
+	JSpinner mutationSpinner;
+	JSpinner precisionSpinner;
+	
+	private int sizePop; 
+	private int numGenerations; 
+	private double crossProb; 
+	private double mutProb; 
+	private double precision; 
+	private boolean elitism;
+	private double eliPercentage;
 	
 	/**
 	 * Create the frame.
@@ -99,34 +112,34 @@ public class Interface extends JFrame {
 		elitismCheckBox.setFont(new Font("Georgia", Font.PLAIN, 14));
 		elitismCheckBox.setBackground(Color.LIGHT_GRAY);
 		
-		sliderElitism = new JSlider();
-		sliderElitism.setFont(new Font("Georgia", Font.PLAIN, 10));
-		sliderElitism.setPaintLabels(true);
-		sliderElitism.setMinorTickSpacing(5);
-		sliderElitism.setMajorTickSpacing(10);
-		sliderElitism.setPaintTicks(true);
-		sliderElitism.setBackground(Color.LIGHT_GRAY);
-		
+		double min = 2.0;
+        double value = 2.0;
+        double max = 7.0;
+        double stepSize = 0.1;
+		SpinnerNumberModel model = new SpinnerNumberModel(value, min, max, stepSize);
+		elitismSpinner = new JSpinner(model);
+		JSpinner.NumberEditor editor = (JSpinner.NumberEditor) elitismSpinner.getEditor();
+        DecimalFormat format = editor.getFormat();
+        format.setMinimumFractionDigits(1);
+        
+        
 		GroupLayout gl_elitismPanel = new GroupLayout(elitismPanel);
 		gl_elitismPanel.setHorizontalGroup(
 			gl_elitismPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_elitismPanel.createSequentialGroup()
-					.addGroup(gl_elitismPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_elitismPanel.createSequentialGroup()
-							.addGap(36)
-							.addComponent(sliderElitism, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_elitismPanel.createSequentialGroup()
-							.addGap(126)
-							.addComponent(elitismCheckBox)))
-					.addContainerGap(37, Short.MAX_VALUE))
-		);
-		gl_elitismPanel.setVerticalGroup(
-			gl_elitismPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_elitismPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(elitismCheckBox)
-					.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-					.addComponent(sliderElitism, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+					.addComponent(elitismSpinner, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_elitismPanel.setVerticalGroup(
+			gl_elitismPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_elitismPanel.createSequentialGroup()
+					.addContainerGap(67, Short.MAX_VALUE)
+					.addGroup(gl_elitismPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(elitismCheckBox)
+						.addComponent(elitismSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		elitismPanel.setLayout(gl_elitismPanel);
@@ -170,8 +183,6 @@ public class Interface extends JFrame {
 		
 		functionDropdown = new JComboBox();
 		functionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		
-		
 		functionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Function 1", "Function 2 Schubert", "Function 3 EggHolder", "Function 4 Michalewicz"}));
 		
 		GroupLayout gl_functionPanel = new GroupLayout(functionPanel);
@@ -225,6 +236,185 @@ public class Interface extends JFrame {
 		);
 		sizePanel.setLayout(gl_sizePanel);
 		
+		JPanel MutationPanel = new JPanel();
+		MutationPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		MutationPanel.setBackground(Color.LIGHT_GRAY);
+		
+		JLabel mutationLabel = new JLabel("Mutation Type");
+		mutationLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		mutationDropdown = new JComboBox();
+		mutationDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Basic", "Basic_Double"}));
+		GroupLayout gl_MutationPanel = new GroupLayout(MutationPanel);
+		gl_MutationPanel.setHorizontalGroup(
+			gl_MutationPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 312, Short.MAX_VALUE)
+				.addGroup(gl_MutationPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(mutationLabel)
+					.addGap(18)
+					.addComponent(mutationDropdown, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(11, Short.MAX_VALUE))
+		);
+		gl_MutationPanel.setVerticalGroup(
+			gl_MutationPanel.createParallelGroup(Alignment.TRAILING)
+				.addGap(0, 46, Short.MAX_VALUE)
+				.addGroup(gl_MutationPanel.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_MutationPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(mutationDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(mutationLabel))
+					.addContainerGap())
+		);
+		MutationPanel.setLayout(gl_MutationPanel);
+		
+		JPanel crossPanel = new JPanel();
+		crossPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		crossPanel.setBackground(Color.LIGHT_GRAY);
+		
+		JLabel crossLabel = new JLabel("Cross Type");
+		crossLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		crossDropdown = new JComboBox();
+		crossDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform"}));
+		GroupLayout gl_crossPanel = new GroupLayout(crossPanel);
+		gl_crossPanel.setHorizontalGroup(
+			gl_crossPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 312, Short.MAX_VALUE)
+				.addGroup(gl_crossPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(crossLabel)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(crossDropdown, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_crossPanel.setVerticalGroup(
+			gl_crossPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 54, Short.MAX_VALUE)
+				.addGroup(gl_crossPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_crossPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(crossLabel)
+						.addComponent(crossDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(18, Short.MAX_VALUE))
+		);
+		crossPanel.setLayout(gl_crossPanel);
+		
+		JPanel crossPercentagePanel = new JPanel();
+		crossPercentagePanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		crossPercentagePanel.setBackground(Color.LIGHT_GRAY);
+		
+		double minCross = 0.0;
+        double valueCross = 60.0;
+        double maxCross = 100.0;
+        double stepSizeCross = 0.1;
+		SpinnerNumberModel modelCross = new SpinnerNumberModel(valueCross, minCross, maxCross, stepSizeCross);
+		crossSpinner = new JSpinner(modelCross);
+		JSpinner.NumberEditor editorCross = (JSpinner.NumberEditor) crossSpinner.getEditor();
+        DecimalFormat formatCross = editorCross.getFormat();
+        formatCross.setMinimumFractionDigits(1);
+		
+		JLabel crossLabelPercentage = new JLabel("Cross (%)");
+		crossLabelPercentage.setFont(new Font("Georgia", Font.PLAIN, 13));
+		GroupLayout gl_crossPercentagePanel = new GroupLayout(crossPercentagePanel);
+		gl_crossPercentagePanel.setHorizontalGroup(
+			gl_crossPercentagePanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_crossPercentagePanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(crossLabelPercentage, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+					.addComponent(crossSpinner, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_crossPercentagePanel.setVerticalGroup(
+			gl_crossPercentagePanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_crossPercentagePanel.createSequentialGroup()
+					.addContainerGap(16, Short.MAX_VALUE)
+					.addGroup(gl_crossPercentagePanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(crossSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(crossLabelPercentage, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		crossPercentagePanel.setLayout(gl_crossPercentagePanel);
+		
+		JPanel mutationPercentagePanel = new JPanel();
+		mutationPercentagePanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		mutationPercentagePanel.setBackground(Color.LIGHT_GRAY);
+		
+		JLabel mutationLabelPercentage = new JLabel("Mutation (%)");
+		mutationLabelPercentage.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		double minMut = 3.0;
+        double valueMut = 5.0;
+        double maxMut = 50.0;
+        double stepSizeMut = 0.1;
+		SpinnerNumberModel modelMut = new SpinnerNumberModel(valueMut, minMut, maxMut, stepSizeMut);
+		mutationSpinner = new JSpinner(modelMut);
+		JSpinner.NumberEditor editorMut = (JSpinner.NumberEditor) mutationSpinner.getEditor();
+        DecimalFormat formatMut = editorMut.getFormat();
+        formatMut.setMinimumFractionDigits(1);
+		
+		GroupLayout gl_mutationPercentagePanel = new GroupLayout(mutationPercentagePanel);
+		gl_mutationPercentagePanel.setHorizontalGroup(
+			gl_mutationPercentagePanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_mutationPercentagePanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(mutationLabelPercentage, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+					.addComponent(mutationSpinner, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_mutationPercentagePanel.setVerticalGroup(
+			gl_mutationPercentagePanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_mutationPercentagePanel.createSequentialGroup()
+					.addContainerGap(16, Short.MAX_VALUE)
+					.addGroup(gl_mutationPercentagePanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(mutationSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(mutationLabelPercentage, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		mutationPercentagePanel.setLayout(gl_mutationPercentagePanel);
+		
+		JPanel precisionPercentagePanel = new JPanel();
+		precisionPercentagePanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		precisionPercentagePanel.setBackground(Color.LIGHT_GRAY);
+		
+		JLabel precisionLabelPercentage = new JLabel("Precision (%)");
+		precisionLabelPercentage.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		double minPreci = 0.001;
+        double valuePreci = 0.001;
+        double maxPreci = 0.100;
+        double stepSizePreci = 0.001;
+		SpinnerNumberModel modelPreci = new SpinnerNumberModel(valuePreci, minPreci, maxPreci, stepSizePreci);
+		precisionSpinner = new JSpinner(modelPreci);
+		JSpinner.NumberEditor editorPreci = (JSpinner.NumberEditor) elitismSpinner.getEditor();
+        DecimalFormat formatPreci = editorPreci.getFormat();
+        formatPreci.setMinimumFractionDigits(3);
+		
+		GroupLayout gl_precisionPercentagePanel = new GroupLayout(precisionPercentagePanel);
+		gl_precisionPercentagePanel.setHorizontalGroup(
+			gl_precisionPercentagePanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_precisionPercentagePanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(precisionLabelPercentage, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+					.addComponent(precisionSpinner, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_precisionPercentagePanel.setVerticalGroup(
+			gl_precisionPercentagePanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_precisionPercentagePanel.createSequentialGroup()
+					.addContainerGap(16, Short.MAX_VALUE)
+					.addGroup(gl_precisionPercentagePanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(precisionSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(precisionLabelPercentage, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		precisionPercentagePanel.setLayout(gl_precisionPercentagePanel);
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -233,21 +423,23 @@ public class Interface extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(selectionPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(MutationPanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+								.addComponent(crossPanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+								.addComponent(functionPanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(elitismPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
 								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 									.addComponent(parametersLabel)
 									.addGap(93))
 								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 									.addComponent(startButton)
 									.addGap(115))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-										.addComponent(sizePanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-										.addComponent(generationsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-										.addComponent(functionPanel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 312, Short.MAX_VALUE)
-										.addComponent(selectionPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-										.addComponent(elitismPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
-									.addPreferredGap(ComponentPlacement.UNRELATED)))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(generationsPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(sizePanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(crossPercentagePanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+								.addComponent(mutationPercentagePanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+								.addComponent(precisionPercentagePanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(panelMathPlot, GroupLayout.PREFERRED_SIZE, 770, GroupLayout.PREFERRED_SIZE)
 							.addGap(171))
 						.addGroup(gl_contentPane.createSequentialGroup()
@@ -262,16 +454,26 @@ public class Interface extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(parametersLabel)
-							.addGap(39)
+							.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
 							.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-							.addGap(30)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-							.addGap(29)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
-							.addGap(154)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(elitismPanel, GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(startButton)
 							.addGap(23))
@@ -330,13 +532,23 @@ public class Interface extends JFrame {
 	}
 	
 	private void processData() {
-		elitism = this.elitismCheckBox.isSelected(); 
-		eliPercentage =	((int)this.sliderElitism.getValue())/100;
+		sizePop = (int)this.spinnerSizePopulation.getValue();
+		numGenerations = (int)this.spinnerNumGenerations.getValue();
+		crossProb = ((double) this.crossSpinner.getValue()) / 100.0;
+		mutProb = ((double) this.mutationSpinner.getValue()) / 100.0;
+		precision = (double) this.precisionSpinner.getValue();
 		
+		elitism = this.elitismCheckBox.isSelected(); 
+		eliPercentage =	((double)this.elitismSpinner.getValue())/100.0;
 		
 		getFunctionType();
+		getSelectionType();
+		getCrossType();
+		getMutationType();
 		gA = new GeneticAlgorithm();
-		gA.Evolute(f_type, numGenerations, elitism, eliPercentage);
+		
+		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage);
 	}
 	
 	private void getFunctionType() {
@@ -346,6 +558,16 @@ public class Interface extends JFrame {
 	
 	private void getSelectionType() {
 		int index = selectionDropdown.getSelectedIndex();
-		f_type = FunctionType.values()[index];
+		s_type = SelectionType.values()[index];
+	}
+	
+	private void getCrossType() {
+		int index = selectionDropdown.getSelectedIndex();
+		c_type = CrossType.values()[index];
+	}
+	
+	private void getMutationType() {
+		int index = selectionDropdown.getSelectedIndex();
+		m_type = MutationType.values()[index];
 	}
 }
