@@ -8,7 +8,7 @@ import genetics.Gen;
 import individual.Chromosome;
 
 public class CrossBLX extends Cross {
-
+	
 	@Override
 	public void cruzar(Chromosome padre1, Chromosome padre2, int param) {		
 				List<Double> fenotipo1 = padre1.getFenotipo();

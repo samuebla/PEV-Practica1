@@ -12,7 +12,7 @@ public class SelectionRoulette extends Selection {
 	public void selection(List<Chromosome> poblation, Object param) {
 
 		//Creamos la lista de la poblacion
-		poblacionSeleccionada = new ArrayList<>();
+		selectedPopulation = new ArrayList<>();
 		double rand;
 		
 		int posSuper;
@@ -26,7 +26,7 @@ public class SelectionRoulette extends Selection {
 				//Seguimos sumando
 				posSuper++;
 			//Y añadimos al array posicionandolo
-			poblacionSeleccionada.add(i, poblation.get(posSuper));
+			selectedPopulation.add(i, poblation.get(posSuper));
 		
 		}
 	}

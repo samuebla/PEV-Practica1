@@ -14,7 +14,7 @@ public class SelectionTournament extends Selection {
 	@Override
 	public void selection(List<Chromosome> poblation, Object param) {
 
-		poblacionSeleccionada = new ArrayList<Chromosome>();
+		selectedPopulation = new ArrayList<Chromosome>();
 		int n = (int) param;
 		
 		//Se coge el mejor de los individuos de un conjunto de 2 elementos
@@ -39,7 +39,7 @@ public class SelectionTournament extends Selection {
 					mejor = ind;
 			
 			//Nos quedamos en el mejor de cada vuelta
-			poblacionSeleccionada.add(mejor);
+			selectedPopulation.add(mejor);
 		}
 	}
 

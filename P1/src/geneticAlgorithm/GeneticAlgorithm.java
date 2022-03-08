@@ -11,6 +11,7 @@ import java.util.List;
 import crosses.*;
 import selection.*;
 import mutations.*;
+import individual.*;
 
 import utils.*;
 
@@ -22,7 +23,7 @@ public class GeneticAlgorithm {
 	private CrossType CrossType_;
 	private MutationType MutType_;
 	private boolean elitism_;
-	List<Chromosome> poblation;
+	Population poblation;
 	
 	private int sizePop_;
 	Function funct;
@@ -47,6 +48,13 @@ public class GeneticAlgorithm {
 		elitism_ = elitism;		
 		InitPopulation(poblation);
 		
+		Params param = new Params();
+		param.numGenerations = numGenerations;
+		param.sizePopulation = sizePopulation;
+		param.crossProbM = crossProb;
+		param.mutProb = mutProb;
+		param.precision = precision;
+		
 		selectTypes();
 		
 		Evaluate();
@@ -54,10 +62,10 @@ public class GeneticAlgorithm {
 			if(elitism_)
 				extractElite();
 			
-			select.selection(poblation, 2);
-			Select();
+			select.selection(poblation.getPoblacion(), param);
+			Population selected = new Population(select.getPopSelected());
 			System.out.println("evolute");
-			Reproduce();
+			cross.reproduce(poblation.getPoblacion(), crossProb);
 			Mutate();
 			if(elitism_)
 				insertElite();
@@ -168,14 +176,8 @@ public class GeneticAlgorithm {
 				}
 				
 				break;
-			
-			
 			}
-			
 			poblation.getPoblacion().add(new Chromosome(genes));
-
-		
-		
 		}
 	}
 	

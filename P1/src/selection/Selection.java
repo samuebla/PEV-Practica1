@@ -7,11 +7,11 @@ import individual.Chromosome;
 public abstract class Selection {
 
 	//Lista de individuos que seleccionamos
-	List<Chromosome> poblacionSeleccionada;
+	List<Chromosome> selectedPopulation;
 	
 
-	public List<Chromosome> getPobSeleccionada() {
-		return poblacionSeleccionada;
+	public List<Chromosome> getPopSelected() {
+		return selectedPopulation;
 	}
 
 	public abstract void selection(List<Chromosome> poblation, Object param);

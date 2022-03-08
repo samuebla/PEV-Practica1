@@ -11,7 +11,7 @@ public class SelectionProbTournament extends Selection {
 	@Override
 	public void selection(List<Chromosome> poblation, Object param) {
 
-		poblacionSeleccionada = new ArrayList<>();
+		selectedPopulation = new ArrayList<>();
 		//Numero de veces que se repite el proceso para escoger el mejor/peor
 //		int k = ((Pair<Integer, Double>) param).getLeft();
 		int k = 0; //PROVISIONAL
@@ -48,11 +48,11 @@ public class SelectionProbTournament extends Selection {
 			//Cogemos un numero entre 0/1; Si es menor a p
 			if(p < Math.random() * 1)
 				//Se coge al mejor
-				poblacionSeleccionada.add(poblation.get(selectMax));
+				selectedPopulation.add(poblation.get(selectMax));
 			//Si es mayor a p
 			else
 				//Cogemos el peor
-				poblacionSeleccionada.add(poblation.get(selectMin));
+				selectedPopulation.add(poblation.get(selectMin));
 		}
 	}
 

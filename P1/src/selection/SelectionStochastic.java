@@ -12,7 +12,7 @@ public class SelectionStochastic extends Selection {
 	@Override
 	public void selection(List<Chromosome> poblation, Object param) {
 
-		poblacionSeleccionada = new ArrayList<>();
+		selectedPopulation = new ArrayList<>();
 		
 		//Se genera un unico numero aleatorio y a partir de este se calculan los restantes
 		double p = Math.random() * (1.0/(int)param);
@@ -25,7 +25,7 @@ public class SelectionStochastic extends Selection {
 				posSuper++;
 			
 			//Y vamos añadiendo a los individuos
-			poblacionSeleccionada.add(i, poblation.get(posSuper));
+			selectedPopulation.add(i, poblation.get(posSuper));
 			
 			//La distancia entre las marcas es de 1/N
 			p = p + (1.0/(int)param);

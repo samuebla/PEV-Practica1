@@ -18,12 +18,12 @@ public class SelectionTruncation extends Selection {
 		
 		//Numero de veces que hay que seleccionar a cada individuo
 		double numRep = 1.0 / (double) param;
-		poblacionSeleccionada = new ArrayList<>();
+		selectedPopulation = new ArrayList<>();
 		
 		for(int i = 0; i < aElegir; i++)
 			for(int j = 0; j < numRep; j++)
 				//Añadimos a la mejor poblacion repetida
-				poblacionSeleccionada.add(poblation.get(i));		
+				selectedPopulation.add(poblation.get(i));		
 	}
 
 }
