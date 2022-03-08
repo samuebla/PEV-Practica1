@@ -7,7 +7,9 @@ public abstract class Gen {
 
 	//CAMBIAR NOMBRE VARIABLES
 	List<Object> alelos;
+	//No se que es pero se multiplica para sacar el fenotipo
 	float prec;
+	//Para ver si es positivo o negativo
 	boolean neg;
 	int tam_cod;
 	double min;
@@ -18,6 +20,9 @@ public abstract class Gen {
 	}
 
 	public abstract void randomize(double min, double max);
+	
+	//GETTERS
+	
 	//Cada gen tiene un fenotipo distinto
 	public abstract double getFenotipo();
 	
@@ -33,6 +38,14 @@ public abstract class Gen {
 		return alelos.size();
 	}
 	
+	boolean getNeg(){return this.neg;}
+
+	float getPrec() {return this.prec;}
+
+	public List<Object> getAlelos(){return alelos;}
+
+	
+	
 	
 	//Para colocar los alelos
 	public void setAlelos(List<Object> alelos) {
@@ -45,4 +58,13 @@ public abstract class Gen {
 	public void setGenotipo(double ay) {
 		
 	}
+	
+	public void setMin(double min) {
+		this.min = min;
+	}
+
+	public void setMax(double max) {
+		this.max = max;
+	}
+	
 }

@@ -1,7 +1,11 @@
 package geneticAlgorithm;
 import functions.*;
+import genetics.BinaryGen;
+import genetics.Gen;
+import genetics.RealGen;
 import individual.Chromosome;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import crosses.*;
@@ -122,8 +126,57 @@ public class GeneticAlgorithm {
 		}
 	}
 	
-	private void InitPopulation(List<Chromosome> poblation) {
+	private void InitPopulation(Population poblation,int pobSize, double precision, FunctionType numFunct, int paramsFuncion, int ciudadInicio) {
 		
+		for(int i = 0; i < pobSize; i++) {
+			List<Gen> genes = new ArrayList<>();
+						
+			switch(numFunct) {			
+			case f1:
+				
+				//Creamos los genes binarios
+				genes.add(new BinaryGen((float) precision));
+				genes.add(new BinaryGen((float) precision));
+				
+				//Establecemos el rango
+				genes.get(0).randomize(-3, 12.1);
+				genes.get(1).randomize(4.1, 5.8);				
+				break;
+			case f2_Schubert:
+				
+				genes.add(new BinaryGen((float) precision));
+				genes.add(new BinaryGen((float) precision));
+
+				//Xi cuenta tanto para x1 como x2
+				genes.get(0).randomize(-10, 10);
+				genes.get(1).randomize(-10, 10);				
+				break;
+			case f3_EggHolder:
+				
+				genes.add(new BinaryGen((float) precision));
+				genes.add(new BinaryGen((float) precision));
+				
+				genes.get(0).randomize(-512, 512);
+				genes.get(1).randomize(-512, 512);
+				
+				
+				break;
+			case f4_Michalewicz:
+				for(int j = 0; j < paramsFuncion; j++) {
+					genes.add(new RealGen((float) precision));
+					genes.get(j).randomize(0, Math.PI);
+				}
+				
+				break;
+			
+			
+			}
+			
+			poblation.getPoblacion().add(new Chromosome(genes));
+
+		
+		
+		}
 	}
 	
 	private void Select() {

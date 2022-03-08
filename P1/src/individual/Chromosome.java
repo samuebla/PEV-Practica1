@@ -3,9 +3,10 @@ package individual;
 import java.util.ArrayList;
 import java.util.List;
 
+import genetics.BinaryGen;
 import genetics.Gen;
+import genetics.RealGen;
 
-//CREO QUE TODO ESTO ESTA COMO EL OGT
 //CROMOSOMA
 public class Chromosome {
 	
@@ -20,6 +21,7 @@ public class Chromosome {
 		
 	private double probSeleccion;
 	
+	//Constructora por copia
 	public Chromosome(Chromosome nCrom){
 		this.acumulado = nCrom.getAcumulado();
 		this.fitness = nCrom.getFitness();
@@ -27,37 +29,36 @@ public class Chromosome {
 		this.probSeleccion = nCrom.getProbSeleccion();
 		this.genes = new ArrayList<>();
 		
-//		for(Gen g : nCrom.getGenes()){
-//			if(g instanceof GenBinario)
-//				this.genes.add(new GenBinario((GenBinario)g));
-//			else if(g instanceof GenReal)
-//				this.genes.add(new GenReal((GenReal)g));
-//			else if(g instanceof GenEntero)
-//				this.genes.add(new GenEntero((GenEntero)g));
-//		}
-	}
-		
-	public Chromosome() {
-		
-	}
+		for(Gen g : nCrom.getGenes()){
+			if(g instanceof BinaryGen)
+				this.genes.add(new BinaryGen((BinaryGen)g));
+			else if(g instanceof RealGen)
+				this.genes.add(new RealGen((RealGen)g));
+		}
+	}		
 	
-	public List<Gen> getGenes() {return genes;}
+	
+	public Chromosome(List<Gen> genes){ this.genes = genes; }
+	
+	
+	//GETTERS
+	public List<Double> getFenotipo(){
+		List<Double> fenot = new ArrayList<>();
+		
+		for(Gen g : genes) 
+			fenot.add(g.getFenotipo());
+		return fenot;
+	}	
+	
+	public List<Object> getAlelos(){
+		List<Object> alelos = new ArrayList<>();
 
-	public double getFitnessAdaptado() {
-		return fitnessAdaptado;
+		for(Gen g : this.genes) 
+			alelos.addAll(g.getAlelos());
+		
+		return alelos;
 	}
 	
-	public double getAcumulado() {
-		return acumulado;
-	}
-	
-	public double getFitness() {
-		return fitness;
-	}
-	
-	public double getProbSeleccion() {
-		return probSeleccion;
-	}
 	
 	//Revisar esto
 	public int getTam(){
@@ -70,17 +71,43 @@ public class Chromosome {
 		
 		return ret;
 	}
+	
+	public List<Gen> getGenes() {return genes;}
 
-	//HAY QUE HACER ESTO AAAA
-	public List<Object> getAlelos() {
-		
+
+	public double getFitness() {
+		return fitness;
+	}
+	public void setFitness(double valor) {
+		fitness = valor;
 	}
 	
-	public List<Double> getFenotipo(){
-		
+	public double getAcumulado() {
+		return acumulado;
 	}
-	public List<Double> getGenotipo(){
+	public void setAcumulado(double valor) {
+		acumulado = valor;
+	}
 		
+	public double getProbSeleccion() {
+		return probSeleccion;
+	}
+	public void getProbSeleccion(double valor) {
+		probSeleccion = valor;
 	}
 	
+	public double getFitnessAdaptado() {
+		return fitnessAdaptado;
+	}
+	public void setFitnessAdaptado(double valor) {
+		this.fitnessAdaptado = valor;
+	}
+	
+	//Creo que falta definir operators de boleanos para ver si un Object es igual que un cromosoma
+	
+
+
+	
+	
+
 }
