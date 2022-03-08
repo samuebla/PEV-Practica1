@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -545,10 +546,42 @@ public class Interface extends JFrame {
 		getSelectionType();
 		getCrossType();
 		getMutationType();
-		gA = new GeneticAlgorithm();
+		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
 				   f_type, s_type,c_type,m_type, elitism, eliPercentage);
+	}
+	
+	public void showGraph(double[] mejorAbs, double[]  mejor, double[] media, double[] peor, double solucion, List<Double> sol) {
+
+		panelMathPlot.removeAllPlots();
+		double [] x = new double[mejorAbs.length];
+		for(int i = 0; i < x.length; i++) {
+			x[i] = i+1;
+		}
+
+		//Add text solution 
+//		textField.setText(String.valueOf(solucion));
+//		textField_1.removeAllItems();
+
+		int i = 0;
+
+		for(Double d : sol) {
+			i++;
+			d = Math.floor(d / 0.0001) * 0.0001;
+
+			String text = "X" + i + ": " + d;
+//			textField_1.addItem(text);
+			//add text for the points
+
+		}
+
+		panelMathPlot.addLegend("SOUTH");
+		panelMathPlot.addLinePlot("Mejor Absoluto", Color.MAGENTA, x, mejorAbs);
+		panelMathPlot.addLinePlot("Mejor de la Generacion", Color.GREEN, x, mejor);
+		panelMathPlot.addLinePlot("Media Generacion", Color.ORANGE, x, media);
+		panelMathPlot.addLinePlot("Peor de la Generacion", Color.RED, x, peor);
+
 	}
 	
 	private void getFunctionType() {

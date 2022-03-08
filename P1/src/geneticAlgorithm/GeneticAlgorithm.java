@@ -1,20 +1,35 @@
 package geneticAlgorithm;
-import functions.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import crosses.Cross;
+import crosses.CrossMonopoint;
+import crosses.CrossUniform;
+import functions.Func2_Schubert;
+import functions.Func3_EggHolder;
+import functions.Func4_Michalewicz;
+import functions.Function;
+import functions.Function1;
 import genetics.BinaryGen;
 import genetics.Gen;
 import genetics.RealGen;
 import individual.Chromosome;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import crosses.*;
-import selection.*;
-import mutations.*;
-import individual.*;
-
-import utils.*;
-
+import individual.Population;
+import mutations.BasicMutation;
+import mutations.MutationAlgorithm;
+import selection.Selection;
+import selection.SelectionProbTournament;
+import selection.SelectionRemains;
+import selection.SelectionRoulette;
+import selection.SelectionStochastic;
+import selection.SelectionTournament;
+import selection.SelectionTruncation;
+import utils.CrossType;
+import utils.FunctionType;
+import utils.MutationType;
+import utils.Params;
+import utils.SelectionType;
+import ui.*;
 
 public class GeneticAlgorithm {
 	
@@ -24,15 +39,15 @@ public class GeneticAlgorithm {
 	private MutationType MutType_;
 	private boolean elitism_;
 	Population poblation;
-	
 	private int sizePop_;
 	Function funct;
 	Selection select;
 	Cross cross;
 	MutationAlgorithm mut;
+	Interface interface_;
 	
-	public GeneticAlgorithm() {
-		
+	public GeneticAlgorithm(Interface inter) {
+		interface_ = inter;
 		
 	}
 	
@@ -58,10 +73,11 @@ public class GeneticAlgorithm {
 		param.precision = precision;
 		param.interval = funct.getInterval();
 		
-		ArrayList<Double> best = new ArrayList<>();
-        ArrayList<Double> bestPob = new ArrayList<>();
-        ArrayList<Double> media = new ArrayList<>();
-        
+		double[] best = new double[numGenerations];
+		double[] bestPob = new double[numGenerations];
+        double[] media = new double[numGenerations];
+        double solution = 4.0;
+        List<Double> sol = new ArrayList<Double>();
 		Evaluate();
 		for(int i = 0; i < numGenerations; i++) {
 			//Extract Elite
@@ -80,10 +96,15 @@ public class GeneticAlgorithm {
 			if(elitism_)
 				insertElite();
 			Evaluate();
-			
-			
 		}
+		
+		
+		interface_.showGraph(media, best, media, bestPob, solution, sol); //temporals
 	}
+	
+	private void showSolution() {
+		
+	};
 	
 	private void selectTypes() {
 		funct = new Function1(); //Compilation Purposes
