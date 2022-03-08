@@ -562,12 +562,12 @@ public class Interface extends JFrame {
 	}
 	
 	private void getCrossType() {
-		int index = selectionDropdown.getSelectedIndex();
+		int index = crossDropdown.getSelectedIndex();
 		c_type = CrossType.values()[index];
 	}
 	
 	private void getMutationType() {
-		int index = selectionDropdown.getSelectedIndex();
+		int index = mutationDropdown.getSelectedIndex();
 		m_type = MutationType.values()[index];
 	}
 }
