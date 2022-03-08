@@ -44,9 +44,11 @@ public class GeneticAlgorithm {
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
 		MutType_ = m_Type;
-		
 		elitism_ = elitism;		
-		InitPopulation(poblation);
+		
+		int function4params = 4;//esto hay que ponerlo en la interfaz
+		InitPopulation(poblation,sizePopulation, precision,f_Type, function4params);
+		selectTypes();		
 		
 		Params param = new Params();
 		param.numGenerations = numGenerations;
@@ -54,22 +56,32 @@ public class GeneticAlgorithm {
 		param.crossProbM = crossProb;
 		param.mutProb = mutProb;
 		param.precision = precision;
+		param.interval = funct.getInterval();
 		
-		selectTypes();
-		
+		ArrayList<Double> best = new ArrayList<>();
+        ArrayList<Double> bestPob = new ArrayList<>();
+        ArrayList<Double> media = new ArrayList<>();
+        
 		Evaluate();
 		for(int i = 0; i < numGenerations; i++) {
+			//Extract Elite
 			if(elitism_)
 				extractElite();
-			
+			//Select
 			select.selection(poblation.getPoblacion(), param);
 			Population selected = new Population(select.getPopSelected());
-			System.out.println("evolute");
+			//Cross
 			cross.reproduce(poblation.getPoblacion(), crossProb);
-			Mutate();
+			poblation = new Population(cross.getHijos());
+			//Mutate
+			mut.mutate(poblation.getPoblacion(), param);
+			poblation = new Population(mut.getMutatedPop());
+			//Reinster Elite
 			if(elitism_)
 				insertElite();
 			Evaluate();
+			
+			
 		}
 	}
 	
@@ -134,7 +146,7 @@ public class GeneticAlgorithm {
 		}
 	}
 	
-	private void InitPopulation(Population poblation,int pobSize, double precision, FunctionType numFunct, int paramsFuncion, int ciudadInicio) {
+	private void InitPopulation(Population poblation,int pobSize, double precision, FunctionType numFunct, int function4params) {
 		
 		for(int i = 0; i < pobSize; i++) {
 			List<Gen> genes = new ArrayList<>();
@@ -170,7 +182,7 @@ public class GeneticAlgorithm {
 				
 				break;
 			case f4_Michalewicz:
-				for(int j = 0; j < paramsFuncion; j++) {
+				for(int j = 0; j < function4params; j++) {
 					genes.add(new RealGen((float) precision));
 					genes.get(j).randomize(0, Math.PI);
 				}
@@ -179,18 +191,6 @@ public class GeneticAlgorithm {
 			}
 			poblation.getPoblacion().add(new Chromosome(genes));
 		}
-	}
-	
-	private void Select() {
-		
-	}
-	
-	private void Reproduce() {
-		
-	}
-	
-	private void Mutate() {
-		
 	}
 	
 	private void extractElite() {

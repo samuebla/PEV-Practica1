@@ -6,9 +6,9 @@ import java.util.List;
 public class Func4_Michalewicz extends Function {
 
 	public Func4_Michalewicz(){
-		intervalo = new ArrayList();
-		intervalo.add(0.0);
-		intervalo.add(Math.PI);
+		interval = new ArrayList();
+		interval.add(0.0);
+		interval.add(Math.PI);
 	}
 	
 	@Override

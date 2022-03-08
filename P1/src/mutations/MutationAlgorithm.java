@@ -8,7 +8,7 @@ public abstract class MutationAlgorithm {
 
 	protected List<Chromosome> mPoblation;
 	
-	public abstract void mutar(List<Chromosome> poblation, List<Double> params);
+	public abstract void mutate(List<Chromosome> poblation, Object params);
 	
-	public List<Chromosome> getPobMutada() { return mPoblation; }	
+	public List<Chromosome> getMutatedPop() { return mPoblation; }	
 }

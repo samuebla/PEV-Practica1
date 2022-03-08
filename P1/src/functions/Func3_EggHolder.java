@@ -6,9 +6,9 @@ import java.util.List;
 public class Func3_EggHolder extends Function {
 	
 	public Func3_EggHolder(){
-		intervalo = new ArrayList();
-		intervalo.add(-512.0);
-		intervalo.add(512.0);
+		interval = new ArrayList();
+		interval.add(-512.0);
+		interval.add(512.0);
 	}
 	
 	@Override

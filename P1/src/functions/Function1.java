@@ -10,12 +10,12 @@ import java.util.List;
 public class Function1 extends Function {
 
 	public Function1() {
-		intervalo = new ArrayList();
+		interval = new ArrayList();
 		//Creo que esto está descolocado
-		intervalo.add(-3.0);
-		intervalo.add(12.1);
-		intervalo.add(4.1);
-		intervalo.add(5.8);		
+		interval.add(-3.0);
+		interval.add(12.1);
+		interval.add(4.1);
+		interval.add(5.8);		
 	}
 		
 	@Override

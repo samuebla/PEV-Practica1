@@ -56,8 +56,8 @@ public class CrossMonopoint extends Cross {
 		
 		this.hijos = new ArrayList<Chromosome>();
 
-//		this.hijos.add(new Chromosome(genes1));
-//		this.hijos.add(new Chromosome(genes2));
+		this.hijos.add(new Chromosome(genes1));
+		this.hijos.add(new Chromosome(genes2));
 	}
 
 }

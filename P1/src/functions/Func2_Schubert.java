@@ -6,9 +6,9 @@ import java.util.List;
 public class Func2_Schubert extends Function {
 
 	public Func2_Schubert(){
-		intervalo = new ArrayList();
-		intervalo.add(-10.0);
-		intervalo.add(10.0);
+		interval = new ArrayList();
+		interval.add(-10.0);
+		interval.add(10.0);
 	}
 	
 	@Override
