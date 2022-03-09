@@ -15,29 +15,29 @@ public class RealGen extends Gen {
 		this.max = nGen.getMax();
 		this.prec = nGen.getPrec();
 		this.neg = nGen.getNeg();
-		this.alelos = new ArrayList<Object>();	
+		this.alleles = new ArrayList<Object>();	
 		for(Object o : nGen.getAlelos()){
-			this.alelos.add(o);
+			this.alleles.add(o);
 		}
 	}
 	
 	@Override
 	public void randomize(double min, double max) {
-		setGenotipo((ThreadLocalRandom.current().nextDouble(min, max+this.prec)));
+		setGenotype((ThreadLocalRandom.current().nextDouble(min, max+this.prec)));
 	}
 	
 	//El fenotipo y genotipo son iguales
 	@Override
-	public double getFenotipo() {
-		return (double) alelos.get(0);
+	public double getFenotype() {
+		return (double) alleles.get(0);
 	}
 
 	//Se mete sin ninguna conversion
 	@Override
-	public void setGenotipo(double valor) {
-		this.alelos = new ArrayList<>();
+	public void setGenotype(double valor) {
+		this.alleles = new ArrayList<>();
 
-		this.alelos.add(valor);
+		this.alleles.add(valor);
 	}
 
 }

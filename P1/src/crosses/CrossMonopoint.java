@@ -10,54 +10,51 @@ import individual.Chromosome;
 public class CrossMonopoint extends Cross {
 
 	@Override
-	public void cruzar(Chromosome padre1, Chromosome padre2, int param) {
-		
-		int min = 0;
-		int max = padre1.getTam();
-
+	public void cruzar(Chromosome parent_1, Chromosome parent_2) {
 		//Cogemos un numero aleatorio para ver donde cortar
-		int cut = ThreadLocalRandom.current().nextInt(min, max);
+		int sizeChromosome = parent_1.getTam();
+		int cut = ThreadLocalRandom.current().nextInt(0, parent_1.getTam());
 		
 		//Creamos los 2 cromosomas hijos
-		Chromosome h1 = new Chromosome(padre1);
-		Chromosome h2 = new Chromosome(padre2);
+		Chromosome copyParent_1 = new Chromosome(parent_1);
+		Chromosome copyParent_2 = new Chromosome(parent_2);
 
-		//Y accedemos a sus genes
-		List<Gen> genes1 = h1.getGenes();
-		List<Gen> genes2 = h2.getGenes();
+		//Alelos de cada padre. Devuelve una lista con los dos genes en "un" gen 
+		List<Object> alleles1 = parent_1.getAlleles();
+		List<Object> alleles2 = parent_2.getAlleles();
 		
-		//Y a sus alelos
-		List<Object> alelos1 = padre1.getAlelos();
-		List<Object> alelos2 = padre2.getAlelos();
+		//Y accedemos a sus genes
+		List<Gen> gen_1 = copyParent_1.getGens();
+		List<Gen> gen_2 = copyParent_2.getGens();
 		
 		//Añadimos mitad del primero mitad del segundo
-		List<Object> hijo1 = alelos1.subList(0,cut);
-		hijo1.addAll(alelos2.subList(cut,max));
+		List<Object> newAlleles_1 = alleles1.subList(0,cut);
+		newAlleles_1.addAll(alleles2.subList(cut,sizeChromosome));
 
 		//Y viceversa
-		List<Object> hijo2 = alelos2.subList(0,cut);
-		hijo2.addAll(alelos1.subList(cut,max));
+		List<Object> newAlleles_2 = alleles2.subList(0,cut);
+		newAlleles_2.addAll(alleles1.subList(cut,sizeChromosome));
 
 		int acum = 0;
 		
-		//Dividimos los genes para establecer sus alelos
-		for(Gen g : genes1) {
-			g.setAlelos(hijo1.subList(acum, acum+g.getTam()));
+		//Ya que newAllels contiene los alelos de ambos genes. Ahora hay que repatirlos de nuevo
+		for(Gen g : gen_1) {
+			g.setAlelos(newAlleles_1.subList(acum, acum + g.getTam()));
 			acum += g.getTam();
 		}
 		
 		acum = 0;
 		
 		//Y viceversa
-		for(Gen g : genes2) {
-			g.setAlelos(hijo2.subList(acum, acum+g.getTam()));
+		for(Gen g : gen_2) {
+			g.setAlelos(newAlleles_2.subList(acum, acum + g.getTam()));
 			acum += g.getTam();
 		}
 		
 		this.hijos = new ArrayList<Chromosome>();
 
-		this.hijos.add(new Chromosome(genes1));
-		this.hijos.add(new Chromosome(genes2));
+		this.hijos.add(new Chromosome(gen_1));
+		this.hijos.add(new Chromosome(gen_2));
 	}
 
 }

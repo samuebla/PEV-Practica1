@@ -552,10 +552,10 @@ public class Interface extends JFrame {
 				   f_type, s_type,c_type,m_type, elitism, eliPercentage);
 	}
 	
-	public void showGraph(double[] mejorAbs, double[]  mejor, double[] media, double[] peor, double solucion, List<Double> sol) {
+	public void showGraph(double[] bestAbs, double[]  best, double[] avarage, double[] peor, double solution, List<Double> sol) {
 
 		panelMathPlot.removeAllPlots();
-		double [] x = new double[mejorAbs.length];
+		double [] x = new double[bestAbs.length];
 		for(int i = 0; i < x.length; i++) {
 			x[i] = i+1;
 		}
@@ -565,7 +565,6 @@ public class Interface extends JFrame {
 //		textField_1.removeAllItems();
 
 		int i = 0;
-
 		for(Double d : sol) {
 			i++;
 			d = Math.floor(d / 0.0001) * 0.0001;
@@ -577,9 +576,9 @@ public class Interface extends JFrame {
 		}
 
 		panelMathPlot.addLegend("SOUTH");
-		panelMathPlot.addLinePlot("Mejor Absoluto", Color.MAGENTA, x, mejorAbs);
-		panelMathPlot.addLinePlot("Mejor de la Generacion", Color.GREEN, x, mejor);
-		panelMathPlot.addLinePlot("Media Generacion", Color.ORANGE, x, media);
+		panelMathPlot.addLinePlot("Mejor Absoluto", Color.MAGENTA, x, bestAbs);
+		panelMathPlot.addLinePlot("Mejor de la Generacion", Color.GREEN, x, best);
+		panelMathPlot.addLinePlot("Media Generacion", Color.ORANGE, x, avarage);
 		panelMathPlot.addLinePlot("Peor de la Generacion", Color.RED, x, peor);
 
 	}

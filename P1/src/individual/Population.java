@@ -17,7 +17,7 @@ public class Population {
 			population_.add(new Chromosome(ind));
 	}
 	
-	public List<Chromosome> getPoblacion() {
+	public List<Chromosome> getPopulation() {
 		return population_;
 	}
 	

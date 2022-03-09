@@ -40,6 +40,7 @@ public class GeneticAlgorithm {
 	private boolean elitism_;
 	Population poblation;
 	private int sizePop_;
+	private int eliteSize;
 	Function funct;
 	Selection select;
 	Cross cross;
@@ -62,8 +63,12 @@ public class GeneticAlgorithm {
 		elitism_ = elitism;		
 		
 		int function4params = 4;//esto hay que ponerlo en la interfaz
-		InitPopulation(poblation,sizePopulation, precision,f_Type, function4params);
+		
+		poblation = InitPopulation(sizePopulation, precision,f_Type, function4params);
 		selectTypes();		
+		
+		eliteSize = (int)(sizePopulation * eliPercentage);
+		Population elite = new Population();
 		
 		Params param = new Params();
 		param.numGenerations = numGenerations;
@@ -72,6 +77,9 @@ public class GeneticAlgorithm {
 		param.mutProb = mutProb;
 		param.precision = precision;
 		param.interval = funct.getInterval();
+		param.f_type = f_Type;
+		
+		
 		
 		double[] best = new double[numGenerations];
 		double[] bestPob = new double[numGenerations];
@@ -81,20 +89,17 @@ public class GeneticAlgorithm {
 		Evaluate();
 		for(int i = 0; i < numGenerations; i++) {
 			//Extract Elite
-			if(elitism_)
-				extractElite();
+			if(elitism_) elite = extractElite(poblation);
 			//Select
-			select.selection(poblation.getPoblacion(), param);
+			select.selection(poblation.getPopulation(), param);
 			Population selected = new Population(select.getPopSelected());
 			//Cross
-			cross.reproduce(poblation.getPoblacion(), crossProb);
-			poblation = new Population(cross.getHijos());
+			poblation = new Population(cross.reproduce(poblation.getPopulation(), crossProb));
 			//Mutate
-			mut.mutate(poblation.getPoblacion(), param);
+			mut.mutate(poblation.getPopulation(), param);
 			poblation = new Population(mut.getMutatedPop());
 			//Reinster Elite
-			if(elitism_)
-				insertElite();
+			if(elitism_) insertElite(elite, poblation);
 			Evaluate();
 		}
 		
@@ -167,8 +172,8 @@ public class GeneticAlgorithm {
 		}
 	}
 	
-	private void InitPopulation(Population poblation,int pobSize, double precision, FunctionType numFunct, int function4params) {
-		
+	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct, int function4params) {
+		Population population = new Population();
 		for(int i = 0; i < pobSize; i++) {
 			List<Gen> genes = new ArrayList<>();
 						
@@ -210,16 +215,19 @@ public class GeneticAlgorithm {
 				
 				break;
 			}
-			poblation.getPoblacion().add(new Chromosome(genes));
+			population.getPopulation().add(new Chromosome(genes));
 		}
+		return population;
 	}
 	
-	private void extractElite() {
-		
+	private Population extractElite(Population base) {
+		return new Population (base.getPopulation().subList(0, eliteSize));
 	}
 	
-	private void insertElite() {
-		
+	private void insertElite(Population elite, Population base) {
+		for(int i = 0; i < elite.getPopulation().size() ; i++) {
+			base.getPopulation().add(i, elite.getPopulation().get(i));
+		}
 	}
 	
 	private void Evaluate() {

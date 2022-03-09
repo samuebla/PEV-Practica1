@@ -9,7 +9,7 @@ public class BinaryGen extends Gen {
 	
 	public BinaryGen(float prec){
 		//Crea la lista de los alelos
-		this.alelos = new ArrayList<>();
+		this.alleles = new ArrayList<>();
 		
 		this.prec = prec;
 	}
@@ -20,8 +20,8 @@ public class BinaryGen extends Gen {
 		this.max = nGen.getMax();
 		this.prec = nGen.getPrec();
 		this.neg = nGen.getNeg();
-		this.alelos = new ArrayList<>();
-		this.alelos.addAll(nGen.getAlelos());
+		this.alleles = new ArrayList<>();
+		this.alleles.addAll(nGen.getAlelos());
 	}
 	
 	@Override
@@ -41,18 +41,18 @@ public class BinaryGen extends Gen {
 		
 		this.tam_cod = Math.max(arrmax.length(), arrmin.length());
 		
-		this.setGenotipo(aux);
+		this.setGenotype(aux);
 	}
 
 	//CONVERSIÓN DE BINARIO A DECIMAL
 	@Override
-	public double getFenotipo() {
+	public double getFenotype() {
 		
 		 double result = 0;
 		 int p = 0;
          
-         for(int i = this.alelos.size() - 1; i >= 0; i--){
-        	 result += (int)alelos.get(i) * Math.pow(2,p);
+         for(int i = this.alleles.size() - 1; i >= 0; i--){
+        	 result += (int)alleles.get(i) * Math.pow(2,p);
              p++;
          }
          if(this.neg)
@@ -64,7 +64,7 @@ public class BinaryGen extends Gen {
 	
 	//CONVERSIÓN DE DECIMAL A BINARIO
 	@Override
-	public void setGenotipo(double valor) {
+	public void setGenotype(double valor) {
 		// TODO Auto-generated method stub
 		if(valor < 0) {
 			this.neg = true;
@@ -74,15 +74,15 @@ public class BinaryGen extends Gen {
 		int l = (int) (valor/this.prec);
 
 		String arr = Integer.toBinaryString(l);
-		this.alelos = new ArrayList<>(arr.length());
+		this.alleles = new ArrayList<>(arr.length());
 		
 		//Añade los ceros necesarios al inicio
 		for(int i = 0; i < this.tam_cod - arr.length(); i++)
-			alelos.add(0);
+			alleles.add(0);
 		
 		//Y aqui hace la conversion char por char
 		for(int i = 0; i < arr.length(); i++)
-			alelos.add(Character.getNumericValue(arr.charAt(i)));
+			alleles.add(Character.getNumericValue(arr.charAt(i)));
 	}
 
 }

@@ -10,7 +10,7 @@ import genetics.RealGen;
 //CROMOSOMA
 public class Chromosome {
 	
-	//UN CROMOSOMA TIENE UNA LISTA DE GENES
+	//Contiene una lista de genes. En total suelen ser 2. 
 	private List<Gen> genes;
 		
 	private double acumulado;
@@ -29,7 +29,7 @@ public class Chromosome {
 		this.probSeleccion = nCrom.getProbSeleccion();
 		this.genes = new ArrayList<>();
 		
-		for(Gen g : nCrom.getGenes()){
+		for(Gen g : nCrom.getGens()){
 			if(g instanceof BinaryGen)
 				this.genes.add(new BinaryGen((BinaryGen)g));
 			else if(g instanceof RealGen)
@@ -46,11 +46,12 @@ public class Chromosome {
 		List<Double> fenot = new ArrayList<>();
 		
 		for(Gen g : genes) 
-			fenot.add(g.getFenotipo());
+			fenot.add(g.getFenotype());
 		return fenot;
 	}	
 	
-	public List<Object> getAlelos(){
+	//Devuelve una lista con todos los alelos de ambos genes
+	public List<Object> getAlleles(){
 		List<Object> alelos = new ArrayList<>();
 
 		for(Gen g : this.genes) 
@@ -60,7 +61,7 @@ public class Chromosome {
 	}
 	
 	
-	//Revisar esto
+	//Tamaño total de ambos genes
 	public int getTam(){
 		int ret = 0;
 		if(!genes.isEmpty()){
@@ -72,7 +73,7 @@ public class Chromosome {
 		return ret;
 	}
 	
-	public List<Gen> getGenes() {return genes;}
+	public List<Gen> getGens() {return genes;}
 
 
 	public double getFitness() {

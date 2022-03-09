@@ -25,17 +25,17 @@ public abstract class Cross {
             }
         }
         
-        if(elegidos.size()%2 != 0){
+        if(elegidos.size()%2 != 0){ //Deben ser pares para que haya dos padres
             elegidos.remove(elegidos.size() - 1);
         }
         
-         for (int i = 0; i < elegidos.size(); i+=2){ 
-        	 cruzar(population.get(elegidos.get(i)), population.get(elegidos.get(i+1)), 1);
+        for (int i = 0; i < elegidos.size(); i += 2){ 
+        	cruzar(population.get(elegidos.get(i)), population.get(elegidos.get(i+1)));
         }
         
-        return population; //esto no esta bien, deberia ser nueva
+        return hijos; //esto no esta bien, deberia ser nueva
 	}
 	
 	//Metodo para cruzar 2 cromosomas
-	public abstract void cruzar(Chromosome padre1, Chromosome padre2, int param);
+	public abstract void cruzar(Chromosome padre1, Chromosome padre2);
 }

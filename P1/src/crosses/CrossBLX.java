@@ -10,15 +10,15 @@ import individual.Chromosome;
 public class CrossBLX extends Cross {
 	
 	@Override
-	public void cruzar(Chromosome padre1, Chromosome padre2, int param) {		
+	public void cruzar(Chromosome padre1, Chromosome padre2) {		
 				List<Double> fenotipo1 = padre1.getFenotipo();
 				List<Double> fenotipo2 = padre2.getFenotipo();
 
 				Chromosome h1 = new Chromosome(padre1);
 				Chromosome h2 = new Chromosome(padre2);
 
-				List<Gen> hijo1 = h1.getGenes();
-				List<Gen> hijo2 = h2.getGenes();
+				List<Gen> hijo1 = h1.getGens();
+				List<Gen> hijo2 = h2.getGens();
 				
 				
 				for(int i = 0; i < hijo1.size(); i++){
@@ -29,8 +29,8 @@ public class CrossBLX extends Cross {
 					//En caso de que sea el mismo numero
 					if(cmax == cmin){
 						//Pues se pone sin más
-						hijo1.get(i).setGenotipo(cmin);
-						hijo2.get(i).setGenotipo(cmin);
+						hijo1.get(i).setGenotype(cmin);
+						hijo2.get(i).setGenotype(cmin);
 					}	
 					else
 					{

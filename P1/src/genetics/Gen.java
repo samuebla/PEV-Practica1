@@ -2,11 +2,9 @@ package genetics;
 
 import java.util.List;
 
-//FALTAN MAZO METODOS Y COSAS ASDVTHTGRGAAAAAAAAA
 public abstract class Gen {
-
-	//CAMBIAR NOMBRE VARIABLES
-	List<Object> alelos;
+	//Puede ser de cualquier tipo
+	List<Object> alleles;
 	//No se que es pero se multiplica para sacar el fenotipo
 	float prec;
 	//Para ver si es positivo o negativo
@@ -24,7 +22,7 @@ public abstract class Gen {
 	//GETTERS
 	
 	//Cada gen tiene un fenotipo distinto
-	public abstract double getFenotipo();
+	public abstract double getFenotype();
 	
 	public double getMin() {
 		return min;
@@ -35,27 +33,25 @@ public abstract class Gen {
 	}
 	
 	public int getTam() {
-		return alelos.size();
+		return alleles.size();
 	}
 	
 	boolean getNeg(){return this.neg;}
 
 	float getPrec() {return this.prec;}
 
-	public List<Object> getAlelos(){return alelos;}
+	public List<Object> getAlelos(){return alleles;}
 
-	
-	
 	
 	//Para colocar los alelos
 	public void setAlelos(List<Object> alelos) {
-		this.alelos = alelos;
+		this.alleles = alelos;
 		//No se muy bien que hace esto
-		if(this.getFenotipo() < this.min || this.getFenotipo() > this.max) this.neg = !this.neg;
+		if(this.getFenotype() < this.min || this.getFenotype() > this.max) this.neg = !this.neg;
 	}
 	
 	
-	public void setGenotipo(double ay) {
+	public void setGenotype(double ay) {
 		
 	}
 	

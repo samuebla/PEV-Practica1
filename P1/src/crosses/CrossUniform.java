@@ -10,10 +10,10 @@ import individual.Chromosome;
 public class CrossUniform extends Cross {
 
 	@Override
-	public void cruzar(Chromosome padre1, Chromosome padre2, int param) {
+	public void cruzar(Chromosome padre1, Chromosome padre2) {
 
-		List<Object> alelos1 = padre1.getAlelos();
-		List<Object> alelos2 = padre2.getAlelos();
+		List<Object> alelos1 = padre1.getAlleles();
+		List<Object> alelos2 = padre2.getAlleles();
 		
 		List<Object> hijo1 = new ArrayList<>();
 		List<Object> hijo2 = new ArrayList<>();
@@ -34,8 +34,8 @@ public class CrossUniform extends Cross {
 		Chromosome h1 = new Chromosome(padre1);
 		Chromosome h2 = new Chromosome(padre2);
 
-		List<Gen> genes1 = h1.getGenes();
-		List<Gen> genes2 = h2.getGenes();
+		List<Gen> genes1 = h1.getGens();
+		List<Gen> genes2 = h2.getGens();
 		
 		for(Gen g : genes1) {
 			g.setAlelos(hijo1.subList(acum, acum+g.getTam()));
