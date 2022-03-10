@@ -11,14 +11,14 @@ public class BinaryGen extends Gen {
 		//Crea la lista de los alelos
 		this.alleles = new ArrayList<>();
 		
-		this.prec = prec;
+		this.precision = prec;
 	}
 	
 	//Crea un Gen a base de otro gen
 	public BinaryGen(BinaryGen nGen){
 		this.min_range = nGen.getMin();
 		this.max_range = nGen.getMax();
-		this.prec = nGen.getPrec();
+		this.precision = nGen.getPrec();
 		this.isNegative_ = nGen.isNegative();
 		this.alleles = new ArrayList<>();
 		this.alleles.addAll(nGen.getAlleles());
@@ -32,14 +32,12 @@ public class BinaryGen extends Gen {
 		//Coge un numero aleatorio entre el min y el max
 		double aux = ThreadLocalRandom.current().nextDouble(min, max);
 		
-		int max_int = (int) (max/this.prec);
-		int min_int = (int) (min/this.prec);
 
-		//Te hace la conversion de binario a string 
-		String arrmax = Integer.toBinaryString(max_int);
-		String arrmin = Integer.toBinaryString(min_int);
-		
-		this.tam_cod = Math.max(arrmax.length(), arrmin.length());
+		//Obtenemos las cadenas de bits de los extremos del intervalo 
+		String arrmax = Integer.toBinaryString((int) (max/this.precision));
+		String arrmin = Integer.toBinaryString((int) (min/this.precision));
+		//Determinamos el maximo tamaño posible
+		this.maxCodificationSize = Math.max(arrmax.length(), arrmin.length());
 		
 		this.setGenotype(aux);
 	}
@@ -56,9 +54,9 @@ public class BinaryGen extends Gen {
              p++;
          }
          if(this.isNegative_)
-        	 return -(result * this.prec);
+        	 return -(result * this.precision);
          else
-         return result * this.prec;
+         return result * this.precision;
 	}
 
 	
@@ -71,13 +69,14 @@ public class BinaryGen extends Gen {
 			valor = -valor;
 		}else this.isNegative_ = false;
 
-		int l = (int) (valor/this.prec);
+		int l = (int) (valor/this.precision);
 
 		String arr = Integer.toBinaryString(l);
 		this.alleles = new ArrayList<>(arr.length());
 		
-		//Añade los ceros necesarios al inicio
-		for(int i = 0; i < this.tam_cod - arr.length(); i++)
+		//En caso de que sea menor el numero. Se añaden ceros al inicio
+		int sizeAlleles = this.maxCodificationSize - arr.length();
+		for(int i = 0; i < sizeAlleles; i++)
 			alleles.add(0);
 		
 		//Y aqui hace la conversion char por char

@@ -9,6 +9,7 @@ public class Func2_Schubert extends Function {
 		interval = new ArrayList();
 		interval.add(-10.0);
 		interval.add(10.0);
+		maximize = true;
 	}
 	
 	@Override

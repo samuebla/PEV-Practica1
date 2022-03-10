@@ -9,6 +9,7 @@ public class Func3_EggHolder extends Function {
 		interval = new ArrayList();
 		interval.add(-512.0);
 		interval.add(512.0);
+		maximize = true;
 	}
 	
 	@Override

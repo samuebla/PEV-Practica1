@@ -16,15 +16,15 @@ public class SelectionTruncation extends Selection {
 
 		//Revisar esta variable
 		Params params = (Params) param;
-		int n = params.sizePopulation;
+		double n = params.truncProb;
 		
-		double aElegir = n;
 		
 		//Numero de veces que hay que seleccionar a cada individuo
-		double numRep = 1.0 / n;
+		double prop = n / 100;
+		double numRep = 1.0 / prop;
 		selectedPopulation = new ArrayList<>();
 		
-		for(int i = 0; i < aElegir; i++)
+		for(int i = 0; i < n; i++)
 			for(int j = 0; j < numRep; j++)
 				//Añadimos a la mejor poblacion repetida
 				selectedPopulation.add(poblation.get(i));		

@@ -50,8 +50,6 @@ public class CrossMonopoint extends Cross {
 			g.setAlleles(newAlleles_2.subList(acum, acum + g.getTam()));
 			acum += g.getTam();
 		}
-		
-		this.hijos = new ArrayList<Chromosome>();
 
 		this.hijos.add(new Chromosome(gen_1));
 		this.hijos.add(new Chromosome(gen_2));

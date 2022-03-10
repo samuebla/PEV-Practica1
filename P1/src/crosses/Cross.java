@@ -15,9 +15,10 @@ public abstract class Cross {
 	}
 	
 	public List<Chromosome> reproduce(List<Chromosome> population, double probCross) {
+
 		Random r = new Random();
 		ArrayList<Integer> elegidos = new ArrayList<>(); 
-		
+		this.hijos = new ArrayList<Chromosome>();
 		//Se realiza el cruce sobre una lista nueva de cromosomas y se devuelve
         for (int i = 0; i < population.size(); i++){
             if (r.nextDouble() < probCross){
@@ -33,7 +34,15 @@ public abstract class Cross {
         	cruzar(population.get(elegidos.get(i)), population.get(elegidos.get(i+1)));
         }
         
-        return hijos; 
+        if(probCross < 1) {
+        	int pop = population.size();
+        	int hij = hijos.size();
+        	int rest =  pop - hij;
+        	
+        	hijos.addAll(population.subList(rest - 1, population.size() - 1));
+        }
+        	
+        return hijos; //esto no esta bien, deberia ser nueva
 	}
 	
 	//Metodo para cruzar 2 cromosomas

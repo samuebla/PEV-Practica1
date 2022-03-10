@@ -12,6 +12,8 @@ public class Population {
 	private double selectionProbability;
 	private double adaptedFitness;
 	
+	public boolean maximizePopulation;
+	
 	public Population() {
 		// TODO Auto-generated constructor stub
 		population_ = new ArrayList<Chromosome>();
@@ -37,6 +39,25 @@ public class Population {
 		return population_;
 	}
 
+	public void calculateAdaptedFitness() {
+		double max_substract = Double.NEGATIVE_INFINITY;
+		double min_add = Double.POSITIVE_INFINITY;
+		//En función del mayor/menor fitness 
+		for(Chromosome c : population_){
+			if(c.getFitness() > max_substract)
+				max_substract = c.getFitness();
+			if(c.getFitness() < min_add)
+				min_add = c.getFitness();
+		}
+		//Se adapta el resto de fitness de los demás individuos, a éste. 
+		// con el objetivo de que poco a poco, se maximiza/minimiza la poblacion
+		if(maximizePopulation)
+			for(Chromosome c : population_)
+				c.setAdaptedFitness(min_add);
+		else
+			for(Chromosome c : population_)
+				c.setAdaptedFitness(max_substract - c.getFitness());
+	}
 	
 	public String toString(){
 		String cadena = "";

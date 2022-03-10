@@ -19,10 +19,6 @@ public class Chromosome{
 	
 	//Constructora por copia
 	public Chromosome(Chromosome nCrom){
-		acc = nCrom.getAcc();
-		fitness = nCrom.getFitness();
-		adaptedFitness = nCrom.getAdaptedFitness();
-		selectionProbability = nCrom.getProbSeleccion();
 		gens = new ArrayList<>();
 		
 		for(Gen g : nCrom.getGens()){
@@ -31,6 +27,11 @@ public class Chromosome{
 			else if(g instanceof RealGen)
 				this.gens.add(new RealGen((RealGen)g));
 		}
+		
+		acc = nCrom.getAcc();
+		fitness = nCrom.getFitness();
+		adaptedFitness = nCrom.getAdaptedFitness();
+		selectionProbability = nCrom.getProbSeleccion();
 	}		
 	
 	public Chromosome(List<Gen> genes){ 
@@ -68,7 +69,6 @@ public class Chromosome{
 	}
 	
 	public List<Gen> getGens() {return gens;}
-
 	
 	public double getFitness() {
 		return fitness;

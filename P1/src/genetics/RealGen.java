@@ -6,14 +6,14 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RealGen extends Gen {
 
 	public RealGen(float prec){
-		this.prec = prec;
+		this.precision = prec;
 	}
 	
 	//Constructora por copia
 	public RealGen(RealGen nGen){
 		this.min_range = nGen.getMax();
 		this.max_range = nGen.getMax();
-		this.prec = nGen.getPrec();
+		this.precision = nGen.getPrec();
 		this.isNegative_ = nGen.isNegative();
 		this.alleles = new ArrayList<Object>();	
 		for(Object o : nGen.getAlleles()){
@@ -23,7 +23,7 @@ public class RealGen extends Gen {
 	
 	@Override
 	public void randomize(double min, double max) {
-		setGenotype((ThreadLocalRandom.current().nextDouble(min, max+this.prec)));
+		setGenotype((ThreadLocalRandom.current().nextDouble(min, max+this.precision)));
 	}
 	
 	//El fenotipo y genotipo son iguales

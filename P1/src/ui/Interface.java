@@ -52,6 +52,8 @@ public class Interface extends JFrame {
 	JSpinner precisionSpinner;
 	JComboBox solutionList;
 	JSpinner nIndividualsFunct4Param;
+	JComboBox truncDropdown;
+	JLabel truncLabel;
 	
 	private int sizePop; 
 	private int numGenerations; 
@@ -187,7 +189,26 @@ public class Interface extends JFrame {
 		crossDropdown = new JComboBox();
 		crossDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform"}));
+		
 		GroupLayout gl_crossPanel = new GroupLayout(crossPanel);
+		gl_crossPanel.setHorizontalGroup(
+			gl_crossPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_crossPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(crossLabel)
+					.addGap(26)
+					.addComponent(crossDropdown, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_crossPanel.setVerticalGroup(
+			gl_crossPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_crossPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_crossPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(crossLabel)
+						.addComponent(crossDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(43, Short.MAX_VALUE))
+		);
 		//-----------------------------------------------------------
 		
 		JPanel functionPanel = new JPanel();
@@ -324,27 +345,6 @@ public class Interface extends JFrame {
 					.addContainerGap())
 		);
 		MutationPanel.setLayout(gl_MutationPanel);
-		
-		gl_crossPanel.setHorizontalGroup(
-			gl_crossPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 312, Short.MAX_VALUE)
-				.addGroup(gl_crossPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(crossLabel)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(crossDropdown, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		gl_crossPanel.setVerticalGroup(
-			gl_crossPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 54, Short.MAX_VALUE)
-				.addGroup(gl_crossPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_crossPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(crossLabel)
-						.addComponent(crossDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(18, Short.MAX_VALUE))
-		);
 		crossPanel.setLayout(gl_crossPanel);
 		
 		JPanel crossPercentagePanel = new JPanel();
@@ -474,30 +474,32 @@ public class Interface extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-								.addComponent(startButton)
-								.addGap(121))
-							.addGroup(gl_contentPane.createSequentialGroup()
-								.addComponent(selectionPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addPreferredGap(ComponentPlacement.RELATED))
-							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-									.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 312, Short.MAX_VALUE)
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(parametersLabel)
-										.addGap(93))
-									.addComponent(generationsPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-									.addComponent(sizePanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-									.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-									.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-									.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-									.addComponent(elitismPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-									.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+							.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(startButton)
+							.addGap(121))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(parametersLabel)
+									.addGap(93))
+								.addComponent(generationsPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(sizePanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(elitismPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(selectionPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+								.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 312, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
@@ -506,8 +508,8 @@ public class Interface extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(solutionLabel, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(maxAbsSol, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(maxAbsSol)
+							.addGap(18)
 							.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
 							.addGap(91)
 							.addComponent(graphTitle)
@@ -530,17 +532,17 @@ public class Interface extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+							.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+							.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -554,26 +556,61 @@ public class Interface extends JFrame {
 		selectionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		selectionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Aleatorio", "Torneo Determinista", "Restos", "Truncamiento", "Estocástico Universal"}));
 		
+		selectionDropdown.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        int funct = selectionDropdown.getSelectedIndex();
+		        
+		        //Cuarta funcion Michalewicz
+		        if(funct == 4) {
+		        	truncDropdown.setEnabled(true);
+		        	truncLabel.setEnabled(true);
+		        	
+		        }else {
+		        	truncDropdown.setEnabled(false);
+		        	truncLabel.setEnabled(false);
+		        }
+		    }
+		});
+		
 		JLabel selectionLabel = new JLabel("Selection Type");
 		selectionLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		truncLabel = new JLabel("Trunc Probability(%)");
+		truncLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
+		truncLabel.setEnabled(false);
+		
+		truncDropdown = new JComboBox();
+		truncDropdown.setModel(new DefaultComboBoxModel(new String[] {"10", "50"}));
+		truncDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		truncDropdown.setEnabled(false);
 		GroupLayout gl_Selection = new GroupLayout(selectionPanel);
 		gl_Selection.setHorizontalGroup(
 			gl_Selection.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Selection.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(selectionLabel)
-					.addGap(18)
-					.addComponent(selectionDropdown, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(54, Short.MAX_VALUE))
+					.addGroup(gl_Selection.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_Selection.createSequentialGroup()
+							.addComponent(selectionLabel)
+							.addPreferredGap(ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+							.addComponent(selectionDropdown, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_Selection.createSequentialGroup()
+							.addComponent(truncLabel, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(truncDropdown, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		gl_Selection.setVerticalGroup(
-			gl_Selection.createParallelGroup(Alignment.TRAILING)
+			gl_Selection.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Selection.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addContainerGap()
 					.addGroup(gl_Selection.createParallelGroup(Alignment.BASELINE)
-						.addComponent(selectionDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(selectionLabel))
-					.addContainerGap())
+						.addComponent(selectionLabel)
+						.addComponent(selectionDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_Selection.createParallelGroup(Alignment.BASELINE)
+						.addComponent(truncDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(truncLabel))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		selectionPanel.setLayout(gl_Selection);
 		
@@ -587,6 +624,12 @@ public class Interface extends JFrame {
 		mutProb = ((double) this.mutationSpinner.getValue()) / 100.0;
 		precision = (double) this.precisionSpinner.getValue();
 		
+		int truncProb = 0;
+		if(truncDropdown.isEnabled()) {
+			String val = truncDropdown.getSelectedItem().toString();
+			truncProb = Integer.valueOf(val);
+		}
+				
 		int paramFunc4 = 0;
 		if(nIndividualsFunct4Param.isEnabled()) {
 			paramFunc4 = (int) nIndividualsFunct4Param.getValue();
@@ -601,10 +644,10 @@ public class Interface extends JFrame {
 		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, paramFunc4);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, paramFunc4, truncProb);
 	}
 	
-	public void showGraph(double[] bestAbs, double[]  best, double[] avarage, double[] peor, double solution, List<Double> sol) {
+	public void showGraph(double[] bestAbs, double[]  best, double[] avarage, double solution, List<Double> sol) {
 
 		panelMathPlot.removeAllPlots();
 		double [] x = new double[bestAbs.length];
@@ -628,7 +671,6 @@ public class Interface extends JFrame {
 		panelMathPlot.addLinePlot("Best So Far", Color.BLUE, x, bestAbs);
 		panelMathPlot.addLinePlot("Best Individual", Color.RED, x, best);
 		panelMathPlot.addLinePlot("Avarage", Color.GREEN, x, avarage);
-		panelMathPlot.addLinePlot("Worst Individual", Color.ORANGE, x, peor);
 	}
 	
 	private void getFunctionType() {

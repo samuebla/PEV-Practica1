@@ -6,9 +6,9 @@ public abstract class Gen {
 	//Puede ser de cualquier tipo
 	List<Object> alleles;
 	//Error range
-	float prec;
+	float precision;
 	boolean isNegative_;
-	int tam_cod;
+	int maxCodificationSize;
 	double min_range;
 	double max_range;
 	
@@ -34,7 +34,7 @@ public abstract class Gen {
 	
 	boolean isNegative(){return this.isNegative_;}
 
-	float getPrec() {return this.prec;}
+	float getPrec() {return this.precision;}
 
 	public List<Object> getAlleles(){return alleles;}
 

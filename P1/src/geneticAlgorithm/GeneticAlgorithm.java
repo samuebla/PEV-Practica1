@@ -63,7 +63,7 @@ public class GeneticAlgorithm {
 	}
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
-						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, double eliPercentage, int function4params) {
+						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, double eliPercentage, int function4params, int truncProbability) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
@@ -79,6 +79,7 @@ public class GeneticAlgorithm {
 		param.precision = precision;
 		param.interval = funct.getInterval();
 		param.f_type = f_Type;
+		param.truncProb = truncProbability;
 		
 		function4params_ = function4params;//esto hay que ponerlo en la interfaz
 		
@@ -88,6 +89,7 @@ public class GeneticAlgorithm {
 		eliteSize = (int)(sizePopulation * eliPercentage);
 		Population elite = new Population();
 		
+		poblation.maximizePopulation = funct.maximize;
 		//EVALUATE POPULATION
 		fitness = Evaluate();
 		
@@ -101,7 +103,7 @@ public class GeneticAlgorithm {
 			//Select
 			Population selected = Selection();
 			//Cross
-			poblation = Cross();
+			poblation = Cross(selected);
 			//Mutate
 			poblation = Mutate();
 			//Reinsert Elite
@@ -127,24 +129,22 @@ public class GeneticAlgorithm {
 		double[] best = new double[numGen];
 		double[] bestPob = new double[numGen];
         double[] avarage = new double[numGen];
-        double[] worst = new double[numGen];
         
         int i = 0;
         while(i < numGen) {
         	if(funct.maximize) {
-        		if(maxAbs > generations.get(i).best) {
+        		if(maxAbs < generations.get(i).best) {
         			maxAbs = generations.get(i).best;
         			sol = generations.get(i).sol;
         		}
         	}else {
-        		if(maxAbs < generations.get(i).best) {
+        		if(maxAbs > generations.get(i).best) {
         			maxAbs = generations.get(i).best;
         			sol = generations.get(i).sol;
         		}
         	}
         	
         	Generation gen = generations.get(i);
-        	worst[i] = gen.worst;
         	bestPob[i] = maxAbs;
         	avarage[i] = gen.avarage;
 			best[i] = gen.best;
@@ -152,7 +152,7 @@ public class GeneticAlgorithm {
         	i++;
         }
         
-        interface_.showGraph(bestPob, best, avarage, worst, maxAbs, sol);
+        interface_.showGraph(bestPob, best, avarage, maxAbs, sol);
 	};
 	
 	private double Evaluate() {
@@ -163,15 +163,15 @@ public class GeneticAlgorithm {
 		for(Chromosome c : chromosomes) {
 			//Son genes ya convertidos a numero, ya no son una cadena de bits o x
 			List<Double> fenotipo = c.getFenotype();
-			funct.ejecutar(fenotipo);
+			c.setFitness(funct.ejecutar(fenotipo));
 		}
-		
-		//Acumulamos los valores de adaptación
+		poblation.calculateAdaptedFitness();
+		//Acumulamos los valores de adaptación y el fitness adaptado al maximo/minimo de la poblacion
 		for(Chromosome c : chromosomes) {
 			fitnessTotal = c.getFitness();
 			adapatedFitnessTotal += c.getAdaptedFitness();
 		}
-		
+		//La poblacion se ordena de MENOR A MAYOR fitness
 		poblation.sort();
 		poblation.setSelectionProbability(adapatedFitnessTotal);
 		
@@ -237,6 +237,10 @@ public class GeneticAlgorithm {
 				mut = new MutationBasic();
 				break;
 		}
+		
+		if(FunctType_ == FunctionType.f4_Michalewicz) 
+			mut = new MutationBasic();
+		
 	}
 	
 	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct, int function4params) {
@@ -299,8 +303,8 @@ public class GeneticAlgorithm {
 		return new Population(select.getPopSelected());
 	}
 	
-	private Population Cross() {
-		return new Population(cross.reproduce(poblation.getPopulation(), param.crossProb));
+	private Population Cross(Population pop) {
+		return new Population(cross.reproduce(pop.getPopulation(), param.crossProb));
 	}
 	
 	private Population Mutate() {
