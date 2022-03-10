@@ -15,6 +15,6 @@ public class Generation {
 		best = population.get(size - 1).getFitness();
 		
 		sol = new ArrayList<Double>();
-		sol.addAll(population.get(size - 1).getFenotype());
+		sol.addAll(population.get(size - 1).getPhenotype());
 	}
 }

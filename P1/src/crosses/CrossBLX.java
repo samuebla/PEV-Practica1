@@ -11,8 +11,8 @@ public class CrossBLX extends Cross {
 	
 	@Override
 	public void cruzar(Chromosome padre1, Chromosome padre2) {		
-				List<Double> fenotipo1 = padre1.getFenotype();
-				List<Double> fenotipo2 = padre2.getFenotype();
+				List<Double> fenotipo1 = padre1.getPhenotype();
+				List<Double> fenotipo2 = padre2.getPhenotype();
 
 				Chromosome h1 = new Chromosome(padre1);
 				Chromosome h2 = new Chromosome(padre2);

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import individual.Chromosome;
 
+//CLASE ABSTRACTA PARA LOS TIPOS DE CRUCE
 public abstract class Cross {
 
 	protected List<Chromosome> hijos;

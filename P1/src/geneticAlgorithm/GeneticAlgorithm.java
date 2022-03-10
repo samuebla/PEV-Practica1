@@ -119,7 +119,7 @@ public class GeneticAlgorithm {
 		int numGen = param.numGenerations;
 		
 		
-		//Quedará la solucion de aquel que sea el mejor/peor segun la funcion
+		//Quedarï¿½ la solucion de aquel que sea el mejor/peor segun la funcion
 		List<Double> sol = new ArrayList<Double>();
 		
 		double maxAbs;
@@ -166,7 +166,7 @@ public class GeneticAlgorithm {
 			c.setFitness(funct.ejecutar(fenotipo));
 		}
 		poblation.calculateAdaptedFitness();
-		//Acumulamos los valores de adaptación y el fitness adaptado al maximo/minimo de la poblacion
+		//Acumulamos los valores de adaptaciï¿½n y el fitness adaptado al maximo/minimo de la poblacion
 		for(Chromosome c : chromosomes) {
 			fitnessTotal = c.getFitness();
 			adapatedFitnessTotal += c.getAdaptedFitness();

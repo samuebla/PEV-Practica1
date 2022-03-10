@@ -62,7 +62,7 @@ public class Population {
 	public String toString(){
 		String cadena = "";
 		for (Chromosome in : population_)
-			cadena += in.getFenotype() + "\n";
+			cadena += in.getPhenotype() + "\n";
 
 		return cadena;
 	}

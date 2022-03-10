@@ -38,7 +38,7 @@ public class Chromosome{
 		this.gens = genes; 
 	}
 	
-	public List<Double> getFenotype(){
+	public List<Double> getPhenotype(){
 		List<Double> fenotype_ = new ArrayList<>();
 		
 		for(Gen g : gens) 
