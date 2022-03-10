@@ -18,20 +18,20 @@ public class Chromosome{
 	private double selectionProbability;
 	
 	//Constructora por copia
-	public Chromosome(Chromosome nCrom){
+	public Chromosome(Chromosome copyCrom){
 		gens = new ArrayList<>();
 		
-		for(Gen g : nCrom.getGens()){
+		for(Gen g : copyCrom.getGens()){
 			if(g instanceof BinaryGen)
 				this.gens.add(new BinaryGen((BinaryGen)g));
 			else if(g instanceof RealGen)
 				this.gens.add(new RealGen((RealGen)g));
 		}
 		
-		acc = nCrom.getAcc();
-		fitness = nCrom.getFitness();
-		adaptedFitness = nCrom.getAdaptedFitness();
-		selectionProbability = nCrom.getProbSeleccion();
+		acc = copyCrom.getAcc();
+		fitness = copyCrom.getFitness();
+		adaptedFitness = copyCrom.getAdaptedFitness();
+		selectionProbability = copyCrom.getProbSeleccion();
 	}		
 	
 	public Chromosome(List<Gen> genes){ 

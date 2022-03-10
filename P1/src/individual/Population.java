@@ -27,7 +27,8 @@ public class Population {
 	
 	public void sort() {
 		Collections.sort(population_, new Comparator<Chromosome>() {
-		    @SuppressWarnings("removal")
+			//Pa quitar los warning
+			@SuppressWarnings("removal")
 			@Override
 		    public int compare(Chromosome c1, Chromosome c2) {
 		        return new Double(c1.getAdaptedFitness()).compareTo(new Double(c2.getAdaptedFitness()));
