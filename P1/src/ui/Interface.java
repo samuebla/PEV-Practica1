@@ -221,7 +221,7 @@ public class Interface extends JFrame {
         double stepSizeParam = 1;
 		SpinnerNumberModel modelParam = new SpinnerNumberModel(valueParam, minParam, maxParam, stepSizeParam);
 		
-		nIndividualsFunct4Param = new JSpinner(modelParam);
+		nIndividualsFunct4Param = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
 		nIndividualsFunct4Param.setEnabled(false);
 		JLabel nIndividualsFunct4 = new JLabel("N\u00BA Individuals");
 		nIndividualsFunct4.setFont(new Font("Georgia", Font.PLAIN, 13));
@@ -632,7 +632,7 @@ public class Interface extends JFrame {
 				
 		int paramFunc4 = 0;
 		if(nIndividualsFunct4Param.isEnabled()) {
-			paramFunc4 = (int) nIndividualsFunct4Param.getValue();
+			paramFunc4 = Integer.valueOf (nIndividualsFunct4Param.getValue().toString());
 		}
 		elitism = this.elitismCheckBox.isSelected(); 
 		eliPercentage =	((double)this.elitismSpinner.getValue())/100.0;

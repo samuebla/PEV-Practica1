@@ -2,6 +2,7 @@ package selection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import individual.Chromosome;
 
@@ -12,12 +13,11 @@ public class SelectionProbTournament extends Selection {
 
 		selectedPopulation = new ArrayList<>();
 		//Numero de veces que se repite el proceso para escoger el mejor/peor
-//		int k = ((Pair<Integer, Double>) param).getLeft();
-		int k = 0; //PROVISIONAL
+		int k = poblation.size();
 		
+		Random rand = new Random();
 		// Generalmente p toma valores en el rango [0.5 , 1]
-//		double p = (double) ((Pair<Object, Object>) param).getRight();
-		int p = 0; //PROVISIONAL
+		double p = rand.nextDouble(0.5, 1.0);
 		
 		
 		//Cogemos 2 o 3 muestras en funcion del tamaño de la poblacion
