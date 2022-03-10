@@ -110,6 +110,7 @@ public class GeneticAlgorithm {
 			if(elitism_) insertElite(elite, poblation);
 			//Get fitness
 			fitness = Evaluate();
+			System.out.println(i);
 		}
 		
 		showSolution();
