@@ -17,7 +17,7 @@ public class SelectionProbTournament extends Selection {
 		
 		Random rand = new Random();
 		// Generalmente p toma valores en el rango [0.5 , 1]
-		double p = rand.nextDouble(0.5, 1.0); //PROVISIONAL
+		double p = rand.nextDouble(0.5, 1.0);
 		
 		
 		//Cogemos 2 o 3 muestras en funcion del tamaño de la poblacion
