@@ -33,7 +33,7 @@ public abstract class Cross {
         	cruzar(population.get(elegidos.get(i)), population.get(elegidos.get(i+1)));
         }
         
-        return hijos; //esto no esta bien, deberia ser nueva
+        return hijos; 
 	}
 	
 	//Metodo para cruzar 2 cromosomas

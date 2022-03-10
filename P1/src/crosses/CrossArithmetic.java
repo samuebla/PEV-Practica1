@@ -9,8 +9,6 @@ import individual.Chromosome;
 public class CrossArithmetic extends Cross {
 
 	//Cruce aritmetico
-	
-	//CREO QUE LO TENGO MAL AAAAAAA
 	@Override
 	public void cruzar(Chromosome padre1, Chromosome padre2) {
 		
@@ -19,8 +17,8 @@ public class CrossArithmetic extends Cross {
 		List<Double> fenotipo2 = padre2.getFenotype();
 
 		//Creamos el padre y cogemos sus genes
-		Chromosome copia_padre = new Chromosome(padre1);
-		List<Gen> hijo = copia_padre.getGens();
+		Chromosome copy_Father = new Chromosome(padre1);
+		List<Gen> hijo = copy_Father.getGens();
 		
 		for(int i = 0; i < fenotipo1.size(); i++){
 			//Hacemos la media de los dos cromosomas
@@ -33,7 +31,7 @@ public class CrossArithmetic extends Cross {
 		}
 		
 		this.hijos = new ArrayList<>();
-//		this.hijos.add(new Chromosome(hijo));
+		this.hijos.add(new Chromosome(hijo));
 	}
 
 }
