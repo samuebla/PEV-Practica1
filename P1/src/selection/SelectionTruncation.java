@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import individual.Chromosome;
+import utils.Params;
 
 public class SelectionTruncation extends Selection {
 
@@ -14,10 +15,13 @@ public class SelectionTruncation extends Selection {
 	public void selection(List<Chromosome> poblation, Object param) {
 
 		//Revisar esta variable
-		double aElegir = (double) param;
+		Params params = (Params) param;
+		int n = params.sizePopulation;
+		
+		double aElegir = n;
 		
 		//Numero de veces que hay que seleccionar a cada individuo
-		double numRep = 1.0 / (double) param;
+		double numRep = 1.0 / n;
 		selectedPopulation = new ArrayList<>();
 		
 		for(int i = 0; i < aElegir; i++)

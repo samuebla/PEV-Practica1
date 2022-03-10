@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import individual.Chromosome;
+import utils.Params;
 
 public class SelectionTournament extends Selection {	
 
@@ -15,7 +16,8 @@ public class SelectionTournament extends Selection {
 	public void selection(List<Chromosome> poblation, Object param) {
 
 		selectedPopulation = new ArrayList<Chromosome>();
-		int n = (int) param;
+		Params params = (Params) param;
+		int n = params.sizePopulation;
 		
 		//Se coge el mejor de los individuos de un conjunto de 2 elementos
 		int tamTorneo = 2;

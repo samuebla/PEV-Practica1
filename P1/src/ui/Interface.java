@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
@@ -23,9 +24,10 @@ import javax.swing.border.BevelBorder;
 import org.math.plot.Plot2DPanel;
 
 import geneticAlgorithm.GeneticAlgorithm;
-import utils.*;
-import javax.swing.SpinnerModel;
-import javax.swing.JTextField;
+import utils.CrossType;
+import utils.FunctionType;
+import utils.MutationType;
+import utils.SelectionType;
 
 public class Interface extends JFrame {
 
@@ -585,7 +587,10 @@ public class Interface extends JFrame {
 		mutProb = ((double) this.mutationSpinner.getValue()) / 100.0;
 		precision = (double) this.precisionSpinner.getValue();
 		
-		int paramFunc4 = (int) nIndividualsFunct4Param.getValue();
+		int paramFunc4 = 0;
+		if(nIndividualsFunct4Param.isEnabled()) {
+			paramFunc4 = (int) nIndividualsFunct4Param.getValue();
+		}
 		elitism = this.elitismCheckBox.isSelected(); 
 		eliPercentage =	((double)this.elitismSpinner.getValue())/100.0;
 		

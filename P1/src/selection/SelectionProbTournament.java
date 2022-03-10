@@ -7,7 +7,6 @@ import individual.Chromosome;
 
 public class SelectionProbTournament extends Selection {
 
-	//AAAAAAAAAAAAA HAY ERRORES
 	@Override
 	public void selection(List<Chromosome> poblation, Object param) {
 
