@@ -15,13 +15,13 @@ public class BinaryGen extends Gen {
 	}
 	
 	//Crea un Gen a base de otro gen
-	public BinaryGen(BinaryGen nGen){
-		this.min_range = nGen.getMin();
-		this.max_range = nGen.getMax();
-		this.precision = nGen.getPrec();
-		this.isNegative_ = nGen.isNegative();
+	public BinaryGen(BinaryGen copyGen){
+		this.min_range = copyGen.getMin();
+		this.max_range = copyGen.getMax();
+		this.isNegative_ = copyGen.isNegative();
+		this.precision = copyGen.getPrec();
 		this.alleles = new ArrayList<>();
-		this.alleles.addAll(nGen.getAlleles());
+		this.alleles.addAll(copyGen.getAlleles());
 	}
 	
 	@Override

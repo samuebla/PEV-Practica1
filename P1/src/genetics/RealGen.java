@@ -10,19 +10,20 @@ public class RealGen extends Gen {
 	}
 	
 	//Constructora por copia
-	public RealGen(RealGen nGen){
-		this.min_range = nGen.getMax();
-		this.max_range = nGen.getMax();
-		this.precision = nGen.getPrec();
-		this.isNegative_ = nGen.isNegative();
+	public RealGen(RealGen copyGen){
+		this.min_range = copyGen.getMax();
+		this.max_range = copyGen.getMax();
+		this.precision = copyGen.getPrec();
+		this.isNegative_ = copyGen.isNegative();
 		this.alleles = new ArrayList<Object>();	
-		for(Object o : nGen.getAlleles()){
+		for(Object o : copyGen.getAlleles()){
 			this.alleles.add(o);
 		}
 	}
 	
 	@Override
 	public void randomize(double min, double max) {
+		//Igual pero ahora en double porque es real
 		setGenotype((ThreadLocalRandom.current().nextDouble(min, max+this.precision)));
 	}
 	

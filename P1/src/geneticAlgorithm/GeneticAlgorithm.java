@@ -70,6 +70,7 @@ public class GeneticAlgorithm {
 		MutType_ = m_Type;
 		elitism_ = elitism;		
 		selectTypes();		
+		
 		//Contenedor de Parametros
 		param = new Params();
 		param.numGenerations = numGenerations;
@@ -81,7 +82,7 @@ public class GeneticAlgorithm {
 		param.f_type = f_Type;
 		param.truncProb = truncProbability;
 		
-		function4params_ = function4params;//esto hay que ponerlo en la interfaz
+		function4params_ = function4params;//Todo esto va en la interfaz
 		
 		//INIT POPULATION
 		poblation = InitPopulation(sizePopulation, precision,f_Type, function4params_);
@@ -153,6 +154,7 @@ public class GeneticAlgorithm {
         	i++;
         }
         
+        //Muestra la grafica
         interface_.showGraph(bestPob, best, avarage, maxAbs, sol);
 	};
 	

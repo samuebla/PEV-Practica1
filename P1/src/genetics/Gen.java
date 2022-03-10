@@ -5,12 +5,12 @@ import java.util.List;
 public abstract class Gen {
 	//Puede ser de cualquier tipo
 	List<Object> alleles;
-	//Error range
-	float precision;
 	boolean isNegative_;
 	int maxCodificationSize;
 	double min_range;
 	double max_range;
+	//Error range
+	float precision;
 	
 	public Gen() { }
 
@@ -19,6 +19,9 @@ public abstract class Gen {
 	//GETTERS
 	
 	public abstract double getGenFenotype();
+
+	public abstract void setGenotype(double aux);
+	
 	
 	public double getMin() {
 		return min_range;
@@ -47,14 +50,9 @@ public abstract class Gen {
 	
 	public void setAlleles(List<Object> alelos) {
 		this.alleles = alelos;
-		//No se muy bien que hace esto
+		//Para ver si es valor negativo o no
 		if(this.getGenFenotype() < this.min_range || this.getGenFenotype() > this.max_range) this.isNegative_ = !this.isNegative_;
-	}
-	
-	
-	public void setGenotype(double ay) {
-		
-	}
+	}	
 	
 	public void setMin(double min) {
 		this.min_range = min;

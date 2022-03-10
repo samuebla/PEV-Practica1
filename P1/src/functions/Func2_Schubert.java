@@ -16,11 +16,11 @@ public class Func2_Schubert extends Function {
 	public double ejecutar(List<Double> x) {
 		double total = 1;
 		for(double y : x)
-			total = total * sumatorio(y);
-		
+			total = total * sumatorio(y);		
 		return total;
 	}
-	
+
+	//Para realizar los sumatorios del problema
 	private double sumatorio(double x) {
 		double sumador = 0;
 		for(int i = 1; i <= 5; ++i)
