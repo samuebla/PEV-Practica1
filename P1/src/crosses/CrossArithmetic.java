@@ -21,17 +21,15 @@ public class CrossArithmetic extends Cross {
 		List<Gen> hijo = copy_Father.getGens();
 		
 		for(int i = 0; i < phenotype1.size(); i++){
-			//Hacemos la media de los dos cromosomas
+			//Hacemos la media de los dos cromosomas en decimal
 			double media = (phenotype1.get(i) + phenotype2.get(i)) / 2;
 			
+			//Le metemos el valor en binario
 			hijo.get(i).setGenotype(media);
-			
-			if(hijo.get(i).getGenFenotype() < hijo.get(i).getMin())
-				System.out.println("stop");
 		}
 		
-		this.hijos = new ArrayList<>();
-		this.hijos.add(new Chromosome(hijo));
+		this.sons = new ArrayList<>();
+		this.sons.add(new Chromosome(hijo));
 	}
 
 }

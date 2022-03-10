@@ -11,6 +11,7 @@ public class CrossMonopoint extends Cross {
 
 	@Override
 	public void cruzar(Chromosome parent_1, Chromosome parent_2) {
+		
 		//Cogemos un numero aleatorio para ver donde cortar
 		int sizeChromosome = parent_1.getTam();
 		int cut = ThreadLocalRandom.current().nextInt(0, parent_1.getTam());
@@ -35,24 +36,26 @@ public class CrossMonopoint extends Cross {
 		List<Object> newAlleles_2 = alleles2.subList(0,cut);
 		newAlleles_2.addAll(alleles1.subList(cut,sizeChromosome));
 
-		int acum = 0;
+		int sum = 0;
 		
 		//Ya que newAllels contiene los alelos de ambos genes. Ahora hay que repatirlos de nuevo
 		for(Gen g : gen_1) {
-			g.setAlleles(newAlleles_1.subList(acum, acum + g.getTam()));
-			acum += g.getTam();
+			g.setAlleles(newAlleles_1.subList(sum, sum + g.getTam()));
+			sum += g.getTam();
 		}
 		
-		acum = 0;
+		sum = 0;
 		
 		//Y viceversa
 		for(Gen g : gen_2) {
-			g.setAlleles(newAlleles_2.subList(acum, acum + g.getTam()));
-			acum += g.getTam();
+			g.setAlleles(newAlleles_2.subList(sum, sum + g.getTam()));
+			sum += g.getTam();
 		}
+		
+		this.sons = new ArrayList<>();
 
-		this.hijos.add(new Chromosome(gen_1));
-		this.hijos.add(new Chromosome(gen_2));
+		this.sons.add(new Chromosome(gen_1));
+		this.sons.add(new Chromosome(gen_2));
 	}
 
 }

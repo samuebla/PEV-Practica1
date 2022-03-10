@@ -10,49 +10,60 @@ import individual.Chromosome;
 public class CrossUniform extends Cross {
 
 	@Override
-	public void cruzar(Chromosome padre1, Chromosome padre2) {
+	public void cruzar(Chromosome father1, Chromosome father2) {
 
-		List<Object> alelos1 = padre1.getAlleles();
-		List<Object> alelos2 = padre2.getAlleles();
+		//Damos por entendido que tienen el mismo tamaño de alelos
+		List<Object> alelos1 = father1.getAlleles();
+		List<Object> alelos2 = father2.getAlleles();
 		
-		List<Object> hijo1 = new ArrayList<>();
-		List<Object> hijo2 = new ArrayList<>();
+		List<Object> son1 = new ArrayList<>();
+		List<Object> son2 = new ArrayList<>();
 		
+		//Vamos avanzando alelo por alelo
 		for(int i = 0; i < alelos1.size(); i++){
+			//50% de probabilidad
 			int random = ThreadLocalRandom.current().nextInt(0, 10);
 			
-			if(random >= 5){
-				hijo1.add(alelos2.get(i));
-				hijo2.add(alelos1.get(i));
-			}else{
-				hijo1.add(alelos1.get(i));
-				hijo2.add(alelos2.get(i));
+			if(random >= 5)
+			{
+				//Lo cambiamos
+				son1.add(alelos2.get(i));
+				son2.add(alelos1.get(i));
+			} else
+			{
+				//Lo dejamos igual
+				son1.add(alelos1.get(i));
+				son2.add(alelos2.get(i));
 			}	
 		}
 		
-		int acum = 0;
-		Chromosome h1 = new Chromosome(padre1);
-		Chromosome h2 = new Chromosome(padre2);
+		int sum = 0;
+		
+		//Copiamos a los padres
+		Chromosome h1 = new Chromosome(father1);
+		Chromosome h2 = new Chromosome(father2);
 
-		List<Gen> genes1 = h1.getGens();
-		List<Gen> genes2 = h2.getGens();
+		List<Gen> gens1 = h1.getGens();
+		List<Gen> gens2 = h2.getGens();
 		
-		for(Gen g : genes1) {
-			g.setAlleles(hijo1.subList(acum, acum+g.getTam()));
-			acum++;
+		for(Gen g : gens1) {
+			//Devuelve la lista de alelos desde SUM hasta SUM+G
+			//Para realizar asi el corte
+			g.setAlleles(son1.subList(sum, sum+g.getTam()));
+			sum++;
 		}
 		
-		acum = 0;
+		sum = 0;
 		
-		for(Gen g : genes2) {
-			g.setAlleles(hijo2.subList(acum, acum+g.getTam()));
-			acum++;
+		for(Gen g : gens2) {
+			g.setAlleles(son2.subList(sum, sum+g.getTam()));
+			sum++;
 		}
 		
-		this.hijos = new ArrayList<>();
+		this.sons = new ArrayList<>();
 		
-//		this.hijos.add(new Chromosome(genes1));
-//		this.hijos.add(new Chromosome(genes2));
+		this.sons.add(new Chromosome(gens1));
+		this.sons.add(new Chromosome(gens2));
 	}
 
 }

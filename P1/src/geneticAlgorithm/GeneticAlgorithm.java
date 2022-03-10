@@ -163,7 +163,7 @@ public class GeneticAlgorithm {
 		//Para cada gen, evaluamos su valor con la funcion F.
 		for(Chromosome c : chromosomes) {
 			//Son genes ya convertidos a numero, ya no son una cadena de bits o x
-			List<Double> fenotipo = c.getFenotype();
+			List<Double> fenotipo = c.getPhenotype();
 			c.setFitness(funct.ejecutar(fenotipo));
 		}
 		poblation.calculateAdaptedFitness();
