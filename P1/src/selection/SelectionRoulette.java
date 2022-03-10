@@ -12,7 +12,7 @@ public class SelectionRoulette extends Selection {
 	@Override
 	public void selection(List<Chromosome> poblation, Object param) {
 		//Creamos la lista de la poblacion
-		selectedPopulation = new ArrayList<>();
+		selectedPopulation = new ArrayList<Chromosome>();
 		double rand;
 		
 		int posSelected;
@@ -24,8 +24,11 @@ public class SelectionRoulette extends Selection {
 			rand = Math.random();
 			posSelected = 0;
 			//Mientras sea menor al acumulado y siga siendo menor que la población
-			while(rand > poblation.get(posSelected).getAcumulado() && posSelected < poblation.size()) posSelected++;
+			while(posSelected < poblation.size() && rand > poblation.get(posSelected).getAcc()) 
+				posSelected++;
 			//Y añadimos al array posicionandolo
+			if(posSelected >= poblation.size())
+				posSelected = poblation.size() - 1;
 			selectedPopulation.add(i, poblation.get(posSelected));
 		}
 	}

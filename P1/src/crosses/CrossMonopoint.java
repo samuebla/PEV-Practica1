@@ -39,7 +39,7 @@ public class CrossMonopoint extends Cross {
 		
 		//Ya que newAllels contiene los alelos de ambos genes. Ahora hay que repatirlos de nuevo
 		for(Gen g : gen_1) {
-			g.setAlelos(newAlleles_1.subList(acum, acum + g.getTam()));
+			g.setAlleles(newAlleles_1.subList(acum, acum + g.getTam()));
 			acum += g.getTam();
 		}
 		
@@ -47,7 +47,7 @@ public class CrossMonopoint extends Cross {
 		
 		//Y viceversa
 		for(Gen g : gen_2) {
-			g.setAlelos(newAlleles_2.subList(acum, acum + g.getTam()));
+			g.setAlleles(newAlleles_2.subList(acum, acum + g.getTam()));
 			acum += g.getTam();
 		}
 		

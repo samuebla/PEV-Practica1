@@ -38,10 +38,10 @@ public class SelectionProbTournament extends Selection {
 				select = (int) (Math.random() * (poblation.size()));
 				
 				//Seleccionamos el mejor
-				if(poblation.get(select).getFitnessAdaptado() > poblation.get(selectMax).getFitnessAdaptado())
+				if(poblation.get(select).getAdaptedFitness() > poblation.get(selectMax).getAdaptedFitness())
 					selectMax = select;
 				//Y el peor
-				if(poblation.get(select).getFitnessAdaptado() < poblation.get(selectMax).getFitnessAdaptado())
+				if(poblation.get(select).getAdaptedFitness() < poblation.get(selectMax).getAdaptedFitness())
 					selectMin = select;
 			}
 			

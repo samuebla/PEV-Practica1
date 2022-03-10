@@ -8,7 +8,7 @@ import individual.Chromosome;
 import utils.FunctionType;
 import utils.Params;
 
-public class BasicMutation extends MutationAlgorithm {
+public class MutationBasic extends Mutation {
 
 	@Override
 	public void mutate(List<Chromosome> poblation, Object params_) {

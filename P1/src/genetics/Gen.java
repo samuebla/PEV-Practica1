@@ -5,49 +5,50 @@ import java.util.List;
 public abstract class Gen {
 	//Puede ser de cualquier tipo
 	List<Object> alleles;
-	//No se que es pero se multiplica para sacar el fenotipo
+	//Error range
 	float prec;
-	//Para ver si es positivo o negativo
-	boolean neg;
+	boolean isNegative_;
 	int tam_cod;
-	double min;
-	double max;
+	double min_range;
+	double max_range;
 	
-	public Gen() {
-
-	}
+	public Gen() { }
 
 	public abstract void randomize(double min, double max);
 	
 	//GETTERS
 	
-	//Cada gen tiene un fenotipo distinto
-	public abstract double getFenotype();
+	public abstract double getGenFenotype();
 	
 	public double getMin() {
-		return min;
+		return min_range;
 	}
 	
 	public double getMax() {
-		return max;
+		return max_range;
 	}
 	
 	public int getTam() {
 		return alleles.size();
 	}
 	
-	boolean getNeg(){return this.neg;}
+	boolean isNegative(){return this.isNegative_;}
 
 	float getPrec() {return this.prec;}
 
-	public List<Object> getAlelos(){return alleles;}
+	public List<Object> getAlleles(){return alleles;}
 
+	public boolean equals(Object o){
+		if(!(o instanceof  Gen)) return false;
+
+		Gen g = (Gen)o;
+		return g.getGenFenotype() == this.getGenFenotype();
+	}
 	
-	//Para colocar los alelos
-	public void setAlelos(List<Object> alelos) {
+	public void setAlleles(List<Object> alelos) {
 		this.alleles = alelos;
 		//No se muy bien que hace esto
-		if(this.getFenotype() < this.min || this.getFenotype() > this.max) this.neg = !this.neg;
+		if(this.getGenFenotype() < this.min_range || this.getGenFenotype() > this.max_range) this.isNegative_ = !this.isNegative_;
 	}
 	
 	
@@ -56,11 +57,11 @@ public abstract class Gen {
 	}
 	
 	public void setMin(double min) {
-		this.min = min;
+		this.min_range = min;
 	}
 
 	public void setMax(double max) {
-		this.max = max;
+		this.max_range = max;
 	}
 	
 }

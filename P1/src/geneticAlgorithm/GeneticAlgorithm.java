@@ -1,5 +1,7 @@
 package geneticAlgorithm;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import crosses.Cross;
@@ -14,9 +16,10 @@ import genetics.BinaryGen;
 import genetics.Gen;
 import genetics.RealGen;
 import individual.Chromosome;
+import individual.Generation;
 import individual.Population;
-import mutations.BasicMutation;
-import mutations.MutationAlgorithm;
+import mutations.Mutation;
+import mutations.MutationBasic;
 import selection.Selection;
 import selection.SelectionProbTournament;
 import selection.SelectionRemains;
@@ -24,92 +27,156 @@ import selection.SelectionRoulette;
 import selection.SelectionStochastic;
 import selection.SelectionTournament;
 import selection.SelectionTruncation;
+import ui.Interface;
 import utils.CrossType;
 import utils.FunctionType;
 import utils.MutationType;
 import utils.Params;
 import utils.SelectionType;
-import ui.*;
 
 public class GeneticAlgorithm {
+	
+	Interface interface_;
 	
 	private FunctionType FunctType_;
 	private SelectionType SelecType_;
 	private CrossType CrossType_;
 	private MutationType MutType_;
-	private boolean elitism_;
+	List<Generation> generations;
+	
 	Population poblation;
-	private int sizePop_;
-	private int eliteSize;
 	Function funct;
 	Selection select;
 	Cross cross;
-	MutationAlgorithm mut;
-	Interface interface_;
+	Mutation mut;
+	
+	Params param;
+	private boolean elitism_;
+	private int sizePop_;
+	private int eliteSize;
+	private double fitness;
+	
+	private int function4params_;
 	
 	public GeneticAlgorithm(Interface inter) {
 		interface_ = inter;
-		
 	}
 	
-	
-	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
-						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, double eliPercentage) {
+						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, double eliPercentage, int function4params) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
 		MutType_ = m_Type;
 		elitism_ = elitism;		
-		
-		int function4params = 4;//esto hay que ponerlo en la interfaz
-		
-		poblation = InitPopulation(sizePopulation, precision,f_Type, function4params);
 		selectTypes();		
-		
-		eliteSize = (int)(sizePopulation * eliPercentage);
-		Population elite = new Population();
-		
-		Params param = new Params();
+		//Contenedor de Parametros
+		param = new Params();
 		param.numGenerations = numGenerations;
 		param.sizePopulation = sizePopulation;
-		param.crossProbM = crossProb;
+		param.crossProb = crossProb;
 		param.mutProb = mutProb;
 		param.precision = precision;
 		param.interval = funct.getInterval();
 		param.f_type = f_Type;
 		
+		function4params_ = function4params;//esto hay que ponerlo en la interfaz
 		
+		//INIT POPULATION
+		poblation = InitPopulation(sizePopulation, precision,f_Type, function4params_);
+		//INIT ELITE
+		eliteSize = (int)(sizePopulation * eliPercentage);
+		Population elite = new Population();
 		
-		double[] best = new double[numGenerations];
-		double[] bestPob = new double[numGenerations];
-        double[] media = new double[numGenerations];
-        double solution = 4.0;
-        List<Double> sol = new ArrayList<Double>();
-		Evaluate();
+		//EVALUATE POPULATION
+		fitness = Evaluate();
+		
+		//Para almacenar el resolutado de cada generacion
+		generations = new ArrayList<>();
+		//EVOLUTION
 		for(int i = 0; i < numGenerations; i++) {
+			generations.add(new Generation(poblation.getPopulation(), fitness));
 			//Extract Elite
 			if(elitism_) elite = extractElite(poblation);
 			//Select
-			select.selection(poblation.getPopulation(), param);
-			Population selected = new Population(select.getPopSelected());
+			Population selected = Selection();
 			//Cross
-			poblation = new Population(cross.reproduce(poblation.getPopulation(), crossProb));
+			poblation = Cross();
 			//Mutate
-			mut.mutate(poblation.getPopulation(), param);
-			poblation = new Population(mut.getMutatedPop());
-			//Reinster Elite
+			poblation = Mutate();
+			//Reinsert Elite
 			if(elitism_) insertElite(elite, poblation);
-			Evaluate();
+			//Get fitness
+			fitness = Evaluate();
 		}
 		
-		
-		interface_.showGraph(media, best, media, bestPob, solution, sol); //temporals
+		showSolution();
 	}
 	
 	private void showSolution() {
+		int numGen = param.numGenerations;
 		
+		
+		//Quedará la solucion de aquel que sea el mejor/peor segun la funcion
+		List<Double> sol = new ArrayList<Double>();
+		
+		double maxAbs;
+		if(funct.maximize) maxAbs = Double.NEGATIVE_INFINITY;
+		else maxAbs =  Double.POSITIVE_INFINITY;
+		
+		double[] best = new double[numGen];
+		double[] bestPob = new double[numGen];
+        double[] avarage = new double[numGen];
+        double[] worst = new double[numGen];
+        
+        int i = 0;
+        while(i < numGen) {
+        	if(funct.maximize) {
+        		if(maxAbs > generations.get(i).best) {
+        			maxAbs = generations.get(i).best;
+        			sol = generations.get(i).sol;
+        		}
+        	}else {
+        		if(maxAbs < generations.get(i).best) {
+        			maxAbs = generations.get(i).best;
+        			sol = generations.get(i).sol;
+        		}
+        	}
+        	
+        	Generation gen = generations.get(i);
+        	worst[i] = gen.worst;
+        	bestPob[i] = maxAbs;
+        	avarage[i] = gen.avarage;
+			best[i] = gen.best;
+			
+        	i++;
+        }
+        
+        interface_.showGraph(bestPob, best, avarage, worst, maxAbs, sol);
 	};
+	
+	private double Evaluate() {
+		double adapatedFitnessTotal = 0;
+		double fitnessTotal = 0;
+		List<Chromosome> chromosomes = poblation.getPopulation(); 
+		//Para cada gen, evaluamos su valor con la funcion F.
+		for(Chromosome c : chromosomes) {
+			//Son genes ya convertidos a numero, ya no son una cadena de bits o x
+			List<Double> fenotipo = c.getFenotype();
+			funct.ejecutar(fenotipo);
+		}
+		
+		//Acumulamos los valores de adaptación
+		for(Chromosome c : chromosomes) {
+			fitnessTotal = c.getFitness();
+			adapatedFitnessTotal += c.getAdaptedFitness();
+		}
+		
+		poblation.sort();
+		poblation.setSelectionProbability(adapatedFitnessTotal);
+		
+		return fitnessTotal;
+	}
 	
 	private void selectTypes() {
 		funct = new Function1(); //Compilation Purposes
@@ -161,13 +228,13 @@ public class GeneticAlgorithm {
 				break;
 		}
 		
-		mut = new BasicMutation(); //Compilation Purposes
+		mut = new MutationBasic(); //Compilation Purposes
 		switch (MutType_) {
 			case Basic :
-				mut = new BasicMutation();
+				mut = new MutationBasic();
 				break;
 			case Basic_Double:
-				mut = new BasicMutation();
+				mut = new MutationBasic();
 				break;
 		}
 	}
@@ -178,42 +245,39 @@ public class GeneticAlgorithm {
 			List<Gen> genes = new ArrayList<>();
 						
 			switch(numFunct) {			
-			case f1:
-				
-				//Creamos los genes binarios
-				genes.add(new BinaryGen((float) precision));
-				genes.add(new BinaryGen((float) precision));
-				
-				//Establecemos el rango
-				genes.get(0).randomize(-3, 12.1);
-				genes.get(1).randomize(4.1, 5.8);				
-				break;
-			case f2_Schubert:
-				
-				genes.add(new BinaryGen((float) precision));
-				genes.add(new BinaryGen((float) precision));
-
-				//Xi cuenta tanto para x1 como x2
-				genes.get(0).randomize(-10, 10);
-				genes.get(1).randomize(-10, 10);				
-				break;
-			case f3_EggHolder:
-				
-				genes.add(new BinaryGen((float) precision));
-				genes.add(new BinaryGen((float) precision));
-				
-				genes.get(0).randomize(-512, 512);
-				genes.get(1).randomize(-512, 512);
-				
-				
-				break;
-			case f4_Michalewicz:
-				for(int j = 0; j < function4params; j++) {
-					genes.add(new RealGen((float) precision));
-					genes.get(j).randomize(0, Math.PI);
-				}
-				
-				break;
+				case f1:
+					//Creamos los genes binarios
+					genes.add(new BinaryGen((float) precision));
+					genes.add(new BinaryGen((float) precision));
+					
+					//Establecemos el rango
+					genes.get(0).randomize(-3, 12.1);
+					genes.get(1).randomize(4.1, 5.8);				
+					break;
+					
+				case f2_Schubert:
+					genes.add(new BinaryGen((float) precision));
+					genes.add(new BinaryGen((float) precision));
+	
+					//Xi cuenta tanto para x1 como x2
+					genes.get(0).randomize(-10, 10);
+					genes.get(1).randomize(-10, 10);				
+					break;
+					
+				case f3_EggHolder:
+					genes.add(new BinaryGen((float) precision));
+					genes.add(new BinaryGen((float) precision));
+					
+					genes.get(0).randomize(-512, 512);
+					genes.get(1).randomize(-512, 512);
+					break;
+					
+				case f4_Michalewicz:
+					for(int j = 0; j < function4params; j++) {
+						genes.add(new RealGen((float) precision));
+						genes.get(j).randomize(0, Math.PI);
+					}
+					break;
 			}
 			population.getPopulation().add(new Chromosome(genes));
 		}
@@ -230,7 +294,17 @@ public class GeneticAlgorithm {
 		}
 	}
 	
-	private void Evaluate() {
-		
+	private Population Selection() {
+		select.selection(poblation.getPopulation(), param);
+		return new Population(select.getPopSelected());
+	}
+	
+	private Population Cross() {
+		return new Population(cross.reproduce(poblation.getPopulation(), param.crossProb));
+	}
+	
+	private Population Mutate() {
+		mut.mutate(poblation.getPopulation(), param);
+		return new Population(mut.getMutatedPop());
 	}
 }

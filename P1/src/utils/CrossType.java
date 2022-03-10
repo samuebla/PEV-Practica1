@@ -4,5 +4,5 @@ package utils;
  * @author Jose Daniel y Samuel Blázquez
  */
 public enum CrossType {
-	Monopoint, Uniform
+	Monopoint, Uniform, BLX, Arithmetic
 }

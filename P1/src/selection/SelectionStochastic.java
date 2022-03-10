@@ -21,7 +21,7 @@ public class SelectionStochastic extends Selection {
 		for(int i = 0; i < (int)param; i++){
 			
 			int posSuper = 0;
-			while(posSuper < poblation.size() && p > poblation.get(posSuper).getAcumulado())
+			while(posSuper < poblation.size() && p > poblation.get(posSuper).getAcc())
 				posSuper++;
 			
 			//Y vamos añadiendo a los individuos

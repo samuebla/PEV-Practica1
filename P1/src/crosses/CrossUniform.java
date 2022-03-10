@@ -38,14 +38,14 @@ public class CrossUniform extends Cross {
 		List<Gen> genes2 = h2.getGens();
 		
 		for(Gen g : genes1) {
-			g.setAlelos(hijo1.subList(acum, acum+g.getTam()));
+			g.setAlleles(hijo1.subList(acum, acum+g.getTam()));
 			acum++;
 		}
 		
 		acum = 0;
 		
 		for(Gen g : genes2) {
-			g.setAlelos(hijo2.subList(acum, acum+g.getTam()));
+			g.setAlleles(hijo2.subList(acum, acum+g.getTam()));
 			acum++;
 		}
 		

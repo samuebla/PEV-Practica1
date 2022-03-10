@@ -11,12 +11,12 @@ public class RealGen extends Gen {
 	
 	//Constructora por copia
 	public RealGen(RealGen nGen){
-		this.min = nGen.getMax();
-		this.max = nGen.getMax();
+		this.min_range = nGen.getMax();
+		this.max_range = nGen.getMax();
 		this.prec = nGen.getPrec();
-		this.neg = nGen.getNeg();
+		this.isNegative_ = nGen.isNegative();
 		this.alleles = new ArrayList<Object>();	
-		for(Object o : nGen.getAlelos()){
+		for(Object o : nGen.getAlleles()){
 			this.alleles.add(o);
 		}
 	}
@@ -28,7 +28,7 @@ public class RealGen extends Gen {
 	
 	//El fenotipo y genotipo son iguales
 	@Override
-	public double getFenotype() {
+	public double getGenFenotype() {
 		return (double) alleles.get(0);
 	}
 

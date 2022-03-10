@@ -35,7 +35,7 @@ public class SelectionTournament extends Selection {
 			//Y nos quedamos con el mejor de la muestra
 			Chromosome mejor = seleccionados.get(0);
 			for(Chromosome ind : seleccionados)
-				if(ind.getFitnessAdaptado() > mejor.getFitnessAdaptado())
+				if(ind.getAdaptedFitness() > mejor.getAdaptedFitness())
 					mejor = ind;
 			
 			//Nos quedamos en el mejor de cada vuelta

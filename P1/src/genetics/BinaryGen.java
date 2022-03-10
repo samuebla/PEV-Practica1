@@ -16,18 +16,18 @@ public class BinaryGen extends Gen {
 	
 	//Crea un Gen a base de otro gen
 	public BinaryGen(BinaryGen nGen){
-		this.min = nGen.getMin();
-		this.max = nGen.getMax();
+		this.min_range = nGen.getMin();
+		this.max_range = nGen.getMax();
 		this.prec = nGen.getPrec();
-		this.neg = nGen.getNeg();
+		this.isNegative_ = nGen.isNegative();
 		this.alleles = new ArrayList<>();
-		this.alleles.addAll(nGen.getAlelos());
+		this.alleles.addAll(nGen.getAlleles());
 	}
 	
 	@Override
 	public void randomize(double min, double max) {
-		this.max = max;
-		this.min = min;
+		this.max_range = max;
+		this.min_range = min;
 
 		//Coge un numero aleatorio entre el min y el max
 		double aux = ThreadLocalRandom.current().nextDouble(min, max);
@@ -46,7 +46,7 @@ public class BinaryGen extends Gen {
 
 	//CONVERSIÓN DE BINARIO A DECIMAL
 	@Override
-	public double getFenotype() {
+	public double getGenFenotype() {
 		
 		 double result = 0;
 		 int p = 0;
@@ -55,7 +55,7 @@ public class BinaryGen extends Gen {
         	 result += (int)alleles.get(i) * Math.pow(2,p);
              p++;
          }
-         if(this.neg)
+         if(this.isNegative_)
         	 return -(result * this.prec);
          else
          return result * this.prec;
@@ -67,9 +67,9 @@ public class BinaryGen extends Gen {
 	public void setGenotype(double valor) {
 		// TODO Auto-generated method stub
 		if(valor < 0) {
-			this.neg = true;
+			this.isNegative_ = true;
 			valor = -valor;
-		}else this.neg = false;
+		}else this.isNegative_ = false;
 
 		int l = (int) (valor/this.prec);
 

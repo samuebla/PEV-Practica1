@@ -15,8 +15,8 @@ public class CrossArithmetic extends Cross {
 	public void cruzar(Chromosome padre1, Chromosome padre2) {
 		
 		//Cogemos el fenotipo de los dos cromosomas
-		List<Double> fenotipo1 = padre1.getFenotipo();
-		List<Double> fenotipo2 = padre2.getFenotipo();
+		List<Double> fenotipo1 = padre1.getFenotype();
+		List<Double> fenotipo2 = padre2.getFenotype();
 
 		//Creamos el padre y cogemos sus genes
 		Chromosome copia_padre = new Chromosome(padre1);
@@ -28,7 +28,7 @@ public class CrossArithmetic extends Cross {
 			
 			hijo.get(i).setGenotype(media);
 			
-			if(hijo.get(i).getFenotype() < hijo.get(i).getMin())
+			if(hijo.get(i).getGenFenotype() < hijo.get(i).getMin())
 				System.out.println("stop");
 		}
 		

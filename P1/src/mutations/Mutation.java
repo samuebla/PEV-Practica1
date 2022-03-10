@@ -4,7 +4,7 @@ import java.util.List;
 
 import individual.Chromosome;
 
-public abstract class MutationAlgorithm {
+public abstract class Mutation {
 
 	protected List<Chromosome> mPoblation;
 	

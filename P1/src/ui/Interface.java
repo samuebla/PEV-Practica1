@@ -25,6 +25,7 @@ import org.math.plot.Plot2DPanel;
 import geneticAlgorithm.GeneticAlgorithm;
 import utils.*;
 import javax.swing.SpinnerModel;
+import javax.swing.JTextField;
 
 public class Interface extends JFrame {
 
@@ -47,6 +48,8 @@ public class Interface extends JFrame {
 	JSpinner crossSpinner;
 	JSpinner mutationSpinner;
 	JSpinner precisionSpinner;
+	JComboBox solutionList;
+	JSpinner nIndividualsFunct4Param;
 	
 	private int sizePop; 
 	private int numGenerations; 
@@ -55,6 +58,7 @@ public class Interface extends JFrame {
 	private double precision; 
 	private boolean elitism;
 	private double eliPercentage;
+	private JTextField maxAbsSol;
 	
 	/**
 	 * Create the frame.
@@ -92,11 +96,7 @@ public class Interface extends JFrame {
 		
 		JButton startButton = new JButton("Evolute");
 		startButton.setBackground(new Color(175, 238, 238));
-		startButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
+
 		startButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -175,9 +175,34 @@ public class Interface extends JFrame {
 		);
 		generationsPanel.setLayout(gl_generationsPanel);
 		
+		JPanel crossPanel = new JPanel();
+		crossPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		crossPanel.setBackground(Color.LIGHT_GRAY);
+		
+		JLabel crossLabel = new JLabel("Cross Type");
+		crossLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		crossDropdown = new JComboBox();
+		crossDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform"}));
+		GroupLayout gl_crossPanel = new GroupLayout(crossPanel);
+		//-----------------------------------------------------------
+		
 		JPanel functionPanel = new JPanel();
 		functionPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		functionPanel.setBackground(Color.LIGHT_GRAY);
+		
+		double minParam = 2;
+        double valueParam = 2;
+        double maxParam = 100;
+        double stepSizeParam = 1;
+		SpinnerNumberModel modelParam = new SpinnerNumberModel(valueParam, minParam, maxParam, stepSizeParam);
+		
+		nIndividualsFunct4Param = new JSpinner(modelParam);
+		nIndividualsFunct4Param.setEnabled(false);
+		JLabel nIndividualsFunct4 = new JLabel("N\u00BA Individuals");
+		nIndividualsFunct4.setFont(new Font("Georgia", Font.PLAIN, 13));
+		nIndividualsFunct4.setEnabled(false);
 		
 		JLabel functionLabel = new JLabel("Function Type");
 		functionLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
@@ -186,15 +211,39 @@ public class Interface extends JFrame {
 		functionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		functionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Function 1", "Function 2 Schubert", "Function 3 EggHolder", "Function 4 Michalewicz"}));
 		
+		functionDropdown.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        int funct = functionDropdown.getSelectedIndex();
+		        
+		        //Cuarta funcion Michalewicz
+		        if(funct == 3) {
+		        	nIndividualsFunct4.setEnabled(true);
+		        	nIndividualsFunct4Param.setEnabled(true);
+		        	crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform", "BLX", "Arithmetic"}));
+		        }else {
+		        	nIndividualsFunct4.setEnabled(false);
+		        	nIndividualsFunct4Param.setEnabled(false);
+		        	crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform"}));
+		        }
+		    }
+		});
+		
+		
 		GroupLayout gl_functionPanel = new GroupLayout(functionPanel);
 		gl_functionPanel.setHorizontalGroup(
-			gl_functionPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_functionPanel.createSequentialGroup()
+			gl_functionPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_functionPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(functionLabel)
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
+				.addGroup(Alignment.TRAILING, gl_functionPanel.createSequentialGroup()
+					.addGap(58)
+					.addComponent(nIndividualsFunct4, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(nIndividualsFunct4Param, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+					.addGap(55))
 		);
 		gl_functionPanel.setVerticalGroup(
 			gl_functionPanel.createParallelGroup(Alignment.LEADING)
@@ -203,7 +252,11 @@ public class Interface extends JFrame {
 					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(functionLabel)
 						.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(18, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(nIndividualsFunct4Param, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(nIndividualsFunct4, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		functionPanel.setLayout(gl_functionPanel);
 		
@@ -270,17 +323,6 @@ public class Interface extends JFrame {
 		);
 		MutationPanel.setLayout(gl_MutationPanel);
 		
-		JPanel crossPanel = new JPanel();
-		crossPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		crossPanel.setBackground(Color.LIGHT_GRAY);
-		
-		JLabel crossLabel = new JLabel("Cross Type");
-		crossLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
-		
-		crossDropdown = new JComboBox();
-		crossDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform"}));
-		GroupLayout gl_crossPanel = new GroupLayout(crossPanel);
 		gl_crossPanel.setHorizontalGroup(
 			gl_crossPanel.createParallelGroup(Alignment.LEADING)
 				.addGap(0, 312, Short.MAX_VALUE)
@@ -416,46 +458,72 @@ public class Interface extends JFrame {
 		);
 		precisionPercentagePanel.setLayout(gl_precisionPercentagePanel);
 		
+		JLabel solutionLabel = new JLabel("Solution:");
+		solutionLabel.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		solutionList = new JComboBox();
+		
+		maxAbsSol = new JTextField();
+		maxAbsSol.setColumns(10);
+		maxAbsSol.setEditable(false);
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+								.addComponent(startButton)
+								.addGap(121))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addComponent(selectionPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED))
+							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 312, Short.MAX_VALUE)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(parametersLabel)
+										.addGap(93))
+									.addComponent(generationsPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+									.addComponent(sizePanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+									.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+									.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+									.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+									.addComponent(elitismPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+									.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(selectionPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addComponent(MutationPanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-								.addComponent(crossPanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-								.addComponent(functionPanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, Short.MAX_VALUE)
-								.addComponent(elitismPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-									.addComponent(parametersLabel)
-									.addGap(93))
-								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-									.addComponent(startButton)
-									.addGap(115))
-								.addComponent(generationsPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addComponent(sizePanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addComponent(crossPercentagePanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-								.addComponent(mutationPercentagePanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-								.addComponent(precisionPercentagePanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(panelMathPlot, GroupLayout.PREFERRED_SIZE, 770, GroupLayout.PREFERRED_SIZE)
 							.addGap(171))
 						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(solutionLabel, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(maxAbsSol, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+							.addGap(91)
 							.addComponent(graphTitle)
 							.addGap(300))))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(graphTitle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(graphTitle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(solutionLabel, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(maxAbsSol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(parametersLabel)
-							.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
 							.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
@@ -466,7 +534,7 @@ public class Interface extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -475,12 +543,10 @@ public class Interface extends JFrame {
 							.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(startButton)
-							.addGap(23))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(panelMathPlot, GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
-							.addContainerGap())))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(startButton))
+						.addComponent(panelMathPlot, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		selectionDropdown = new JComboBox();
 		selectionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
@@ -509,27 +575,7 @@ public class Interface extends JFrame {
 		);
 		selectionPanel.setLayout(gl_Selection);
 		
-		contentPane.setLayout(gl_contentPane);
-		
-//		double[] x = { 1, 2, 3, 4, 5, 6 };
-//		double[] y = { 45, 89, 6, 32, 63, 12 };
-//		
-//		panelMathPlot.setAlignmentY(Component.TOP_ALIGNMENT);
-//		panelMathPlot.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-//		panelMathPlot.setLocation(new Point(0, 8));
-//		BorderLayout borderLayout = (BorderLayout) panelMathPlot.getLayout();
-//		borderLayout.setVgap(1);
-//		panelMathPlot.setBounds(300, 0, 758, 601);
-//		
-//		// define the legend position
-//		panelMathPlot.addLegend("SOUTH");
-//		
-//		// add a line plot to the PlotPanel
-//		panelMathPlot.addLinePlot("my plot", x, y);
-//		contentPane.setLayout(new GridLayout(0, 3, 3, 0));
-//		panelMathPlot.plotCanvas.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		
+		contentPane.setLayout(gl_contentPane);		
 	}
 	
 	private void processData() {
@@ -539,6 +585,7 @@ public class Interface extends JFrame {
 		mutProb = ((double) this.mutationSpinner.getValue()) / 100.0;
 		precision = (double) this.precisionSpinner.getValue();
 		
+		int paramFunc4 = (int) nIndividualsFunct4Param.getValue();
 		elitism = this.elitismCheckBox.isSelected(); 
 		eliPercentage =	((double)this.elitismSpinner.getValue())/100.0;
 		
@@ -549,38 +596,34 @@ public class Interface extends JFrame {
 		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, paramFunc4);
 	}
 	
 	public void showGraph(double[] bestAbs, double[]  best, double[] avarage, double[] peor, double solution, List<Double> sol) {
 
 		panelMathPlot.removeAllPlots();
 		double [] x = new double[bestAbs.length];
-		for(int i = 0; i < x.length; i++) {
-			x[i] = i+1;
-		}
+		for(int i = 0; i < x.length; i++) x[i] = i+1;
 
-		//Add text solution 
-//		textField.setText(String.valueOf(solucion));
-//		textField_1.removeAllItems();
-
+		maxAbsSol.setEditable(true);
+		maxAbsSol.setText(String.valueOf(solution));
+		solutionList.removeAllItems();
+		maxAbsSol.setEditable(false);
+		
 		int i = 0;
 		for(Double d : sol) {
 			i++;
 			d = Math.floor(d / 0.0001) * 0.0001;
 
 			String text = "X" + i + ": " + d;
-//			textField_1.addItem(text);
-			//add text for the points
-
+			solutionList.addItem(text);
 		}
 
 		panelMathPlot.addLegend("SOUTH");
-		panelMathPlot.addLinePlot("Mejor Absoluto", Color.MAGENTA, x, bestAbs);
-		panelMathPlot.addLinePlot("Mejor de la Generacion", Color.GREEN, x, best);
-		panelMathPlot.addLinePlot("Media Generacion", Color.ORANGE, x, avarage);
-		panelMathPlot.addLinePlot("Peor de la Generacion", Color.RED, x, peor);
-
+		panelMathPlot.addLinePlot("Best So Far", Color.BLUE, x, bestAbs);
+		panelMathPlot.addLinePlot("Best Individual", Color.RED, x, best);
+		panelMathPlot.addLinePlot("Avarage", Color.GREEN, x, avarage);
+		panelMathPlot.addLinePlot("Worst Individual", Color.ORANGE, x, peor);
 	}
 	
 	private void getFunctionType() {
