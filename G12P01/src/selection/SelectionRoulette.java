@@ -1,0 +1,37 @@
+package selection;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import individual.Chromosome;
+import utils.Params;
+
+public class SelectionRoulette extends Selection {
+
+	//Seleccion por ruleta
+	@Override
+	public void selection(List<Chromosome> poblation, Object param) {
+		selectedPopulation = new ArrayList<Chromosome>();
+		double rand;
+		
+		
+		int posSelected;
+		Params params = (Params) param;
+		int nSelected = params.sizePopulation;
+		
+		for(int i = 0; i < nSelected; i++){
+			//Cogemos un numero aleatorio
+			rand = Math.random();
+			posSelected = 0;
+			//Mientras sea menor al acumulado y siga siendo menor que la población
+			while(posSelected < poblation.size() && rand > poblation.get(posSelected).getAcc()) 
+				posSelected++;
+			//Y añadimos al array posicionandolo
+			if(posSelected >= poblation.size())
+				posSelected = poblation.size() - 1;
+			selectedPopulation.add(i, poblation.get(posSelected));
+		}
+	}
+
+}
