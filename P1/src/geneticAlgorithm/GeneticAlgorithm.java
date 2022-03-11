@@ -234,9 +234,6 @@ public class GeneticAlgorithm {
 			case Basic :
 				mut = new MutationBasic();
 				break;
-			case Basic_Double:
-				mut = new MutationBasic();
-				break;
 		}
 		
 		if(FunctType_ == FunctionType.f4_Michalewicz) 

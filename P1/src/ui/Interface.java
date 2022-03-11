@@ -322,7 +322,7 @@ public class Interface extends JFrame {
 		
 		mutationDropdown = new JComboBox();
 		mutationDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Basic", "Basic_Double"}));
+		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Basic"}));
 		GroupLayout gl_MutationPanel = new GroupLayout(MutationPanel);
 		gl_MutationPanel.setHorizontalGroup(
 			gl_MutationPanel.createParallelGroup(Alignment.LEADING)
