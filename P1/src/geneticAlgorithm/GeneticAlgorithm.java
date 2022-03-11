@@ -119,9 +119,7 @@ public class GeneticAlgorithm {
 	
 	private void showSolution() {
 		int numGen = param.numGenerations;
-		
-		
-		//Quedar� la solucion de aquel que sea el mejor/peor segun la funcion
+		//Quedaria la solucion de aquel que sea el mejor/peor segun la funcion
 		List<Double> sol = new ArrayList<Double>();
 		
 		double maxAbs;

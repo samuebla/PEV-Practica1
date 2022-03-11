@@ -11,7 +11,6 @@ public class CrossArithmetic extends Cross {
 	//Cruce aritmetico
 	@Override
 	public void cruzar(Chromosome father1, Chromosome father2) {
-		
 		//Cogemos el fenotipo de los dos cromosomas
 		List<Double> phenotype1 = father1.getPhenotype();
 		List<Double> phenotype2 = father2.getPhenotype();
@@ -28,7 +27,6 @@ public class CrossArithmetic extends Cross {
 			hijo.get(i).setGenotype(media);
 		}
 		
-		this.sons = new ArrayList<>();
 		this.sons.add(new Chromosome(hijo));
 	}
 

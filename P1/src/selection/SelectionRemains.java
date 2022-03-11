@@ -2,22 +2,37 @@ package selection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 import individual.Chromosome;
-import utils.Params;
 
 public class SelectionRemains extends Selection {
 
 	//
 	@Override
 	public void selection(List<Chromosome> poblation, Object param) {
-
-		//Seleccionabas n individuos y miltiplicabas su probabilidad por el numero de individuos y miltiplicabas
-		//Si el numero era mayor que 1 te lo quedas, si es menor que 1 fuera
-		//La otra opcion era que si te salia 2.3 haces 2 copias, si te sale 1.2 haces una copia, si te sale 0.4 no haces copias, y asi...
-		//El resto de peña se hace mediante otro tipo de seleccion que programemos de default (Este man me ha recomendado ruleta)			
+		int k = poblation.size();
+		selectedPopulation = new ArrayList<Chromosome>();
+		Random r = new Random();
 		
+		for(int i = 0; i < k; i++) {
+			double pK = poblation.get(i).getAcc() * k;
+			int selected = (int) Math.round(pK);
+			for(int j = 0; j < selected  && selectedPopulation.size() < k; j++) {
+				double diff = pK - j;
+				if(diff >= 0.5) selectedPopulation.add(poblation.get(i));
+			}
+		}
+		
+		if(selectedPopulation.size() < poblation.size()) {
+			int toSelect = poblation.size() - selectedPopulation.size();
+			int i = 0;
+			while(i < toSelect) {
+				int posSelected = r.nextInt(0, poblation.size());
+				selectedPopulation.add(poblation.get(posSelected));
+				i++;
+			}
+		}
 	}
 
 }

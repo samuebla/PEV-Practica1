@@ -9,7 +9,7 @@ public class Func4_Michalewicz extends Function {
 		interval = new ArrayList();
 		interval.add(0.0);
 		interval.add(Math.PI);
-		maximize = true;
+		maximize = false;
 	}
 	
 	@Override

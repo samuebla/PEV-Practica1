@@ -52,8 +52,6 @@ public class CrossMonopoint extends Cross {
 			sum += g.getTam();
 		}
 		
-		this.sons = new ArrayList<>();
-
 		this.sons.add(new Chromosome(gen_1));
 		this.sons.add(new Chromosome(gen_2));
 	}

@@ -2,6 +2,7 @@ package selection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import individual.Chromosome;
 import utils.Params;
@@ -11,9 +12,9 @@ public class SelectionRoulette extends Selection {
 	//Seleccion por ruleta
 	@Override
 	public void selection(List<Chromosome> poblation, Object param) {
-		//Creamos la lista de la poblacion
 		selectedPopulation = new ArrayList<Chromosome>();
 		double rand;
+		
 		
 		int posSelected;
 		Params params = (Params) param;

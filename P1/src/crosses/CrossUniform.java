@@ -60,8 +60,6 @@ public class CrossUniform extends Cross {
 			sum++;
 		}
 		
-		this.sons = new ArrayList<>();
-		
 		this.sons.add(new Chromosome(gens1));
 		this.sons.add(new Chromosome(gens2));
 	}
