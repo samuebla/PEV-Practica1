@@ -35,12 +35,12 @@ public abstract class Cross {
         	cruzar(population.get(elegidos.get(i)), population.get(elegidos.get(i+1)));
         }
         
-        if(probCross < 1) {
+        if(probCross < 1 && sons.size() < population.size()) {
         	int pop = population.size();
         	int hij = sons.size();
         	int rest =  pop - hij;
         	
-        	sons.addAll(population.subList(rest - 1, population.size() - 1));
+        	sons.addAll(population.subList(hij - 1, population.size() - 1));
         }
         	
         return sons; //esto no esta bien, deberia ser nueva
