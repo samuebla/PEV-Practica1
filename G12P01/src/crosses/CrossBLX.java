@@ -58,7 +58,7 @@ public class CrossBLX extends Cross {
 		maxI = max + alphaI;
 
 		//Si el numero con la diferencia es mas pequeño/mayor que el original se sustituye el num original
-		if(minI < son1.get(i).getMin()) minI = son1.get(i).getMin();
+		if(minI < this.son1.get(i).getMin()) minI = son1.get(i).getMin();
 		if(maxI > son1.get(i).getMax() || maxI < minI) maxI = son1.get(i).getMax();
 	}
 
