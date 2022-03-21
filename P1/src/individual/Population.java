@@ -52,9 +52,12 @@ public class Population {
 		}
 		//Se adapta el resto de fitness de los demás individuos, a éste. 
 		// con el objetivo de que poco a poco, se maximiza/minimiza la poblacion
+		max_substract *= 1.05;
+		min_add *= 0.95;
+		
 		if(maximizePopulation)
 			for(Chromosome c : population_)
-				c.setAdaptedFitness(min_add);
+				c.setAdaptedFitness(min_add + c.getFitness());
 		else
 			for(Chromosome c : population_)
 				c.setAdaptedFitness(max_substract - c.getFitness());

@@ -322,7 +322,7 @@ public class Interface extends JFrame {
 		
 		mutationDropdown = new JComboBox();
 		mutationDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Basic"}));
+		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Basic", "Basic_Double"}));
 		GroupLayout gl_MutationPanel = new GroupLayout(MutationPanel);
 		gl_MutationPanel.setHorizontalGroup(
 			gl_MutationPanel.createParallelGroup(Alignment.LEADING)
@@ -644,7 +644,7 @@ public class Interface extends JFrame {
 		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, paramFunc4, truncProb);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, paramFunc4, truncProb, false);
 	}
 	
 	public void showGraph(double[] bestAbs, double[]  best, double[] avarage, double solution, List<Double> sol) {

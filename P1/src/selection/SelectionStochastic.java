@@ -25,7 +25,7 @@ public class SelectionStochastic extends Selection {
 		for(int i = 0; i < n; i++){
 			
 			int posSuper = 0;
-			while(posSuper < poblation.size() && p > poblation.get(posSuper).getAcc())
+			while(posSuper < poblation.size() && p > poblation.get(posSuper).getPuntuationAcc())
 				posSuper++;
 			
 			if(posSuper >= poblation.size())

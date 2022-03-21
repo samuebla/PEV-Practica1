@@ -12,10 +12,12 @@ public class Chromosome{
 	
 	//Contiene una lista de genes. En total suelen ser 2. 
 	private List<Gen> gens;
-	private double acc;
 	private double fitness;
 	private double adaptedFitness;
 	private double selectionProbability;
+	private double puntuation;
+	private double puntuation_acc;
+	
 	
 	//Constructora por copia
 	public Chromosome(Chromosome copyCrom){
@@ -28,7 +30,7 @@ public class Chromosome{
 				this.gens.add(new RealGen((RealGen)g));
 		}
 		
-		acc = copyCrom.getAcc();
+		puntuation_acc = copyCrom.getPuntuationAcc();
 		fitness = copyCrom.getFitness();
 		adaptedFitness = copyCrom.getAdaptedFitness();
 		selectionProbability = copyCrom.getProbSeleccion();
@@ -77,11 +79,11 @@ public class Chromosome{
 		fitness = valor;
 	}
 	
-	public double getAcc() {
-		return acc;
+	public double getPuntuationAcc() {
+		return puntuation_acc;
 	}
-	public void setAcc(double valor) {
-		acc = valor;
+	public void setPuntuationAcc(double valor) {
+		puntuation_acc = valor;
 	}
 		
 	public double getProbSeleccion() {
@@ -97,5 +99,13 @@ public class Chromosome{
 	
 	public void setAdaptedFitness(double valor) {
 		this.adaptedFitness = valor;
+	}
+
+	public double getPuntuation() {
+		return puntuation;
+	}
+
+	public void setPuntuation(double puntuation) {
+		this.puntuation = puntuation;
 	}
 }

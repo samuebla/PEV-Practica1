@@ -63,7 +63,8 @@ public class GeneticAlgorithm {
 	}
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
-						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, double eliPercentage, int function4params, int truncProbability) {
+						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
+						double eliPercentage, int function4params, int truncProbability, boolean func4IsBin) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
@@ -85,7 +86,7 @@ public class GeneticAlgorithm {
 		function4params_ = function4params;//Todo esto va en la interfaz
 		
 		//INIT POPULATION
-		poblation = InitPopulation(sizePopulation, precision,f_Type, function4params_);
+		poblation = InitPopulation(sizePopulation, precision,f_Type, function4params_, func4IsBin);
 		//INIT ELITE
 		eliteSize = (int)(sizePopulation * eliPercentage);
 		Population elite = new Population();
@@ -157,24 +158,38 @@ public class GeneticAlgorithm {
 	};
 	
 	private double Evaluate() {
-		double adapatedFitnessTotal = 0;
+		double puntuationAcc = 0;
 		double fitnessTotal = 0;
-		List<Chromosome> chromosomes = poblation.getPopulation(); 
+		double bestFitness = 0;
+		int best_pos = 0;
+		List<Chromosome> chromosomes = poblation.getPopulation();
+		
 		//Para cada gen, evaluamos su valor con la funcion F.
 		for(Chromosome c : chromosomes) {
 			//Son genes ya convertidos a numero, ya no son una cadena de bits o x
 			List<Double> fenotipo = c.getPhenotype();
 			c.setFitness(funct.ejecutar(fenotipo));
+			if(c.getFitness() > bestFitness) {
+				bestFitness = c.getFitness();
+			}
+			fitnessTotal += c.getFitness();
 		}
+		
+		//Calculamos la puntucion
+		for(Chromosome c : chromosomes) {
+			c.setPuntuation(c.getFitness()/fitnessTotal);
+			c.setPuntuationAcc(c.getPuntuation() + puntuationAcc);
+			puntuationAcc += c.getPuntuation();
+		}
+		
 		poblation.calculateAdaptedFitness();
 		//Acumulamos los valores de adaptaci�n y el fitness adaptado al maximo/minimo de la poblacion
 		for(Chromosome c : chromosomes) {
-			fitnessTotal = c.getFitness();
-			adapatedFitnessTotal += c.getAdaptedFitness();
+			puntuationAcc += c.getAdaptedFitness();
 		}
 		//La poblacion se ordena de MENOR A MAYOR fitness
 		poblation.sort();
-		poblation.setSelectionProbability(adapatedFitnessTotal);
+		poblation.setSelectionProbability(puntuationAcc);
 		
 		return fitnessTotal;
 	}
@@ -234,6 +249,9 @@ public class GeneticAlgorithm {
 			case Basic :
 				mut = new MutationBasic();
 				break;
+			case Basic_Double:
+				mut = new MutationBasic();
+				break;
 		}
 		
 		if(FunctType_ == FunctionType.f4_Michalewicz) 
@@ -241,7 +259,7 @@ public class GeneticAlgorithm {
 		
 	}
 	
-	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct, int function4params) {
+	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct, int function4params, boolean func4IsBin) {
 		Population population = new Population();
 		for(int i = 0; i < pobSize; i++) {
 			List<Gen> genes = new ArrayList<>();
@@ -276,7 +294,9 @@ public class GeneticAlgorithm {
 					
 				case f4_Michalewicz:
 					for(int j = 0; j < function4params; j++) {
-						genes.add(new RealGen((float) precision));
+						if(!func4IsBin)
+							genes.add(new RealGen((float) precision));
+						else genes.add(new BinaryGen((float) precision));
 						genes.get(j).randomize(0, Math.PI);
 					}
 					break;

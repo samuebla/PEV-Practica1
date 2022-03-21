@@ -25,7 +25,7 @@ public class SelectionRoulette extends Selection {
 			rand = Math.random();
 			posSelected = 0;
 			//Mientras sea menor al acumulado y siga siendo menor que la población
-			while(posSelected < poblation.size() && rand > poblation.get(posSelected).getAcc()) 
+			while(posSelected < poblation.size() && rand > poblation.get(posSelected).getPuntuationAcc()) 
 				posSelected++;
 			//Y añadimos al array posicionandolo
 			if(posSelected >= poblation.size())
