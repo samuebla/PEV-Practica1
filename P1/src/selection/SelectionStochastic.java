@@ -16,7 +16,7 @@ public class SelectionStochastic extends Selection {
 		selectedPopulation = new ArrayList<>();
 		
 		Params params = (Params) param;
-		int n = params.sizePopulation;
+		int n = poblation.size();
 		
 		//Se genera un unico numero aleatorio y a partir de este se calculan los restantes
 		double p = Math.random() * (1.0/n);

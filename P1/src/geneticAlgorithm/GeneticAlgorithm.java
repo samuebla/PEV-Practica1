@@ -54,7 +54,7 @@ public class GeneticAlgorithm {
 	private boolean elitism_;
 	private int sizePop_;
 	private int eliteSize;
-	private double fitness;
+	private double totalFitness;
 	
 	private int function4params_;
 	
@@ -75,7 +75,6 @@ public class GeneticAlgorithm {
 		//Contenedor de Parametros
 		param = new Params();
 		param.numGenerations = numGenerations;
-		param.sizePopulation = sizePopulation;
 		param.crossProb = crossProb;
 		param.mutProb = mutProb;
 		param.precision = precision;
@@ -83,39 +82,51 @@ public class GeneticAlgorithm {
 		param.f_type = f_Type;
 		param.truncProb = truncProbability;
 		
+		eliteSize = (int)(sizePopulation * eliPercentage);
 		function4params_ = function4params;//Todo esto va en la interfaz
 		
 		//INIT POPULATION
 		poblation = InitPopulation(sizePopulation, precision,f_Type, function4params_, func4IsBin);
 		//INIT ELITE
-		eliteSize = (int)(sizePopulation * eliPercentage);
 		Population elite = new Population();
 		
 		poblation.maximizePopulation = funct.maximize;
 		//EVALUATE POPULATION
-		fitness = Evaluate();
+		totalFitness = Evaluate();
 		
 		//Para almacenar el resolutado de cada generacion
 		generations = new ArrayList<>();
 		//EVOLUTION
 		for(int i = 0; i < numGenerations; i++) {
-			generations.add(new Generation(poblation.getPopulation(), fitness));
-			//Extract Elite
-			if(elitism_) elite = extractElite(poblation);
-			//Select
+			generations.add(new Generation(poblation.getPopulation(), totalFitness));
+			if(elitism_) elite = extractElite();
 			Population selected = Selection();
-			//Cross
 			poblation = Cross(selected);
-			//Mutate
 			poblation = Mutate();
-			//Reinsert Elite
-			if(elitism_) insertElite(elite, poblation);
-			//Get fitness
-			fitness = Evaluate();
+			poblation.sort();
+			if(elitism_) insertElite(elite);
+			totalFitness = Evaluate();
 			System.out.println(i);
 		}
 		
 		showSolution();
+	}
+	
+	private Population extractElite() {
+		
+		//As the elite is ordered from minor to major fitness, the best indivoduals are at the end of the list
+		Population elite = new Population(poblation.getPopulation().subList(poblation.getPopulation().size() - eliteSize, poblation.getPopulation().size()), poblation);	
+		return elite;
+	}
+	
+	private void insertElite(Population elite) {
+		//Se debe de llamar despues del primer Evaluate
+		//Los vamos a insertar al principio de la poblacion, reemplazando a los peores
+		for(int i = 0; i < elite.getPopulation().size() ; i++) {
+			poblation.getPopulation().add(i, elite.getPopulation().get(i));
+		}
+		
+		int n = 10;
 	}
 	
 	private void showSolution() {
@@ -160,36 +171,35 @@ public class GeneticAlgorithm {
 	private double Evaluate() {
 		double puntuationAcc = 0;
 		double fitnessTotal = 0;
+		double fitnessDisplacedTotal = 0;
 		double bestFitness = 0;
 		int best_pos = 0;
-		List<Chromosome> chromosomes = poblation.getPopulation();
-		
 		//Para cada gen, evaluamos su valor con la funcion F.
-		for(Chromosome c : chromosomes) {
+		for(Chromosome c : poblation.getPopulation()) {
 			//Son genes ya convertidos a numero, ya no son una cadena de bits o x
 			List<Double> fenotipo = c.getPhenotype();
 			c.setFitness(funct.ejecutar(fenotipo));
+		}
+		
+		poblation.displaceFitness();
+		
+		//obtenemos el mejor y el total
+		for(Chromosome c : poblation.getPopulation()) {
 			if(c.getFitness() > bestFitness) {
 				bestFitness = c.getFitness();
 			}
 			fitnessTotal += c.getFitness();
+			fitnessDisplacedTotal += c.getFitnessDisplaced();
 		}
 		
-		//Calculamos la puntucion
-		for(Chromosome c : chromosomes) {
-			c.setPuntuation(c.getFitness()/fitnessTotal);
-			c.setPuntuationAcc(c.getPuntuation() + puntuationAcc);
-			puntuationAcc += c.getPuntuation();
-		}
-		
-		poblation.calculateAdaptedFitness();
-		//Acumulamos los valores de adaptaci�n y el fitness adaptado al maximo/minimo de la poblacion
-		for(Chromosome c : chromosomes) {
-			puntuationAcc += c.getAdaptedFitness();
-		}
-		//La poblacion se ordena de MENOR A MAYOR fitness
 		poblation.sort();
-		poblation.setSelectionProbability(puntuationAcc);
+		
+		//Asiganmos la puntuacion y la acumulada a cada cromosoma
+		for(Chromosome c : poblation.getPopulation()) {
+			c.setPuntuation(c.getFitnessDisplaced()/fitnessDisplacedTotal);
+			puntuationAcc += c.getPuntuation();
+			c.setPuntuationAcc(puntuationAcc);
+		}
 		
 		return fitnessTotal;
 	}
@@ -306,27 +316,17 @@ public class GeneticAlgorithm {
 		return population;
 	}
 	
-	private Population extractElite(Population base) {
-		return new Population (base.getPopulation().subList(0, eliteSize));
-	}
-	
-	private void insertElite(Population elite, Population base) {
-		for(int i = 0; i < elite.getPopulation().size() ; i++) {
-			base.getPopulation().add(i, elite.getPopulation().get(i));
-		}
-	}
-	
 	private Population Selection() {
 		select.selection(poblation.getPopulation(), param);
-		return new Population(select.getPopSelected());
+		return new Population(select.getPopSelected(), poblation);
 	}
 	
 	private Population Cross(Population pop) {
-		return new Population(cross.reproduce(pop.getPopulation(), param.crossProb));
+		return new Population(cross.reproduce(pop.getPopulation(), param.crossProb), pop);
 	}
 	
 	private Population Mutate() {
 		mut.mutate(poblation.getPopulation(), param);
-		return new Population(mut.getMutatedPop());
+		return new Population(mut.getMutatedPop(), poblation);
 	}
 }

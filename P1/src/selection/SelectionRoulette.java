@@ -15,22 +15,19 @@ public class SelectionRoulette extends Selection {
 		selectedPopulation = new ArrayList<Chromosome>();
 		double rand;
 		
-		
-		int posSelected;
+		int pos_super;
 		Params params = (Params) param;
-		int nSelected = params.sizePopulation;
+		int nSelected = poblation.size();
 		
 		for(int i = 0; i < nSelected; i++){
 			//Cogemos un numero aleatorio
 			rand = Math.random();
-			posSelected = 0;
+			pos_super = 0;
 			//Mientras sea menor al acumulado y siga siendo menor que la población
-			while(posSelected < poblation.size() && rand > poblation.get(posSelected).getPuntuationAcc()) 
-				posSelected++;
+			while(rand > poblation.get(pos_super).getPuntuationAcc() && pos_super < poblation.size()) 
+				pos_super++;
 			//Y añadimos al array posicionandolo
-			if(posSelected >= poblation.size())
-				posSelected = poblation.size() - 1;
-			selectedPopulation.add(i, poblation.get(posSelected));
+			selectedPopulation.add(poblation.get(pos_super));
 		}
 	}
 

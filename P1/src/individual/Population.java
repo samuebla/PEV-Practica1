@@ -9,7 +9,6 @@ public class Population {
 	private List<Chromosome> population_;
 	private double accumulatedFitness;
 	private double fitness;
-	private double selectionProbability;
 	private double adaptedFitness;
 	
 	public boolean maximizePopulation;
@@ -19,19 +18,24 @@ public class Population {
 		population_ = new ArrayList<Chromosome>();
 	}
 	
-	public Population(List<Chromosome> pob){
+	public Population(List<Chromosome> pob, Population popu){
 		population_ = new ArrayList();
 		for(Chromosome ind : pob)
 			population_.add(new Chromosome(ind));
+		
+		maximizePopulation = popu.maximizePopulation;
+		accumulatedFitness = popu.accumulatedFitness;
+		fitness = popu.fitness;
+		adaptedFitness = popu.adaptedFitness;
 	}
 	
 	public void sort() {
 		Collections.sort(population_, new Comparator<Chromosome>() {
-			//Pa quitar los warning
+			//Para quitar los warning
 			@SuppressWarnings("removal")
 			@Override
 		    public int compare(Chromosome c1, Chromosome c2) {
-		        return new Double(c1.getAdaptedFitness()).compareTo(new Double(c2.getAdaptedFitness()));
+		        return new Double(c1.getFitnessDisplaced()).compareTo(new Double(c2.getFitnessDisplaced()));
 		    }
 		});
 	}
@@ -40,27 +44,23 @@ public class Population {
 		return population_;
 	}
 
-	public void calculateAdaptedFitness() {
+	public void displaceFitness() {
 		double max_substract = Double.NEGATIVE_INFINITY;
 		double min_add = Double.POSITIVE_INFINITY;
-		//En función del mayor/menor fitness 
 		for(Chromosome c : population_){
 			if(c.getFitness() > max_substract)
 				max_substract = c.getFitness();
 			if(c.getFitness() < min_add)
 				min_add = c.getFitness();
 		}
-		//Se adapta el resto de fitness de los demás individuos, a éste. 
-		// con el objetivo de que poco a poco, se maximiza/minimiza la poblacion
 		max_substract *= 1.05;
-		min_add *= 0.95;
 		
 		if(maximizePopulation)
 			for(Chromosome c : population_)
-				c.setAdaptedFitness(min_add + c.getFitness());
+				c.setFitnessDisplaced(Math.abs(min_add) + c.getFitness()); 
 		else
 			for(Chromosome c : population_)
-				c.setAdaptedFitness(max_substract - c.getFitness());
+				c.setFitnessDisplaced(max_substract - c.getFitness());
 	}
 	
 	public String toString(){
@@ -69,37 +69,5 @@ public class Population {
 			cadena += in.getPhenotype() + "\n";
 
 		return cadena;
-	}
-
-	public double getAccumulatedFitness() {
-		return accumulatedFitness;
-	}
-
-	public void setAccumulatedFitness(double accumulatedFitness) {
-		this.accumulatedFitness = accumulatedFitness;
-	}
-
-	public double getFitness() {
-		return fitness;
-	}
-
-	public void setFitness(double fitness) {
-		this.fitness = fitness;
-	}
-
-	public double getSelectionProbability() {
-		return selectionProbability;
-	}
-
-	public void setSelectionProbability(double selectionProbability) {
-		this.selectionProbability = selectionProbability;
-	}
-
-	public double getAdaptedFitness() {
-		return adaptedFitness;
-	}
-
-	public void setAdaptedFitness(double adaptedFitness) {
-		this.adaptedFitness = adaptedFitness;
 	}
 }

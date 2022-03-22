@@ -39,6 +39,7 @@ public class BinaryGen extends Gen {
 		//Determinamos el maximo tamaño posible
 		this.maxCodificationSize = Math.max(arrmax.length(), arrmin.length());
 		
+		this.genotype = aux;
 		this.setGenotype(aux);
 	}
 

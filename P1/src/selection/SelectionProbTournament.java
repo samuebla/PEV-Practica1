@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import individual.Chromosome;
+import utils.Params;
 
 public class SelectionProbTournament extends Selection {
 
@@ -14,7 +15,6 @@ public class SelectionProbTournament extends Selection {
 		selectedPopulation = new ArrayList<>();
 		//Numero de veces que se repite el proceso para escoger el mejor/peor
 		int k = poblation.size();
-		
 		Random rand = new Random();
 		// Generalmente p toma valores en el rango [0.5 , 1]
 		double p = rand.nextDouble(0.5, 1.0);
@@ -37,10 +37,10 @@ public class SelectionProbTournament extends Selection {
 				select = (int) (Math.random() * (poblation.size()));
 				
 				//Seleccionamos el mejor
-				if(poblation.get(select).getAdaptedFitness() > poblation.get(selectMax).getAdaptedFitness())
+				if(poblation.get(select).getFitness() > poblation.get(selectMax).getFitness())
 					selectMax = select;
 				//Y el peor
-				if(poblation.get(select).getAdaptedFitness() < poblation.get(selectMax).getAdaptedFitness())
+				if(poblation.get(select).getFitness() < poblation.get(selectMax).getFitness())
 					selectMin = select;
 			}
 			

@@ -54,6 +54,7 @@ public class Interface extends JFrame {
 	JSpinner nIndividualsFunct4Param;
 	JComboBox truncDropdown;
 	JLabel truncLabel;
+	JComboBox typeGenDropdown;
 	
 	private int sizePop; 
 	private int numGenerations; 
@@ -234,6 +235,16 @@ public class Interface extends JFrame {
 		functionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		functionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Function 1", "Function 2 Schubert", "Function 3 EggHolder", "Function 4 Michalewicz"}));
 		
+		JLabel genTypeFunct4_1 = new JLabel("Gen Type");
+		genTypeFunct4_1.setFont(new Font("Georgia", Font.PLAIN, 13));
+		genTypeFunct4_1.setEnabled(false);
+		
+		typeGenDropdown = new JComboBox();
+		typeGenDropdown.setModel(new DefaultComboBoxModel(new String[] {"Real", "Binary"}));
+		typeGenDropdown.setToolTipText("");
+		typeGenDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		typeGenDropdown.setEnabled(false);
+		
 		functionDropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        int funct = functionDropdown.getSelectedIndex();
@@ -241,10 +252,15 @@ public class Interface extends JFrame {
 		        //Cuarta funcion Michalewicz
 		        if(funct == 3) {
 		        	nIndividualsFunct4.setEnabled(true);
+		        	genTypeFunct4_1.setEnabled(true);
+		        	typeGenDropdown.setEnabled(true);
 		        	nIndividualsFunct4Param.setEnabled(true);
 		        	crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform", "BLX", "Arithmetic"}));
 		        }else {
+		        	
 		        	nIndividualsFunct4.setEnabled(false);
+		        	genTypeFunct4_1.setEnabled(false);
+		        	typeGenDropdown.setEnabled(false);
 		        	nIndividualsFunct4Param.setEnabled(false);
 		        	crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform"}));
 		        }
@@ -252,21 +268,27 @@ public class Interface extends JFrame {
 		});
 		
 		
+		
+		
 		GroupLayout gl_functionPanel = new GroupLayout(functionPanel);
 		gl_functionPanel.setHorizontalGroup(
-			gl_functionPanel.createParallelGroup(Alignment.LEADING)
+			gl_functionPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_functionPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(functionLabel)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_functionPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_functionPanel.createSequentialGroup()
+							.addComponent(genTypeFunct4_1, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(typeGenDropdown, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.TRAILING, gl_functionPanel.createSequentialGroup()
+							.addComponent(nIndividualsFunct4, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+							.addGap(72)
+							.addComponent(nIndividualsFunct4Param, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_functionPanel.createSequentialGroup()
+							.addComponent(functionLabel)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
-				.addGroup(Alignment.TRAILING, gl_functionPanel.createSequentialGroup()
-					.addGap(58)
-					.addComponent(nIndividualsFunct4, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(nIndividualsFunct4Param, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-					.addGap(55))
 		);
 		gl_functionPanel.setVerticalGroup(
 			gl_functionPanel.createParallelGroup(Alignment.LEADING)
@@ -277,8 +299,12 @@ public class Interface extends JFrame {
 						.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(nIndividualsFunct4Param, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(nIndividualsFunct4, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+						.addComponent(nIndividualsFunct4, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+						.addComponent(nIndividualsFunct4Param, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(genTypeFunct4_1, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+						.addComponent(typeGenDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		functionPanel.setLayout(gl_functionPanel);
@@ -474,32 +500,32 @@ public class Interface extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(startButton)
-							.addGap(121))
-						.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addComponent(startButton)
+								.addGap(121))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addComponent(elitismPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+									.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addComponent(selectionPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+									.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addComponent(parametersLabel)
+							.addGap(105))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
 								.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(parametersLabel)
-									.addGap(93))
 								.addComponent(generationsPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
 								.addComponent(sizePanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addComponent(elitismPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(selectionPanel, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE)
-								.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 312, Short.MAX_VALUE))
+								.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 312, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
@@ -518,38 +544,42 @@ public class Interface extends JFrame {
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(graphTitle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(solutionLabel, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(maxAbsSol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(parametersLabel)
-							.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-							.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(graphTitle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(solutionLabel, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+								.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(maxAbsSol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(startButton))
-						.addComponent(panelMathPlot, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+									.addGap(8)
+									.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(functionPanel, GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(startButton))
+								.addComponent(panelMathPlot, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(parametersLabel)))
 					.addContainerGap())
 		);
 		selectionDropdown = new JComboBox();
@@ -624,6 +654,11 @@ public class Interface extends JFrame {
 		mutProb = ((double) this.mutationSpinner.getValue()) / 100.0;
 		precision = (double) this.precisionSpinner.getValue();
 		
+		boolean isBinFuct4 = false;
+		if(typeGenDropdown.isEnabled()) {
+			isBinFuct4 = typeGenDropdown.getSelectedIndex() == 1 ? true : false;
+		}
+		
 		int truncProb = 0;
 		if(truncDropdown.isEnabled()) {
 			String val = truncDropdown.getSelectedItem().toString();
@@ -644,7 +679,7 @@ public class Interface extends JFrame {
 		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, paramFunc4, truncProb, false);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, paramFunc4, truncProb, isBinFuct4);
 	}
 	
 	public void showGraph(double[] bestAbs, double[]  best, double[] avarage, double solution, List<Double> sol) {
