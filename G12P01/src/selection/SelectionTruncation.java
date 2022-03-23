@@ -24,7 +24,10 @@ public class SelectionTruncation extends Selection {
 		double numRep = 1.0 / prop;
 		selectedPopulation = new ArrayList<>();
 		
-		for(int i = 0; i < n; i++)
+		int limit = poblation.size() - (int)n;
+
+		
+		for(int i = poblation.size() - 1; i >= limit; i--)
 			for(int j = 0; j < numRep; j++)
 				//Añadimos a la mejor poblacion repetida
 				selectedPopulation.add(poblation.get(i));		

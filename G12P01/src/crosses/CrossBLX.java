@@ -29,37 +29,39 @@ public class CrossBLX extends Cross {
 			double max = Math.max(phenotype1.get(i), phenotype2.get(i));
 			double min = Math.min(phenotype1.get(i), phenotype2.get(i));
 
+			//En caso de que sea el mismo numero
+			if(max == min){
+				//Pues se pone sin más
+				son1.get(i).setGenotype(min);
+				son2.get(i).setGenotype(min);
+			}	
+			else
+			{
+				double alpha,alphaI,minI,maxI;
+				do {
+					//Cogemos un numero de 0 a 1
+					alpha = ThreadLocalRandom.current().nextDouble(0, 1);
+					
+					//Y multiplicamos la diferencia por el numero
+					alphaI = (max - min) * alpha;
+
+					//Sumamos y restamos la diferencia a los numeros
+					minI = min - alphaI;
+					maxI = max + alphaI;
+
+					//Si el numero con la diferencia es mas pequeño/mayor que el original se sustituye el num original
+					if(minI < son1.get(i).getMin()) minI = son1.get(i).getMin();
+					if(maxI > son1.get(i).getMax() || maxI < minI) maxI = son1.get(i).getMax();
+				} while(minI == maxI);
 				
-			double alpha = 0,alphaI = 0,minI = 0,maxI = 0;
-			check(alpha, alphaI, minI, maxI, max, min);
-			
-			while(minI == maxI) {
-				check(alpha, alphaI, minI, maxI, max, min);
-			} 
-			
-			//Y le ponemos o el mas grande o el mas pequeño
-			son1.get(i).randomize(minI, maxI);
-			son2.get(i).randomize(minI, maxI);
+				//Y le ponemos o el mas grande o el mas pequeño
+				son1.get(i).randomize(minI, maxI);
+				son2.get(i).randomize(minI, maxI);
+			}
 		}
 		
 		this.sons.add(new Chromosome(son1));
 		this.sons.add(new Chromosome(son2));
-	}
-	
-	void check(double alpha, double alphaI, double minI, double maxI, double max, double min) {
-		//Cogemos un numero de 0 a 1
-		alpha = ThreadLocalRandom.current().nextDouble(0, 1);
-		
-		//Y multiplicamos la diferencia por el numero
-		alphaI = (max - min) * alpha;
-
-		//Sumamos y restamos la diferencia a los numeros
-		minI = min - alphaI;
-		maxI = max + alphaI;
-
-		//Si el numero con la diferencia es mas pequeño/mayor que el original se sustituye el num original
-		if(minI < this.son1.get(i).getMin()) minI = son1.get(i).getMin();
-		if(maxI > son1.get(i).getMax() || maxI < minI) maxI = son1.get(i).getMax();
 	}
 
 }

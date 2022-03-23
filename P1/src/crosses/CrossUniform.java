@@ -22,9 +22,9 @@ public class CrossUniform extends Cross {
 		//Vamos avanzando alelo por alelo
 		for(int i = 0; i < alelos1.size(); i++){
 			//50% de probabilidad
-			int random = ThreadLocalRandom.current().nextInt(0, 10);
+			int random = ThreadLocalRandom.current().nextInt(0, 11);
 			
-			if(random >= 5)
+			if(random > 5)
 			{
 				//Lo cambiamos
 				son1.add(alelos2.get(i));
@@ -50,14 +50,14 @@ public class CrossUniform extends Cross {
 			//Devuelve la lista de alelos desde SUM hasta SUM+G
 			//Para realizar asi el corte
 			g.setAlleles(son1.subList(sum, sum+g.getTam()));
-			sum++;
+			sum += g.getTam();
 		}
 		
 		sum = 0;
 		
 		for(Gen g : gens2) {
 			g.setAlleles(son2.subList(sum, sum+g.getTam()));
-			sum++;
+			sum += g.getTam();
 		}
 		
 		this.sons.add(new Chromosome(gens1));

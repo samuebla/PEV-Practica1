@@ -11,6 +11,7 @@ public abstract class Gen {
 	double max_range;
 	//Error range
 	float precision;
+	double genotype;
 	
 	public Gen() { }
 

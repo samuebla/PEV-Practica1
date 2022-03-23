@@ -16,7 +16,7 @@ public class SelectionRemains extends Selection {
 		Random r = new Random();
 		
 		for(int i = 0; i < k; i++) {
-			double pK = poblation.get(i).getPuntuationAcc() * k;
+			double pK = poblation.get(i).getPuntuation() * k;
 			int selected = (int) Math.round(pK);
 			for(int j = 0; j < selected  && selectedPopulation.size() < k; j++) {
 				double diff = pK - j;

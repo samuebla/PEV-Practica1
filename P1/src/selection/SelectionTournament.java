@@ -16,7 +16,6 @@ public class SelectionTournament extends Selection {
 	public void selection(List<Chromosome> poblation, Object param) {
 
 		selectedPopulation = new ArrayList<Chromosome>();
-		Params params = (Params) param;
 		int n = poblation.size();
 		
 		//Se coge el mejor de los individuos de un conjunto de 2 elementos
@@ -37,7 +36,7 @@ public class SelectionTournament extends Selection {
 			//Y nos quedamos con el mejor de la muestra
 			Chromosome mejor = seleccionados.get(0);
 			for(Chromosome ind : seleccionados)
-				if(ind.getFitness() > mejor.getFitness())
+				if(ind.getPuntuation() > mejor.getPuntuation())
 					mejor = ind;
 			
 			//Nos quedamos en el mejor de cada vuelta

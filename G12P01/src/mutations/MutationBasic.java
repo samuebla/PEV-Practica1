@@ -22,6 +22,7 @@ public class MutationBasic extends Mutation {
 		//Lo mismo pero con toda la poblacion
 		for(Chromosome cromosoma : poblation){
 			int i = 0;
+			//Dos genes por cada cromosoma
 			for(Gen gen : cromosoma.getGens()){
 				double random = ThreadLocalRandom.current().nextDouble(0, 1);
 				min = params.interval.get(i);
