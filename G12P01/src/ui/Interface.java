@@ -586,6 +586,16 @@ public class Interface extends JFrame {
 		selectionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		selectionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Aleatorio", "Torneo Determinista", "Restos", "Truncamiento", "Estocástico Universal"}));
 		
+		truncLabel = new JLabel("Trunc Probability(%)");
+		truncLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
+		truncLabel.setEnabled(false);
+		
+		truncDropdown = new JComboBox();
+		truncDropdown.setModel(new DefaultComboBoxModel(new String[] {"10", "50"}));
+		truncDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		truncDropdown.setEnabled(false);
+		
+		
 		selectionDropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        int funct = selectionDropdown.getSelectedIndex();
@@ -605,14 +615,7 @@ public class Interface extends JFrame {
 		JLabel selectionLabel = new JLabel("Selection Type");
 		selectionLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
-		truncLabel = new JLabel("Trunc Probability(%)");
-		truncLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
-		truncLabel.setEnabled(false);
 		
-		truncDropdown = new JComboBox();
-		truncDropdown.setModel(new DefaultComboBoxModel(new String[] {"10", "50"}));
-		truncDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		truncDropdown.setEnabled(false);
 		GroupLayout gl_Selection = new GroupLayout(selectionPanel);
 		gl_Selection.setHorizontalGroup(
 			gl_Selection.createParallelGroup(Alignment.LEADING)
