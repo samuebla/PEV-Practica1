@@ -21,8 +21,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import org.math.plot.Plot2DPanel;
 
@@ -75,6 +78,7 @@ public class Interface extends JFrame {
 	
 	List<TVuelo> TTEL_vuelo;
 	List<List<Double>> separations;
+	private JTable solTable;
 	
 	
 	/**
@@ -182,6 +186,7 @@ public class Interface extends JFrame {
 		));
 		
 		telsTable = new JTable();
+		telsTable.setRowHeight(20);
 		telsTable.setFont(new Font("Georgia", Font.PLAIN, 11));
 		telsTable.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -194,14 +199,28 @@ public class Interface extends JFrame {
 			}
 		));
 		
-		weightsTable = new JTable();
+		weightsTable = new JTable(){
+			
+			@Override
+			  	public boolean isCellEditable(int row, int column) {
+			       //Only the third column
+					if(column == 0)
+						return false;
+					
+					if(row == 0)
+						return false;
+					
+					return true;
+			   }
+		};
+		weightsTable.setRowHeight(30);
 		weightsTable.setFont(new Font("Georgia", Font.PLAIN, 18));
 		weightsTable.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, "W", "G", "P"},
 				{"W", "1", "1.5", "2"},
 				{"G", "1", "1.5", "1.5"},
-				{"P", "1", "1", null},
+				{"P", "1", "1", "1"},
 			},
 			new String[] {
 				"New column", "New column", "New column", "New column"
@@ -294,10 +313,6 @@ public class Interface extends JFrame {
 						.addComponent(flightTable, GroupLayout.DEFAULT_SIZE, 1049, Short.MAX_VALUE))
 					.addGap(1376))
 				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(229)
-					.addComponent(weightsTable, GroupLayout.PREFERRED_SIZE, 581, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1615, Short.MAX_VALUE))
-				.addGroup(gl_entryTab.createSequentialGroup()
 					.addGap(350)
 					.addComponent(sizePanel_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(1747, Short.MAX_VALUE))
@@ -306,9 +321,13 @@ public class Interface extends JFrame {
 					.addComponent(sizePanel_1_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(1736, Short.MAX_VALUE))
 				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(348)
+					.addGap(370)
 					.addComponent(sizePanel_1_1_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1749, Short.MAX_VALUE))
+					.addContainerGap(1727, Short.MAX_VALUE))
+				.addGroup(gl_entryTab.createSequentialGroup()
+					.addGap(228)
+					.addComponent(weightsTable, GroupLayout.PREFERRED_SIZE, 581, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(1616, Short.MAX_VALUE))
 		);
 		gl_entryTab.setVerticalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
@@ -321,11 +340,11 @@ public class Interface extends JFrame {
 					.addComponent(sizePanel_1_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 					.addGap(31)
 					.addComponent(telsTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(111)
+					.addGap(62)
 					.addComponent(sizePanel_1_1_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(61)
+					.addGap(18)
 					.addComponent(weightsTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(589, Short.MAX_VALUE))
+					.addContainerGap(613, Short.MAX_VALUE))
 		);
 		entryTab.setLayout(gl_entryTab);
 		
@@ -886,6 +905,44 @@ public class Interface extends JFrame {
 		
 		JPanel solTab = new JPanel();
 		tabbedPane.addTab("Solution", null, solTab, null);
+		
+		solTable = new JTable();
+		solTable.setModel(new DefaultTableModel(
+			new Object[][] {
+				{"N\u00FAmero Pista", "1", null},
+				{"Vuelo", "Nombre", "TLA"},
+				{"", "", ""},
+			},
+			new String[] {
+				"New column", "New column", "New column"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		solTable.setRowHeight(30);
+		solTable.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		GroupLayout gl_solTab = new GroupLayout(solTab);
+		gl_solTab.setHorizontalGroup(
+			gl_solTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_solTab.createSequentialGroup()
+					.addGap(28)
+					.addComponent(solTable, GroupLayout.PREFERRED_SIZE, 354, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(2043, Short.MAX_VALUE))
+		);
+		gl_solTab.setVerticalGroup(
+			gl_solTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_solTab.createSequentialGroup()
+					.addGap(33)
+					.addComponent(solTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(1134, Short.MAX_VALUE))
+		);
+		solTab.setLayout(gl_solTab);
 		
 		contentPane.setLayout(gl_contentPane);		
 	}
