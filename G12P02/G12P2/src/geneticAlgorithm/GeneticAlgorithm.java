@@ -1,6 +1,7 @@
 package geneticAlgorithm;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import crosses.*;
 import functions.*;
@@ -240,16 +241,25 @@ public class GeneticAlgorithm {
 				mut = new MutationHeuristics();
 				break;
 		}
-		
 	}
 	
 	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct) {
 		Population population = new Population();
 		for(int i = 0; i < pobSize; i++) {
 			List<Gen> genes = new ArrayList<>();
+			
+			List<Integer> vuelos = new ArrayList<>();
+			int number = 0;
+			while(vuelos.size() < TTEL_vuelo_.size()) vuelos.add(number++);
+			
 			for(int j = 0; j < TTEL_vuelo_.size(); j++) {
-				genes.add(new FlightGen((float) precision));
-				genes.get(0).randomize(-3, 12.1);
+				int index = ThreadLocalRandom.current().nextInt(0, vuelos.size());
+				
+				FlightGen gen = new FlightGen((float) precision);
+				gen.pos_vuelo = vuelos.get(index);
+				vuelos.remove(index);
+				genes.add(gen);
+//				genes.get(0).randomize(-3, 12.1);
 			}
 			population.getPopulation().add(new Chromosome(genes));
 		}
