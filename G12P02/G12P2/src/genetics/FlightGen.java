@@ -6,9 +6,9 @@ import java.util.concurrent.ThreadLocalRandom;
 //Tipo de gen que vamos a usar para la practica1
 public class FlightGen extends Gen {
 
-	int pos_vuelo;
-	int pista;
-	double hour;
+	public int pos_vuelo;
+	public int pista;
+	public double hour;
 	
 	public FlightGen(float prec){
 		//Crea la lista de los alelos
