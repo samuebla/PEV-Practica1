@@ -1,37 +1,15 @@
 package geneticAlgorithm;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import crosses.Cross;
-import functions.Func2_Schubert;
-import functions.Func3_EggHolder;
-import functions.Func4_Michalewicz;
-import functions.Function;
-import functions.Function1;
-import genetics.BinaryGen;
-import genetics.Gen;
-import genetics.RealGen;
-import individual.Chromosome;
-import individual.Generation;
-import individual.Population;
-import mutations.Mutation;
-import mutations.MutationBasic;
-import selection.Selection;
-import selection.SelectionProbTournament;
-import selection.SelectionRemains;
-import selection.SelectionRoulette;
-import selection.SelectionStochastic;
-import selection.SelectionTournament;
-import selection.SelectionTruncation;
+import crosses.*;
+import functions.*;
+import genetics.*;
+import individual.*;
+import mutations.*;
+import selection.*;
+import utils.*;
 import ui.Interface;
-import utils.CrossType;
-import utils.FunctionType;
-import utils.MutationType;
-import utils.Params;
-import utils.SelectionType;
-import utils.TVuelo;
 
 public class GeneticAlgorithm {
 	
@@ -207,22 +185,7 @@ public class GeneticAlgorithm {
 	}
 	
 	private void selectTypes() {
-		funct = new Function1(); //Compilation Purposes
-
-		switch (FunctType_) {
-			case f1 :
-				funct = new Function1();
-				break;
-			case f2_Schubert:
-				funct = new Func2_Schubert();
-				break;
-			case f3_EggHolder:
-				funct = new Func3_EggHolder();
-				break;
-			case f4_Michalewicz:
-				funct = new Func4_Michalewicz();
-				break;
-		}
+		funct = new FunctionP2(); //Compilation Purposes
 		
 		select = new SelectionRoulette(); //Compilation Purposes
 		switch (SelecType_) {
@@ -246,28 +209,37 @@ public class GeneticAlgorithm {
 				break;
 		}
 		
-		cross = new CrossMonopoint(); //Compilation Purposes
+		cross = new CrossPMX(); //Compilation Purposes
 		switch (CrossType_) {
-			case Monopoint :
-				cross = new CrossMonopoint();
+			case PMX :
+				cross = new CrossPMX();
 				break;
-			case Uniform:
-				cross = new CrossUniform();
+			case Order_OX:
+				cross = new CrossOrderOX();
+				break;
+			case Cycles_CX:
+				cross = new CrossCyclesCX();
+				break;
+			case CO_Ordinal_Encoding:
+				cross = new CrossCOOrdinalEncoding();
 				break;
 		}
 		
-		mut = new MutationBasic(); //Compilation Purposes
+		mut = new MutationInsertion(); //Compilation Purposes
 		switch (MutType_) {
-			case Basic :
-				mut = new MutationBasic();
+			case Insertion :
+				mut = new MutationInsertion();
 				break;
-			case Basic_Double:
-				mut = new MutationBasic();
+			case Exchange:
+				mut = new MutationExchange();
+				break;
+			case Inversion:
+				mut = new MutationInversion();
+				break;
+			case Heuristics:
+				mut = new MutationHeuristics();
 				break;
 		}
-		
-		if(FunctType_ == FunctionType.f4_Michalewicz) 
-			mut = new MutationBasic();
 		
 	}
 	
@@ -275,43 +247,9 @@ public class GeneticAlgorithm {
 		Population population = new Population();
 		for(int i = 0; i < pobSize; i++) {
 			List<Gen> genes = new ArrayList<>();
-						
-			switch(numFunct) {			
-				case f1:
-					//Creamos los genes binarios
-					genes.add(new BinaryGen((float) precision));
-					genes.add(new BinaryGen((float) precision));
-					
-					//Establecemos el rango
-					genes.get(0).randomize(-3, 12.1);
-					genes.get(1).randomize(4.1, 5.8);				
-					break;
-					
-				case f2_Schubert:
-					genes.add(new BinaryGen((float) precision));
-					genes.add(new BinaryGen((float) precision));
-	
-					//Xi cuenta tanto para x1 como x2
-					genes.get(0).randomize(-10, 10);
-					genes.get(1).randomize(-10, 10);				
-					break;
-					
-				case f3_EggHolder:
-					genes.add(new BinaryGen((float) precision));
-					genes.add(new BinaryGen((float) precision));
-					
-					genes.get(0).randomize(-512, 512);
-					genes.get(1).randomize(-512, 512);
-					break;
-					
-//				case f4_Michalewicz:
-//					for(int j = 0; j < function4params; j++) {
-//						if(!func4IsBin)
-//							genes.add(new RealGen((float) precision));
-//						else genes.add(new BinaryGen((float) precision));
-//						genes.get(j).randomize(0, Math.PI);
-//					}
-//					break;
+			for(int j = 0; j < TTEL_vuelo_.size(); j++) {
+				genes.add(new FlightGen((float) precision));
+				genes.get(0).randomize(-3, 12.1);
 			}
 			population.getPopulation().add(new Chromosome(genes));
 		}
