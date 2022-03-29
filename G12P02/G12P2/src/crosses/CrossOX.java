@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import genetics.Gen;
 import individual.Chromosome;
 
-public class CrossOrderOX extends Cross {
+public class CrossOX extends Cross {
 
 	@Override
 	public void cruzar(Chromosome padre1, Chromosome padre2) {

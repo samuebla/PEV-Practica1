@@ -215,7 +215,7 @@ public class GeneticAlgorithm {
 				cross = new CrossPMX();
 				break;
 			case Order_OX:
-				cross = new CrossOrderOX();
+				cross = new CrossOX();
 				break;
 			case Cycles_CX:
 				cross = new CrossCyclesCX();
