@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import crosses.Cross;
-import crosses.CrossMonopoint;
-import crosses.CrossUniform;
 import functions.Func2_Schubert;
 import functions.Func3_EggHolder;
 import functions.Func4_Michalewicz;
