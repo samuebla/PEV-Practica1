@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -21,16 +23,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import org.math.plot.Plot2DPanel;
 
 import geneticAlgorithm.GeneticAlgorithm;
 import utils.CrossType;
+import utils.FlightType;
 import utils.FunctionType;
 import utils.MutationType;
 import utils.SelectionType;
@@ -74,10 +74,11 @@ public class Interface extends JFrame {
 	
 	JTable flightTable;
 	JTable telsTable;
-	JTable weightsTable;
+	JTable separationsTable;
 	
-	List<TVuelo> TTEL_vuelo;
-	List<List<Double>> separations;
+	List<TVuelo> TTEL_vuelos;
+	List<ArrayList<Double>> separations;
+	final int numPistas = 3;
 	private JTable solTable;
 	
 	
@@ -199,7 +200,7 @@ public class Interface extends JFrame {
 			}
 		));
 		
-		weightsTable = new JTable(){
+		separationsTable = new JTable(){
 			
 			@Override
 			  	public boolean isCellEditable(int row, int column) {
@@ -213,9 +214,9 @@ public class Interface extends JFrame {
 					return true;
 			   }
 		};
-		weightsTable.setRowHeight(30);
-		weightsTable.setFont(new Font("Georgia", Font.PLAIN, 18));
-		weightsTable.setModel(new DefaultTableModel(
+		separationsTable.setRowHeight(30);
+		separationsTable.setFont(new Font("Georgia", Font.PLAIN, 18));
+		separationsTable.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, "W", "G", "P"},
 				{"W", "1", "1.5", "2"},
@@ -284,15 +285,15 @@ public class Interface extends JFrame {
 		sizePanel_1_1_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		sizePanel_1_1_1.setBackground(Color.LIGHT_GRAY);
 		
-		JLabel lblWeights = new JLabel("Weights");
+		JLabel lblWeights = new JLabel("Weights Separations");
 		lblWeights.setFont(new Font("Georgia", Font.PLAIN, 18));
 		GroupLayout gl_sizePanel_1_1_1 = new GroupLayout(sizePanel_1_1_1);
 		gl_sizePanel_1_1_1.setHorizontalGroup(
 			gl_sizePanel_1_1_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_sizePanel_1_1_1.createSequentialGroup()
-					.addGap(124)
-					.addComponent(lblWeights, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(132, Short.MAX_VALUE))
+					.addGap(64)
+					.addComponent(lblWeights, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(80, Short.MAX_VALUE))
 		);
 		gl_sizePanel_1_1_1.setVerticalGroup(
 			gl_sizePanel_1_1_1.createParallelGroup(Alignment.TRAILING)
@@ -326,7 +327,7 @@ public class Interface extends JFrame {
 					.addContainerGap(1727, Short.MAX_VALUE))
 				.addGroup(gl_entryTab.createSequentialGroup()
 					.addGap(228)
-					.addComponent(weightsTable, GroupLayout.PREFERRED_SIZE, 581, GroupLayout.PREFERRED_SIZE)
+					.addComponent(separationsTable, GroupLayout.PREFERRED_SIZE, 581, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(1616, Short.MAX_VALUE))
 		);
 		gl_entryTab.setVerticalGroup(
@@ -343,7 +344,7 @@ public class Interface extends JFrame {
 					.addGap(62)
 					.addComponent(sizePanel_1_1_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addComponent(weightsTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(separationsTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(613, Short.MAX_VALUE))
 		);
 		entryTab.setLayout(gl_entryTab);
@@ -972,6 +973,9 @@ public class Interface extends JFrame {
 		elitism = this.elitismCheckBox.isSelected(); 
 		eliPercentage =	((double)this.elitismSpinner.getValue())/100.0;
 		
+		readFlightsNTels();
+		readSeparations();
+		
 		getFunctionType();
 		getSelectionType();
 		getCrossType();
@@ -979,7 +983,41 @@ public class Interface extends JFrame {
 		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, paramFunc4, truncProb, isBinFuct4);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations);
+	}
+	
+	private void readFlightsNTels() {
+		int numRows = flightTable.getRowCount();
+		int numCols = flightTable.getColumnCount();
+		
+		TTEL_vuelos = new ArrayList<TVuelo>();
+		for(int i = 0; i < numCols ; i++) {
+			int j = 1;
+			TVuelo vuelo = new TVuelo();
+			vuelo.name_ = flightTable.getModel().getValueAt(j++ ,i).toString();
+			vuelo.type_ = FlightType.valueOf(flightTable.getModel().getValueAt(j, i).toString());
+			vuelo.TTEL_vuelo = new ArrayList<Double>();
+			for(int k = 0; k < numPistas; k++) {
+				double tel = Double.parseDouble(telsTable.getModel().getValueAt(k , i).toString());
+				vuelo.TTEL_vuelo.add(tel);
+			}
+			TTEL_vuelos.add(vuelo);
+		}
+	}
+	
+	private void readSeparations() {
+		int numRows = separationsTable.getRowCount();
+		int numCols = separationsTable.getColumnCount();
+		
+		separations = new ArrayList<ArrayList<Double>>();
+		
+		for(int i = 1; i < numRows; i++) {
+			ArrayList<Double>  sep = new ArrayList<Double>();
+			for(int j = 1; j < numCols; j++) {
+				sep.add(Double.parseDouble(separationsTable.getModel().getValueAt(i, j).toString()));
+			}
+			separations.add(sep);
+		}
 	}
 	
 	public void showGraph(double[] bestAbs, double[]  best, double[] avarage, double solution, List<Double> sol) {

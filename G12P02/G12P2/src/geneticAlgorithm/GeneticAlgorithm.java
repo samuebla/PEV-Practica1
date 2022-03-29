@@ -33,6 +33,7 @@ import utils.FunctionType;
 import utils.MutationType;
 import utils.Params;
 import utils.SelectionType;
+import utils.TVuelo;
 
 public class GeneticAlgorithm {
 	
@@ -50,13 +51,14 @@ public class GeneticAlgorithm {
 	Cross cross;
 	Mutation mut;
 	
+	List<TVuelo> TTEL_vuelo_;
+	List<ArrayList<Double>> separations_;
+	
 	Params param;
 	private boolean elitism_;
 	private int sizePop_;
 	private int eliteSize;
 	private double totalFitness;
-	
-	private int function4params_;
 	
 	public GeneticAlgorithm(Interface inter) {
 		interface_ = inter;
@@ -64,13 +66,16 @@ public class GeneticAlgorithm {
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
-						double eliPercentage, int function4params, int truncProbability, boolean func4IsBin) {
+						double eliPercentage, int truncProbability,List<TVuelo> TTEL_vuelo, List<ArrayList<Double>> separations) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
 		MutType_ = m_Type;
 		elitism_ = elitism;		
 		selectTypes();		
+		
+		TTEL_vuelo_ = TTEL_vuelo;
+		separations_ = separations;
 		
 		//Contenedor de Parametros
 		param = new Params();
@@ -83,10 +88,9 @@ public class GeneticAlgorithm {
 		param.truncProb = truncProbability;
 		
 		eliteSize = (int)(sizePopulation * eliPercentage);
-		function4params_ = function4params;//Todo esto va en la interfaz
 		
 		//INIT POPULATION
-		poblation = InitPopulation(sizePopulation, precision,f_Type, function4params_, func4IsBin);
+		poblation = InitPopulation(sizePopulation, precision,f_Type);
 		//INIT ELITE
 		Population elite = new Population();
 		
@@ -269,7 +273,7 @@ public class GeneticAlgorithm {
 		
 	}
 	
-	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct, int function4params, boolean func4IsBin) {
+	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct) {
 		Population population = new Population();
 		for(int i = 0; i < pobSize; i++) {
 			List<Gen> genes = new ArrayList<>();
@@ -302,14 +306,14 @@ public class GeneticAlgorithm {
 					genes.get(1).randomize(-512, 512);
 					break;
 					
-				case f4_Michalewicz:
-					for(int j = 0; j < function4params; j++) {
-						if(!func4IsBin)
-							genes.add(new RealGen((float) precision));
-						else genes.add(new BinaryGen((float) precision));
-						genes.get(j).randomize(0, Math.PI);
-					}
-					break;
+//				case f4_Michalewicz:
+//					for(int j = 0; j < function4params; j++) {
+//						if(!func4IsBin)
+//							genes.add(new RealGen((float) precision));
+//						else genes.add(new BinaryGen((float) precision));
+//						genes.get(j).randomize(0, Math.PI);
+//					}
+//					break;
 			}
 			population.getPopulation().add(new Chromosome(genes));
 		}
