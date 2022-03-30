@@ -11,84 +11,101 @@ import individual.Chromosome;
 public class CrossOXPP extends Cross {
 
 	@Override
-	public void cruzar(Chromosome padre1, Chromosome padre2) {
-		//número de genes que se van a intercambiar entre padre e hijo
-		//ESTO DEBERIA DE SER MUCHO MENOS AAAAAAA REVISAR
-        final int NINTERCAMBIOS = 6;
-        List<Integer> pcorte = new ArrayList<>();
-        int min = (int) padre1.getGens().get(0).getMin();
-        int max = (int) padre1.getGens().get(0).getMax();
+	public void cruzar(Chromosome father1, Chromosome father2) {
+		//Aunque deba ser en funcion del tamaño Carlos dijo que con 3 servia
+        final int numCuts = 3;
+        
+        List<Integer> cutPoints = new ArrayList<>();
+        int min = (int) father1.getGens().get(0).getMin();
+        int max = (int) father1.getGens().get(0).getMax();
 
-        Chromosome h1 = new Chromosome(padre1);
-        Chromosome h2 = new Chromosome(padre2);
+        Chromosome h1 = new Chromosome(father1);
+        Chromosome h2 = new Chromosome(father2);
 
-        Chromosome p1 = new Chromosome(padre1);
-        Chromosome p2 = new Chromosome(padre2);
+        Chromosome p1 = new Chromosome(father1);
+        Chromosome p2 = new Chromosome(father2);
 
         List<Gen> genes1 = p1.getGens();
         List<Gen> genes2 = p2.getGens();
 
-        List<Gen> hijo1 = h1.getGens();
-        List<Gen> hijo2 = h2.getGens();
+        List<Gen> son1 = h1.getGens();
+        List<Gen> son2 = h2.getGens();
 
 
         for (int i = 1; i < genes1.size() - 1; i++) {
-            hijo1.get(i).setGenotype(-1);
-            hijo2.get(i).setGenotype(max);
+            son1.get(i).setGenotype(-1);
+            son2.get(i).setGenotype(max);
         }
 
 
-        for (int i = 0; i < NINTERCAMBIOS; i++) {
+        //Calculamos el numero de cortes...
+        for (int i = 0; i < numCuts; i++) {
             int c = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
 
-            while (pcorte.contains(c))
+            //Se repite para que no den cortes iguales
+            while (cutPoints.contains(c))
                 c = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
-            pcorte.add(c);
+            
+            //Y lo añadimos
+            cutPoints.add(c);
         }
 
-        Collections.sort(pcorte);
+        //Ordenamos los cortes para hacerlos de izquierda a derecha
+        Collections.sort(cutPoints);
 
-        for (int c : pcorte) {
-            hijo1.set(c, genes2.get(c));
-            hijo2.set(c, genes1.get(c));
+        //Invertimos los valores seleccionados
+        for (int c : cutPoints) {
+            son1.set(c, genes2.get(c));
+            son2.set(c, genes1.get(c));
         }
 
-        int i = pcorte.get(NINTERCAMBIOS - 1) + 1, acum = i;
+        //Ahora comenzamos con el corte más a la derecha y vamos de derecha a izquierda
+        int i = cutPoints.get(numCuts - 1) + 1;
+        int acum = i;
 
-        fill(genes1, hijo1, i, acum);
+        //Ponemos el resto de valores en orden
+        complete(genes1, son1, i, acum);
 
-        i = pcorte.get(NINTERCAMBIOS - 1) + 1;
+        //Volvemos a la misma posicion
+        i = cutPoints.get(numCuts - 1) + 1;
         acum = i;
 
-        fill(genes2, hijo2, i, acum);
+        //Y repetimos con el otro hijo
+        complete(genes2, son2, i, acum);
 
+        //Metemos los dos hijos
         this.sons = new ArrayList<>();
-
-        this.sons.add(new Chromosome(hijo1));
-        this.sons.add(new Chromosome(hijo2));
+        this.sons.add(new Chromosome(son1));
+        this.sons.add(new Chromosome(son2));
     }
 
-    private void fill(List<Gen> genes, List<Gen> hijo, int i, int acum) {
-        while (i < hijo.size() - 1) {
-            if (!hijo.contains(genes.get(acum))) {
-                hijo.set(i, genes.get(acum));
+    private void complete(List<Gen> gens, List<Gen> son1, int i, int acum) {
+    	
+    	//Hasta el final de la lista
+        while (i < son1.size() - 1) {
+            if (!son1.contains(gens.get(acum))) {
+                son1.set(i, gens.get(acum));
                 i++;
             }
             acum++;
-            if (acum == genes.size() - 1) acum = 1;
+            if (acum == gens.size() - 1) acum = 1;
         }
 
+        //Volvemos al inicio
         i = 1;
 
-        while (i < hijo.size() - 1) {
-            if (hijo.get(i).getGenFenotype() == -1) {
-                if (!hijo.contains(genes.get(acum))) {
-                    hijo.set(i, genes.get(acum));
+        while (i < son1.size() - 1) {
+        	//Solo cambia el valor en los casos en los que no se haya cambiado ya (Para dejar los cortes intactos)
+            if (son1.get(i).getGenFenotype() == -1) {
+                if (!son1.contains(gens.get(acum))) {
+                    son1.set(i, gens.get(acum));
                     i++;
                 }
                 acum++;
-                if (acum == genes.size() - 1) acum = 1;
+                //SIGO PENSANDO QUE ESTO AQUI NO TIENE NINGUN TIPO DE LOGICA AAAAAAAAAAAA
+                if (acum == gens.size() - 1) acum = 1;
             }
+            //Si ha topado con un corte avanzamos sin modificarlo
             else i++;
         }
 	}
