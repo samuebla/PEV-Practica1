@@ -3,9 +3,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -62,6 +65,8 @@ public class Interface extends JFrame {
 	JComboBox truncDropdown;
 	JLabel truncLabel;
 	JComboBox typeGenDropdown;
+	JComboBox caseDropdown;
+	JCheckBox readFileCheckbox;
 	
 	private int sizePop; 
 	private int numGenerations; 
@@ -290,10 +295,10 @@ public class Interface extends JFrame {
 		GroupLayout gl_sizePanel_1_1_1 = new GroupLayout(sizePanel_1_1_1);
 		gl_sizePanel_1_1_1.setHorizontalGroup(
 			gl_sizePanel_1_1_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_sizePanel_1_1_1.createSequentialGroup()
-					.addGap(64)
+				.addGroup(Alignment.TRAILING, gl_sizePanel_1_1_1.createSequentialGroup()
+					.addContainerGap(81, Short.MAX_VALUE)
 					.addComponent(lblWeights, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(80, Short.MAX_VALUE))
+					.addGap(63))
 		);
 		gl_sizePanel_1_1_1.setVerticalGroup(
 			gl_sizePanel_1_1_1.createParallelGroup(Alignment.TRAILING)
@@ -303,20 +308,34 @@ public class Interface extends JFrame {
 					.addContainerGap())
 		);
 		sizePanel_1_1_1.setLayout(gl_sizePanel_1_1_1);
+		
+		readFileCheckbox = new JCheckBox("Read From File");
+		readFileCheckbox.setFont(new Font("Georgia", Font.BOLD, 12));
+		
+		readFileCheckbox.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        int funct = selectionDropdown.getSelectedIndex();
+		        if(readFileCheckbox.isSelected()) {
+		        	caseDropdown.setEnabled(true);
+		        	flightTable.setEnabled(false);
+		        	separationsTable.setEnabled(false);
+		        	telsTable.setEnabled(false);
+		        }else {
+		        	caseDropdown.setEnabled(false);
+		        	flightTable.setEnabled(true);
+		        	separationsTable.setEnabled(true);
+		        	telsTable.setEnabled(true);
+		        }
+		    }
+		});
+		
+		caseDropdown = new JComboBox();
+		caseDropdown.setEnabled(false);
+		caseDropdown.setModel(new DefaultComboBoxModel(new String[] {"Case1", "Case2"}));
+		caseDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		GroupLayout gl_entryTab = new GroupLayout(entryTab);
 		gl_entryTab.setHorizontalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_entryTab.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(telsTable, GroupLayout.DEFAULT_SIZE, 1039, Short.MAX_VALUE))
-						.addComponent(flightTable, GroupLayout.DEFAULT_SIZE, 1049, Short.MAX_VALUE))
-					.addGap(1376))
-				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(350)
-					.addComponent(sizePanel_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1747, Short.MAX_VALUE))
 				.addGroup(gl_entryTab.createSequentialGroup()
 					.addGap(361)
 					.addComponent(sizePanel_1_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
@@ -329,15 +348,37 @@ public class Interface extends JFrame {
 					.addGap(228)
 					.addComponent(separationsTable, GroupLayout.PREFERRED_SIZE, 581, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(1616, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_entryTab.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
+						.addComponent(flightTable, GroupLayout.DEFAULT_SIZE, 1049, Short.MAX_VALUE)
+						.addComponent(telsTable, GroupLayout.DEFAULT_SIZE, 1039, Short.MAX_VALUE))
+					.addGap(1376))
+				.addGroup(gl_entryTab.createSequentialGroup()
+					.addGap(359)
+					.addComponent(sizePanel_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(1738, Short.MAX_VALUE))
+				.addGroup(gl_entryTab.createSequentialGroup()
+					.addGap(461)
+					.addComponent(readFileCheckbox)
+					.addContainerGap(1867, Short.MAX_VALUE))
+				.addGroup(gl_entryTab.createSequentialGroup()
+					.addGap(442)
+					.addComponent(caseDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(1824, Short.MAX_VALUE))
 		);
 		gl_entryTab.setVerticalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(20)
+					.addContainerGap()
+					.addComponent(readFileCheckbox)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(caseDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+					.addGap(45)
 					.addComponent(sizePanel_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(flightTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(87)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(sizePanel_1_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 					.addGap(31)
 					.addComponent(telsTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -557,30 +598,8 @@ public class Interface extends JFrame {
 		
 		functionDropdown = new JComboBox();
 		functionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		functionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Function 1", "Function 2 Schubert", "Function 3 EggHolder", "Function 4 Michalewicz"}));
-		
-		functionDropdown.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		        int funct = functionDropdown.getSelectedIndex();
-		        
-		        //Cuarta funcion Michalewicz
-		        if(funct == 3) {
-		        	nIndividualsFunct4.setEnabled(true);
-		        	genTypeFunct4_1.setEnabled(true);
-		        	typeGenDropdown.setEnabled(true);
-		        	nIndividualsFunct4Param.setEnabled(true);
-		        	crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform", "BLX", "Arithmetic"}));
-		        }else {
-		        	
-		        	nIndividualsFunct4.setEnabled(false);
-		        	genTypeFunct4_1.setEnabled(false);
-		        	typeGenDropdown.setEnabled(false);
-		        	nIndividualsFunct4Param.setEnabled(false);
-		        	crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform"}));
-		        }
-		    }
-		});
-		
+		functionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Function Practice 2"}));
+				
 		GroupLayout gl_functionPanel = new GroupLayout(functionPanel);
 		gl_functionPanel.setHorizontalGroup(
 			gl_functionPanel.createParallelGroup(Alignment.TRAILING)
@@ -633,7 +652,7 @@ public class Interface extends JFrame {
 		
 		selectionDropdown = new JComboBox();
 		selectionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		selectionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Aleatorio", "Torneo Determinista", "Restos", "Truncamiento", "Estocástico Universal"}));
+		selectionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Aleatorio", "Torneo Determinista", "Restos", "Truncamiento", "Estocástico Universal", "Ranking"}));
 		
 		selectionDropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -703,7 +722,7 @@ public class Interface extends JFrame {
 		
 		crossDropdown = new JComboBox();
 		crossDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Monopoint","Uniform"}));
+		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"PMX","Orden OX","Orden OX Priority Positions", "Cyles CX", "Ordinal Encoding"}));
 		
 		GroupLayout gl_crossPanel = new GroupLayout(crossPanel);
 		gl_crossPanel.setHorizontalGroup(
@@ -739,7 +758,7 @@ public class Interface extends JFrame {
 		
 		mutationDropdown = new JComboBox();
 		mutationDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Basic", "Basic_Double"}));
+		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Insertion", "Exchange", "Inversion", "Heuristics"}));
 		
 		GroupLayout gl_MutationPanel = new GroupLayout(MutationPanel);
 		gl_MutationPanel.setHorizontalGroup(
@@ -806,7 +825,12 @@ public class Interface extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {			
-				processData();		
+				try {
+					processData();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}		
 			}
 		});
 		
@@ -948,7 +972,7 @@ public class Interface extends JFrame {
 		contentPane.setLayout(gl_contentPane);		
 	}
 	
-	private void processData() {
+	private void processData() throws IOException {
 		sizePop = (int)this.spinnerSizePopulation.getValue();
 		numGenerations = (int)this.spinnerNumGenerations.getValue();
 		crossProb = ((double) this.crossSpinner.getValue()) / 100.0;
@@ -973,8 +997,7 @@ public class Interface extends JFrame {
 		elitism = this.elitismCheckBox.isSelected(); 
 		eliPercentage =	((double)this.elitismSpinner.getValue())/100.0;
 		
-		readFlightsNTels();
-		readSeparations();
+		readEntry();
 		
 		getFunctionType();
 		getSelectionType();
@@ -984,6 +1007,38 @@ public class Interface extends JFrame {
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
 				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations);
+	}
+	
+	private void readEntry() throws IOException {
+		if(readFileCheckbox.isSelected()) {
+			String file = caseDropdown.getSelectedItem().toString();
+			BufferedReader br = new BufferedReader(new FileReader(file + ".txt"));
+			try {
+				int numFlights = Integer.parseInt(br.readLine());
+				TTEL_vuelos = new ArrayList<TVuelo>();
+				for(int i = 0; i < numFlights ; i++) {
+					int j = 1;
+					TVuelo vuelo = new TVuelo();
+					String data = br.readLine();
+					String[] tokens = data.split(" ");
+					vuelo.name_ = tokens[0];
+					vuelo.type_ = FlightType.valueOf(tokens[1]);
+					vuelo.TTEL_vuelo = new ArrayList<Double>();
+					int tok = 2;
+					for(int k = 0; k < numPistas; k++) {
+						double tel = Double.parseDouble(tokens[tok++]);
+						vuelo.TTEL_vuelo.add(tel);
+					}
+					TTEL_vuelos.add(vuelo);
+				}
+				
+			} finally {
+			    br.close();
+			}
+		}else {
+			readFlightsNTels();
+		}
+		readSeparations();
 	}
 	
 	private void readFlightsNTels() {
