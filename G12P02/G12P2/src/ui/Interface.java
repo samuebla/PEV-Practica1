@@ -84,7 +84,9 @@ public class Interface extends JFrame {
 	List<TVuelo> TTEL_vuelos;
 	List<ArrayList<Double>> separations;
 	final int numPistas = 3;
-	private JTable solTable;
+	private JTable solTablePista1;
+	private JTable solTablePista2;
+	private JTable solTablePista3;
 	
 	
 	/**
@@ -930,11 +932,11 @@ public class Interface extends JFrame {
 		
 		JPanel solTab = new JPanel();
 		tabbedPane.addTab("Solution", null, solTab, null);
-		
-		solTable = new JTable();
-		solTable.setModel(new DefaultTableModel(
+		int tamCell = 20;
+		solTablePista1 = new JTable();
+		solTablePista1.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"N\u00FAmero Pista", "1", null},
+				{"N\u00FAm Pista", "1", null},
 				{"Vuelo", "Nombre", "TLA"},
 				{"", "", ""},
 			},
@@ -949,23 +951,72 @@ public class Interface extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		solTable.setRowHeight(30);
-		solTable.setFont(new Font("Georgia", Font.PLAIN, 18));
+		solTablePista1.setRowHeight(tamCell);
+		solTablePista1.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		solTablePista2 = new JTable();
+		solTablePista2.setModel(new DefaultTableModel(
+				new Object[][] {
+					{"N\u00FAm Pista", "2", null},
+					{"Vuelo", "Nombre", "TLA"},
+					{"", "", ""},
+				},
+				new String[] {
+					"New column", "New column", "New column"
+				}
+			) {
+				boolean[] columnEditables = new boolean[] {
+					false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+		solTablePista2.setRowHeight(tamCell);
+		solTablePista2.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		solTablePista3 = new JTable();
+		solTablePista3.setModel(new DefaultTableModel(
+				new Object[][] {
+					{"N\u00FAm Pista", "3", null},
+					{"Vuelo", "Nombre", "TLA"},
+					{"", "", ""},
+				},
+				new String[] {
+					"New column", "New column", "New column"
+				}
+			) {
+				boolean[] columnEditables = new boolean[] {
+					false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+		solTablePista3.setRowHeight(tamCell);
+		solTablePista3.setFont(new Font("Georgia", Font.PLAIN, 18));
 		
 		GroupLayout gl_solTab = new GroupLayout(solTab);
 		gl_solTab.setHorizontalGroup(
 			gl_solTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_solTab.createSequentialGroup()
-					.addGap(28)
-					.addComponent(solTable, GroupLayout.PREFERRED_SIZE, 354, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(2043, Short.MAX_VALUE))
+					.addGap(22)
+					.addComponent(solTablePista1, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
+					.addGap(29)
+					.addComponent(solTablePista2, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
+					.addGap(30)
+					.addComponent(solTablePista3, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(1405, Short.MAX_VALUE))
 		);
 		gl_solTab.setVerticalGroup(
 			gl_solTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_solTab.createSequentialGroup()
 					.addGap(33)
-					.addComponent(solTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1134, Short.MAX_VALUE))
+					.addGroup(gl_solTab.createParallelGroup(Alignment.LEADING)
+						.addComponent(solTablePista3, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+						.addComponent(solTablePista2, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+						.addComponent(solTablePista1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(1092, Short.MAX_VALUE))
 		);
 		solTab.setLayout(gl_solTab);
 		
