@@ -1,4 +1,4 @@
-package utils;
+package utilsFlight;
 
 public class TAsignacion {
 	public double tel;

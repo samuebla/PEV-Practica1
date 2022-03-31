@@ -10,6 +10,7 @@ import individual.*;
 import mutations.*;
 import selection.*;
 import utils.*;
+import utilsFlight.TVuelo;
 import ui.Interface;
 
 public class GeneticAlgorithm {
@@ -36,6 +37,7 @@ public class GeneticAlgorithm {
 	private int sizePop_;
 	private int eliteSize;
 	private double totalFitness;
+	int numPistas_;
 	
 	public GeneticAlgorithm(Interface inter) {
 		interface_ = inter;
@@ -43,12 +45,13 @@ public class GeneticAlgorithm {
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
-						double eliPercentage, int truncProbability,List<TVuelo> TTEL_vuelo, List<ArrayList<Double>> separations) {
+						double eliPercentage, int truncProbability,List<TVuelo> TTEL_vuelo, List<ArrayList<Double>> separations, int numPistas) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
 		MutType_ = m_Type;
-		elitism_ = elitism;		
+		elitism_ = elitism;	
+		numPistas_ = numPistas;
 		selectTypes();		
 		
 		TTEL_vuelo_ = TTEL_vuelo;
@@ -157,9 +160,7 @@ public class GeneticAlgorithm {
 		int best_pos = 0;
 		//Para cada gen, evaluamos su valor con la funcion F.
 		for(Chromosome c : poblation.getPopulation()) {
-			//Son genes ya convertidos a numero, ya no son una cadena de bits o x
-			List<Double> fenotipo = c.getPhenotype();
-			c.setFitness(funct.ejecutar(fenotipo));
+			c.setFitness(funct.ejecutar(c.getGens()));
 		}
 		
 		poblation.displaceFitness();
@@ -186,7 +187,7 @@ public class GeneticAlgorithm {
 	}
 	
 	private void selectTypes() {
-		funct = new FunctionP2(); //Compilation Purposes
+		funct = new FunctionP2(numPistas_, TTEL_vuelo_,separations_); //Compilation Purposes
 		
 		select = new SelectionRoulette(); //Compilation Purposes
 		switch (SelecType_) {
@@ -260,6 +261,7 @@ public class GeneticAlgorithm {
 				
 				FlightGen gen = new FlightGen((float) precision);
 				gen.pos_vuelo = vuelos.get(index);
+				gen.pistaAsignada = ThreadLocalRandom.current().nextInt(0, 3);
 				vuelos.remove(index);
 				genes.add(gen);
 //				genes.get(0).randomize(-3, 12.1);

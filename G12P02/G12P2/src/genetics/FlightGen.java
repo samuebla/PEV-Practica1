@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class FlightGen extends Gen {
 
 	public int pos_vuelo;
-	public int pista;
+	public int pistaAsignada;
 	public double hour;
 	
 	public FlightGen(float prec){

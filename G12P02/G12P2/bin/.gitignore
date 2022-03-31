@@ -1,11 +1,6 @@
-/crosses/
-/mutations/
-/ui/
 /functions/
+/utilsFlight/
 /geneticAlgorithm/
-/genetics/
-/graph/
-/individual/
-/launcher/
-/selection/
+/ui/
 /utils/
+/genetics/

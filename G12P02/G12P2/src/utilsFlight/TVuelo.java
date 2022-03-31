@@ -1,7 +1,8 @@
-package utils;
+package utilsFlight;
 
 import java.util.List;
-import utils.FlightType;
+
+import utilsFlight.FlightType;
 
 public class TVuelo {
 	public String name_;

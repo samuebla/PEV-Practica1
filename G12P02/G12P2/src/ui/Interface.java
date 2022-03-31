@@ -33,11 +33,11 @@ import org.math.plot.Plot2DPanel;
 
 import geneticAlgorithm.GeneticAlgorithm;
 import utils.CrossType;
-import utils.FlightType;
 import utils.FunctionType;
 import utils.MutationType;
 import utils.SelectionType;
-import utils.TVuelo;
+import utilsFlight.FlightType;
+import utilsFlight.TVuelo;
 
 public class Interface extends JFrame {
 
@@ -1057,7 +1057,7 @@ public class Interface extends JFrame {
 		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations, numPistas);
 	}
 	
 	private void readEntry() throws IOException {
