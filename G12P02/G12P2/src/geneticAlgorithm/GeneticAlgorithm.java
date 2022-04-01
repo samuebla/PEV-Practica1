@@ -68,6 +68,9 @@ public class GeneticAlgorithm {
 		param.interval = funct.getInterval();
 		param.f_type = f_Type;
 		param.truncProb = truncProbability;
+		//AAAAAAAAAA Igual poner algun if de que si el tipo es heuristica se guarda y asi no 
+		//Guardamos la función para la heurística
+		param.funct2 = (FunctionP2)funct;
 		
 		eliteSize = (int)(sizePopulation * eliPercentage);
 		

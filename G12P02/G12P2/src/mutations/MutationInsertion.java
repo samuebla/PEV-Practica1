@@ -5,14 +5,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import genetics.Gen;
 import individual.Chromosome;
+import utils.Params;
 
 public class MutationInsertion extends Mutation {
 
 	@Override
-	public void mutate(List<Chromosome> poblation, Object params) {
+	public void mutate(List<Chromosome> poblation, Object params_) {
 		
 		//Cogemos la probabilidad seleccionada
-		double prob = params.get(0);
+		Params params = (Params) params_;
+		double prob = params.mutProb;
 		
 		//Y el rango
         int min = (int) poblation.get(0).getGens().get(0).getMin();

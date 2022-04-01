@@ -4,14 +4,16 @@ import java.util.List;
 
 import genetics.Gen;
 import individual.Chromosome;
+import utils.Params;
 
 public class MutationInversion extends Mutation {
 
 	@Override
-	public void mutate(List<Chromosome> poblation, Object params) {
+	public void mutate(List<Chromosome> poblation, Object params_) {
 		
 		//Cogemos la probabilidad de mutacion
-		double probabilidad = params.get(0);
+		Params params = (Params) params_;
+		double probabilidad = params.mutProb;
 
 		//Por cada cromosoma
         for(Chromosome ind : poblation){

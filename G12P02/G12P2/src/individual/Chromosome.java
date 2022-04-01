@@ -8,82 +8,89 @@ import genetics.Gen;
 import genetics.RealGen;
 
 //CROMOSOMA
-public class Chromosome{
-	
-	//Contiene una lista de genes. En total suelen ser 2. 
+public class Chromosome {
+
+	// Contiene una lista de genes. En total suelen ser 2.
 	private List<Gen> gens;
 	private double fitness;
 	private double puntuation;
 	private double puntuation_acc;
-	
+
 	private double fitnessDisplaced;
-	
-	
-	//Constructora por copia
-	public Chromosome(Chromosome copyCrom){
+
+	// Constructora por copia
+	public Chromosome(Chromosome copyCrom) {
 		gens = new ArrayList<>();
-		
-		for(Gen g : copyCrom.getGens()){
-			if(g instanceof BinaryGen)
-				this.gens.add(new BinaryGen((BinaryGen)g));
-			else if(g instanceof RealGen)
-				this.gens.add(new RealGen((RealGen)g));
+
+		for (Gen g : copyCrom.getGens()) {
+			if (g instanceof BinaryGen)
+				this.gens.add(new BinaryGen((BinaryGen) g));
+			else if (g instanceof RealGen)
+				this.gens.add(new RealGen((RealGen) g));
 		}
-		
+
 		puntuation_acc = copyCrom.getPuntuationAcc();
 		fitness = copyCrom.getFitness();
-	}		
-	
-	public Chromosome(List<Gen> genes){ 
-		this.gens = genes; 
 	}
-	
-	public List<Double> getPhenotype(){
+
+	public Chromosome(List<Gen> genes) {
+		this.gens = genes;
+	}
+
+	public List<Double> getPhenotype() {
 		List<Double> fenotype_ = new ArrayList<>();
-		
-		for(Gen g : gens) 
+
+		for (Gen g : gens)
 			fenotype_.add(g.getGenFenotype());
 		return fenotype_;
-	}	
-	
-	//Devuelve una lista con todos los alelos de ambos genes
-	public List<Object> getAlleles(){
+	}
+
+	// Devuelve una lista con todos los alelos de ambos genes
+	public List<Object> getAlleles() {
 		List<Object> alleles = new ArrayList<>();
 
-		for(Gen g : this.gens) 
+		for (Gen g : this.gens)
 			alleles.addAll(g.getAlleles());
-		
+
 		return alleles;
 	}
-	
-	//Tamaño total de ambos genes
-	public int getTam(){
+
+	// Tamaño total de ambos genes
+	public int getTam() {
 		int ret = 0;
-		if(!gens.isEmpty()){
-			for(Gen g : this.gens){
+		if (!gens.isEmpty()) {
+			for (Gen g : this.gens) {
 				ret += g.getTam();
 			}
 		}
-		
+
 		return ret;
 	}
-	
-	public List<Gen> getGens() {return gens;}
-	
+
+	public List<Gen> getGens() {
+		return gens;
+	}
+
+	public void setGens(List<Gen> aux) {
+		this.gens = aux;
+	}
+
 	public double getFitness() {
 		return fitness;
 	}
+
 	public void setFitness(double valor) {
 		fitness = valor;
 	}
-	
+
 	public double getPuntuationAcc() {
 		return puntuation_acc;
 	}
+
 	public void setPuntuationAcc(double valor) {
 		puntuation_acc = valor;
 	}
-		
+
 	public double getPuntuation() {
 		return puntuation;
 	}
