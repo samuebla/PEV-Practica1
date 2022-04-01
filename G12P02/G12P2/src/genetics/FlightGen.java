@@ -8,7 +8,7 @@ public class FlightGen extends Gen {
 
 	public int pos_vuelo;
 	public int pistaAsignada;
-	public double hour;
+	public double TLA;
 	
 	public FlightGen(float prec){
 		//Crea la lista de los alelos

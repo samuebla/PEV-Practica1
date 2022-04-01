@@ -59,12 +59,10 @@ public class Interface extends JFrame {
 	JSpinner elitismSpinner;
 	JSpinner crossSpinner;
 	JSpinner mutationSpinner;
-	JSpinner precisionSpinner;
 	JComboBox solutionList;
-	JSpinner nIndividualsFunct4Param;
 	JComboBox truncDropdown;
 	JLabel truncLabel;
-	JComboBox typeGenDropdown;
+	JComboBox fitnessTypeDropdown;
 	JComboBox caseDropdown;
 	JCheckBox readFileCheckbox;
 	
@@ -147,7 +145,6 @@ public class Interface extends JFrame {
         double maxPreci = 0.100;
         double stepSizePreci = 0.001;
 		SpinnerNumberModel modelPreci = new SpinnerNumberModel(valuePreci, minPreci, maxPreci, stepSizePreci);
-		precisionSpinner = new JSpinner(modelPreci);
 		JSpinner.NumberEditor editorPreci = (JSpinner.NumberEditor) elitismSpinner.getEditor();
         DecimalFormat formatPreci = editorPreci.getFormat();
         formatPreci.setMinimumFractionDigits(3);
@@ -540,40 +537,6 @@ public class Interface extends JFrame {
 		);
 		sizePanel.setLayout(gl_sizePanel);
 		
-		JPanel precisionPercentagePanel = new JPanel();
-		precisionPercentagePanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		precisionPercentagePanel.setBackground(Color.LIGHT_GRAY);
-		
-		JLabel precisionLabelPercentage = new JLabel("Precision (%)");
-		precisionLabelPercentage.setFont(new Font("Georgia", Font.PLAIN, 13));
-		
-		GroupLayout gl_precisionPercentagePanel = new GroupLayout(precisionPercentagePanel);
-		gl_precisionPercentagePanel.setHorizontalGroup(
-			gl_precisionPercentagePanel.createParallelGroup(Alignment.TRAILING)
-				.addGap(0, 328, Short.MAX_VALUE)
-				.addGap(0, 324, Short.MAX_VALUE)
-				.addGap(0, 320, Short.MAX_VALUE)
-				.addGroup(gl_precisionPercentagePanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(precisionLabelPercentage, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
-					.addComponent(precisionSpinner, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		gl_precisionPercentagePanel.setVerticalGroup(
-			gl_precisionPercentagePanel.createParallelGroup(Alignment.TRAILING)
-				.addGap(0, 121, Short.MAX_VALUE)
-				.addGap(0, 117, Short.MAX_VALUE)
-				.addGap(0, 113, Short.MAX_VALUE)
-				.addGroup(gl_precisionPercentagePanel.createSequentialGroup()
-					.addContainerGap(78, Short.MAX_VALUE)
-					.addGroup(gl_precisionPercentagePanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(precisionSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(precisionLabelPercentage, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
-		precisionPercentagePanel.setLayout(gl_precisionPercentagePanel);
-		
 		JPanel functionPanel = new JPanel();
 		functionPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		functionPanel.setBackground(Color.LIGHT_GRAY);
@@ -582,18 +545,13 @@ public class Interface extends JFrame {
 		genTypeFunct4_1.setFont(new Font("Georgia", Font.PLAIN, 13));
 		genTypeFunct4_1.setEnabled(false);
 		
-		typeGenDropdown = new JComboBox();
-		typeGenDropdown.setModel(new DefaultComboBoxModel(new String[] {"Real", "Binary"}));
-		typeGenDropdown.setToolTipText("");
-		typeGenDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		typeGenDropdown.setEnabled(false);
+		fitnessTypeDropdown = new JComboBox();
+		fitnessTypeDropdown.setModel(new DefaultComboBoxModel(new String[] {"Minor TEL", "TEL Assigned"}));
+		fitnessTypeDropdown.setToolTipText("");
+		fitnessTypeDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
-		JLabel nIndividualsFunct4 = new JLabel("N\u00BA Individuals");
-		nIndividualsFunct4.setFont(new Font("Georgia", Font.PLAIN, 13));
-		nIndividualsFunct4.setEnabled(false);
-		
-		nIndividualsFunct4Param = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
-		nIndividualsFunct4Param.setEnabled(false);
+		JLabel fitnessType = new JLabel("Fitness Type");
+		fitnessType.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
 		JLabel functionLabel = new JLabel("Function Type");
 		functionLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
@@ -605,20 +563,16 @@ public class Interface extends JFrame {
 		GroupLayout gl_functionPanel = new GroupLayout(functionPanel);
 		gl_functionPanel.setHorizontalGroup(
 			gl_functionPanel.createParallelGroup(Alignment.TRAILING)
-				.addGap(0, 328, Short.MAX_VALUE)
 				.addGap(0, 324, Short.MAX_VALUE)
 				.addGroup(gl_functionPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_functionPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_functionPanel.createSequentialGroup()
-							.addComponent(genTypeFunct4_1, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-							.addComponent(typeGenDropdown, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.TRAILING, gl_functionPanel.createSequentialGroup()
-							.addComponent(nIndividualsFunct4, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-							.addGap(72)
-							.addComponent(nIndividualsFunct4Param, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.TRAILING, gl_functionPanel.createSequentialGroup()
+					.addGroup(gl_functionPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(genTypeFunct4_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_functionPanel.createSequentialGroup()
+							.addComponent(fitnessType, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(fitnessTypeDropdown, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_functionPanel.createSequentialGroup()
 							.addComponent(functionLabel)
 							.addPreferredGap(ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
 							.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)))
@@ -626,22 +580,20 @@ public class Interface extends JFrame {
 		);
 		gl_functionPanel.setVerticalGroup(
 			gl_functionPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 121, Short.MAX_VALUE)
-				.addGap(0, 117, Short.MAX_VALUE)
+				.addGap(0, 98, Short.MAX_VALUE)
 				.addGroup(gl_functionPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
 						.addComponent(functionLabel))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(nIndividualsFunct4, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-						.addComponent(nIndividualsFunct4Param, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(typeGenDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(genTypeFunct4_1, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(27, Short.MAX_VALUE))
+					.addGroup(gl_functionPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_functionPanel.createSequentialGroup()
+							.addComponent(fitnessType, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(genTypeFunct4_1, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+						.addComponent(fitnessTypeDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(16, Short.MAX_VALUE))
 		);
 		functionPanel.setLayout(gl_functionPanel);
 		
@@ -872,7 +824,6 @@ public class Interface extends JFrame {
 								.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 								.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 								.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 								.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
 							.addGroup(gl_evolTab.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_evolTab.createSequentialGroup()
@@ -914,9 +865,7 @@ public class Interface extends JFrame {
 							.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(precisionPercentagePanel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGap(57)
 							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
@@ -1028,12 +977,7 @@ public class Interface extends JFrame {
 		numGenerations = (int)this.spinnerNumGenerations.getValue();
 		crossProb = ((double) this.crossSpinner.getValue()) / 100.0;
 		mutProb = ((double) this.mutationSpinner.getValue()) / 100.0;
-		precision = (double) this.precisionSpinner.getValue();
 		
-		boolean isBinFuct4 = false;
-		if(typeGenDropdown.isEnabled()) {
-			isBinFuct4 = typeGenDropdown.getSelectedIndex() == 1 ? true : false;
-		}
 		
 		int truncProb = 0;
 		if(truncDropdown.isEnabled()) {
@@ -1042,11 +986,11 @@ public class Interface extends JFrame {
 		}
 				
 		int paramFunc4 = 0;
-		if(nIndividualsFunct4Param.isEnabled()) {
-			paramFunc4 = Integer.valueOf (nIndividualsFunct4Param.getValue().toString());
-		}
+		
 		elitism = this.elitismCheckBox.isSelected(); 
 		eliPercentage =	((double)this.elitismSpinner.getValue())/100.0;
+		
+		boolean typeFitness_minorTel = fitnessTypeDropdown.getSelectedIndex() == 0 ? true : false;
 		
 		readEntry();
 		
@@ -1057,7 +1001,7 @@ public class Interface extends JFrame {
 		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations, numPistas);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations, numPistas, typeFitness_minorTel);
 	}
 	
 	private void readEntry() throws IOException {

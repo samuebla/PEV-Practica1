@@ -22,6 +22,7 @@ public class GeneticAlgorithm {
 	private CrossType CrossType_;
 	private MutationType MutType_;
 	List<Generation> generations;
+	boolean minorTel_type_;
 	
 	Population poblation;
 	Function funct;
@@ -45,13 +46,14 @@ public class GeneticAlgorithm {
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
-						double eliPercentage, int truncProbability,List<TVuelo> TTEL_vuelo, List<ArrayList<Double>> separations, int numPistas) {
+						double eliPercentage, int truncProbability,List<TVuelo> TTEL_vuelo, List<ArrayList<Double>> separations, int numPistas, boolean minorTel_type) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
 		MutType_ = m_Type;
 		elitism_ = elitism;	
 		numPistas_ = numPistas;
+		minorTel_type_ = minorTel_type;
 		selectTypes();		
 		
 		TTEL_vuelo_ = TTEL_vuelo;
@@ -187,7 +189,7 @@ public class GeneticAlgorithm {
 	}
 	
 	private void selectTypes() {
-		funct = new FunctionP2(numPistas_, TTEL_vuelo_,separations_); //Compilation Purposes
+		funct = new FunctionP2(numPistas_, TTEL_vuelo_,separations_,minorTel_type_); //Compilation Purposes
 		
 		select = new SelectionRoulette(); //Compilation Purposes
 		switch (SelecType_) {
@@ -261,10 +263,9 @@ public class GeneticAlgorithm {
 				
 				FlightGen gen = new FlightGen((float) precision);
 				gen.pos_vuelo = vuelos.get(index);
-				gen.pistaAsignada = ThreadLocalRandom.current().nextInt(0, 3);
+//				gen.pistaAsignada = ThreadLocalRandom.current().nextInt(0, 3);
 				vuelos.remove(index);
 				genes.add(gen);
-//				genes.get(0).randomize(-3, 12.1);
 			}
 			population.getPopulation().add(new Chromosome(genes));
 		}
