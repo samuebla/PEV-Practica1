@@ -38,6 +38,7 @@ import utils.MutationType;
 import utils.SelectionType;
 import utilsFlight.FlightType;
 import utilsFlight.TVuelo;
+import javax.swing.SpinnerModel;
 
 public class Interface extends JFrame {
 
@@ -59,6 +60,8 @@ public class Interface extends JFrame {
 	JSpinner elitismSpinner;
 	JSpinner crossSpinner;
 	JSpinner mutationSpinner;
+	JSpinner betaSpinner;
+	JLabel betaLabel_;
 	JComboBox solutionList;
 	JComboBox truncDropdown;
 	JLabel truncLabel;
@@ -610,10 +613,10 @@ public class Interface extends JFrame {
 		
 		selectionDropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		        int funct = selectionDropdown.getSelectedIndex();
+		        int select = selectionDropdown.getSelectedIndex();
 		        
 		        //Cuarta funcion Michalewicz
-		        if(funct == 4) {
+		        if(select == 4) {
 		        	truncDropdown.setEnabled(true);
 		        	truncLabel.setEnabled(true);
 		        	
@@ -621,6 +624,16 @@ public class Interface extends JFrame {
 		        	truncDropdown.setEnabled(false);
 		        	truncLabel.setEnabled(false);
 		        }
+		        
+		        if(select == 6) {
+		        	betaSpinner.setEnabled(true);
+		        	betaLabel_.setEnabled(true);
+		        	
+		        }else {
+		        	betaSpinner.setEnabled(false);
+		        	betaLabel_.setEnabled(false);
+		        }
+		        
 		    }
 		});
 		
@@ -632,11 +645,29 @@ public class Interface extends JFrame {
 		truncDropdown.setModel(new DefaultComboBoxModel(new String[] {"10", "50"}));
 		truncDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		truncDropdown.setEnabled(false);
+		
+		
+		mutationSpinner = new JSpinner(modelMut);
+
+		
+        
+        double minBeta = 1.0;
+        double valueBeta = 1.5;
+        double maxBeta = 2.0;
+        double stepSizeBeta = 0.1;
+        SpinnerNumberModel modelBeta = new SpinnerNumberModel(valueBeta, minBeta, maxBeta, stepSizeBeta);
+		betaSpinner = new JSpinner(modelBeta);
+		JSpinner.NumberEditor editorBeta = (JSpinner.NumberEditor) betaSpinner.getEditor();
+        DecimalFormat formatBeta = editorBeta.getFormat();
+        formatBeta.setMinimumFractionDigits(1);
+        betaSpinner.setEnabled(false);
+		
+		betaLabel_ = new JLabel("Beta/Sampling  Factor");
+		betaLabel_.setFont(new Font("Georgia", Font.PLAIN, 13));
+		betaLabel_.setEnabled(false);
 		GroupLayout gl_selectionPanel = new GroupLayout(selectionPanel);
 		gl_selectionPanel.setHorizontalGroup(
 			gl_selectionPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 328, Short.MAX_VALUE)
-				.addGap(0, 324, Short.MAX_VALUE)
 				.addGroup(gl_selectionPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_selectionPanel.createParallelGroup(Alignment.LEADING)
@@ -645,15 +676,17 @@ public class Interface extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
 							.addComponent(selectionDropdown, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_selectionPanel.createSequentialGroup()
-							.addComponent(truncLabel, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(truncDropdown, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_selectionPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(truncLabel, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+								.addComponent(betaLabel_, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+							.addGroup(gl_selectionPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(truncDropdown, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+								.addComponent(betaSpinner, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap())
 		);
 		gl_selectionPanel.setVerticalGroup(
 			gl_selectionPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 82, Short.MAX_VALUE)
-				.addGap(0, 78, Short.MAX_VALUE)
 				.addGroup(gl_selectionPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_selectionPanel.createParallelGroup(Alignment.BASELINE)
@@ -661,9 +694,13 @@ public class Interface extends JFrame {
 						.addComponent(selectionDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_selectionPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(truncDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(truncLabel))
-					.addContainerGap(15, Short.MAX_VALUE))
+						.addComponent(truncLabel)
+						.addComponent(truncDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_selectionPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(betaSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(betaLabel_, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(27, Short.MAX_VALUE))
 		);
 		selectionPanel.setLayout(gl_selectionPanel);
 		
@@ -815,16 +852,17 @@ public class Interface extends JFrame {
 							.addComponent(maxAbsSol, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_evolTab.createSequentialGroup()
 							.addGap(20)
-							.addGroup(gl_evolTab.createParallelGroup(Alignment.LEADING)
-								.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_evolTab.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_evolTab.createParallelGroup(Alignment.LEADING)
+									.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+									.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+									.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+									.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+									.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+									.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+									.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
+								.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+								.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
 							.addGroup(gl_evolTab.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_evolTab.createSequentialGroup()
 									.addGap(310)
@@ -865,11 +903,11 @@ public class Interface extends JFrame {
 							.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-							.addGap(57)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
 							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
@@ -985,6 +1023,11 @@ public class Interface extends JFrame {
 			truncProb = Integer.valueOf(val);
 		}
 				
+		double betaValue = 0;
+		if(betaSpinner.isEnabled()) {
+			betaValue = (double)this.betaSpinner.getValue();
+		}
+		
 		int paramFunc4 = 0;
 		
 		elitism = this.elitismCheckBox.isSelected(); 
@@ -1001,7 +1044,7 @@ public class Interface extends JFrame {
 		gA = new GeneticAlgorithm(this);
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations, numPistas, typeFitness_minorTel);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations, numPistas, typeFitness_minorTel, betaValue);
 	}
 	
 	private void readEntry() throws IOException {

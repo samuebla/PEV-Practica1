@@ -46,7 +46,7 @@ public class GeneticAlgorithm {
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
-						double eliPercentage, int truncProbability,List<TVuelo> TTEL_vuelo, List<ArrayList<Double>> separations, int numPistas, boolean minorTel_type) {
+						double eliPercentage, int truncProbability,List<TVuelo> TTEL_vuelo, List<ArrayList<Double>> separations, int numPistas, boolean minorTel_type, double betaValue) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
@@ -68,6 +68,8 @@ public class GeneticAlgorithm {
 		param.interval = funct.getInterval();
 		param.f_type = f_Type;
 		param.truncProb = truncProbability;
+		param.beta = betaValue;
+		
 		//AAAAAAAAAA Igual poner algun if de que si el tipo es heuristica se guarda y asi no 
 		//Guardamos la función para la heurística
 		param.funct2 = (FunctionP2)funct;

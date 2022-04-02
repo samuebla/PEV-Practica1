@@ -13,4 +13,5 @@ public class Params {
 	public List<Double> interval;
 	public FunctionType f_type;
 	public FunctionP2 funct2;
+	public double beta;
 }
