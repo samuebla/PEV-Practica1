@@ -17,21 +17,24 @@ public class MutationInsertion extends Mutation {
 		double prob = params.mutProb;
 		
 		//Y el rango
-        int min = (int) poblation.get(0).getGens().get(0).getMin();
-        int max = (int) poblation.get(0).getGens().get(0).getMax();
+        int size = poblation.get(0).getGens().size();
 
         for (Chromosome ind : poblation){
             double random = ThreadLocalRandom.current().nextDouble(0, 1);
             //Si se llega a mutar...
             if(random < prob){
+            	int pos1 = 0;
+                int pos2 = 0;
+                
+            	while(pos1 == pos2 ) {
             	//Calculamos un alelo aleatorio que coger y otro para colocar
-                int posOri = ThreadLocalRandom.current().nextInt(min+1, max-1);
-                int posDest = ThreadLocalRandom.current().nextInt(min+1, max-2);
-
-                //Eliminamos el primero
-                Gen swap = ind.getGens().remove(posOri);
+                pos1 = ThreadLocalRandom.current().nextInt( 1, size -1);
+                pos2 = ThreadLocalRandom.current().nextInt( 1, size -1);
+            	}
+                //Eliminamos el valor más a la derecha y lo guardamos para reposicionarlo
+                Gen swap = ind.getGens().remove(Math.max(pos1, pos2));
                 //Y con este metodo al añadirlo todos se arrastran correctamente, por lo que no hay que hacer nada mas
-                ind.getGens().add(posDest,swap);
+                ind.getGens().add(Math.min(pos1, pos2),swap);
             }
         }
 
