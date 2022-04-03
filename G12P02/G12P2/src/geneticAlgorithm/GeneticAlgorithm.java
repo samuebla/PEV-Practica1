@@ -174,7 +174,7 @@ public class GeneticAlgorithm {
         
         //Muestra la grafica
         double solutionFitness = maxAbs;
-        interface_.showGraph(bestPob, best, worstPob, worst, avarage, maxAbs, sol, param.numCrosses, param.numMutations);
+        interface_.showGraph(bestPob, best, worstPob, worst, avarage, maxAbs, minAbs, sol, param.numCrosses, param.numMutations);
 	};
 	
 	private double Evaluate() {

@@ -29,15 +29,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import org.math.plot.Plot2DPanel;
 
 import geneticAlgorithm.GeneticAlgorithm;
-import genetics.BinaryGen;
 import genetics.FlightGen;
 import genetics.Gen;
-import genetics.RealGen;
-import individual.Chromosome;
 import utils.CrossType;
 import utils.FunctionType;
 import utils.MutationType;
@@ -81,7 +79,7 @@ public class Interface extends JFrame {
 	private double precision; 
 	private boolean elitism;
 	private double eliPercentage;
-	private JTextField maxAbsSol;
+	private JTextField mutField;
 	
 	JTable flightTable;
 	JTable telsTable;
@@ -93,6 +91,7 @@ public class Interface extends JFrame {
 	private JTable solTablePista1;
 	private JTable solTablePista2;
 	private JTable solTablePista3;
+	private JTextField crosField;
 	
 	
 	/**
@@ -549,10 +548,6 @@ public class Interface extends JFrame {
 		functionPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		functionPanel.setBackground(Color.LIGHT_GRAY);
 		
-		JLabel genTypeFunct4_1 = new JLabel("Gen Type");
-		genTypeFunct4_1.setFont(new Font("Georgia", Font.PLAIN, 13));
-		genTypeFunct4_1.setEnabled(false);
-		
 		fitnessTypeDropdown = new JComboBox();
 		fitnessTypeDropdown.setModel(new DefaultComboBoxModel(new String[] {"Minor TEL", "TEL Assigned"}));
 		fitnessTypeDropdown.setToolTipText("");
@@ -571,13 +566,11 @@ public class Interface extends JFrame {
 		GroupLayout gl_functionPanel = new GroupLayout(functionPanel);
 		gl_functionPanel.setHorizontalGroup(
 			gl_functionPanel.createParallelGroup(Alignment.TRAILING)
-				.addGap(0, 324, Short.MAX_VALUE)
 				.addGroup(gl_functionPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_functionPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(genTypeFunct4_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_functionPanel.createSequentialGroup()
-							.addComponent(fitnessType, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+							.addComponent(fitnessType, GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(fitnessTypeDropdown, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_functionPanel.createSequentialGroup()
@@ -588,7 +581,6 @@ public class Interface extends JFrame {
 		);
 		gl_functionPanel.setVerticalGroup(
 			gl_functionPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 98, Short.MAX_VALUE)
 				.addGroup(gl_functionPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
@@ -596,12 +588,9 @@ public class Interface extends JFrame {
 						.addComponent(functionLabel))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_functionPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_functionPanel.createSequentialGroup()
-							.addComponent(fitnessType, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(genTypeFunct4_1, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+						.addComponent(fitnessType, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
 						.addComponent(fitnessTypeDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(16, Short.MAX_VALUE))
+					.addContainerGap(34, Short.MAX_VALUE))
 		);
 		functionPanel.setLayout(gl_functionPanel);
 		
@@ -837,12 +826,22 @@ public class Interface extends JFrame {
 		
 		panelMathPlot = new Plot2DPanel();
 		
-		maxAbsSol = new JTextField();
-		maxAbsSol.setEditable(false);
-		maxAbsSol.setColumns(10);
+		mutField = new JTextField();
+		mutField.setEditable(false);
+		mutField.setColumns(10);
 		
 		JLabel graphTitle = new JLabel("Graph Evolution");
 		graphTitle.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		JLabel lblNmut = new JLabel("nMut:");
+		lblNmut.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		JLabel lblNcross = new JLabel("nCross:");
+		lblNcross.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		crosField = new JTextField();
+		crosField.setEditable(false);
+		crosField.setColumns(10);
 		GroupLayout gl_evolTab = new GroupLayout(evolTab);
 		gl_evolTab.setHorizontalGroup(
 			gl_evolTab.createParallelGroup(Alignment.LEADING)
@@ -852,32 +851,39 @@ public class Interface extends JFrame {
 							.addGap(127)
 							.addComponent(parametersLabel)
 							.addGap(149)
-							.addComponent(solutionLabel, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(maxAbsSol, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE))
+							.addComponent(solutionLabel, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_evolTab.createSequentialGroup()
 							.addGap(20)
 							.addGroup(gl_evolTab.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_evolTab.createParallelGroup(Alignment.LEADING)
-									.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-									.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-									.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 									.addComponent(mutationPercentagePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 									.addComponent(generationsPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 									.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 									.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
 								.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
+								.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+								.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+								.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+								.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
 							.addGroup(gl_evolTab.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_evolTab.createSequentialGroup()
 									.addGap(310)
 									.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_evolTab.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_evolTab.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_evolTab.createParallelGroup(Alignment.TRAILING, false)
 										.addGroup(gl_evolTab.createSequentialGroup()
-											.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
-											.addGap(58)
+											.addGap(97)
+											.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(lblNcross, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+											.addGap(10)
+											.addComponent(crosField, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(lblNmut)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(mutField, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+											.addGap(18)
 											.addComponent(graphTitle, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
 										.addComponent(panelMathPlot, GroupLayout.PREFERRED_SIZE, 686, GroupLayout.PREFERRED_SIZE))))))
 					.addGap(1385))
@@ -890,10 +896,15 @@ public class Interface extends JFrame {
 						.addComponent(parametersLabel)
 						.addGroup(gl_evolTab.createParallelGroup(Alignment.BASELINE)
 							.addComponent(solutionLabel, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-							.addComponent(maxAbsSol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(graphTitle, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-							.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(3)
+							.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(mutField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblNmut, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_evolTab.createSequentialGroup()
+							.addGap(3)
+							.addComponent(crosField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblNcross, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_evolTab.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_evolTab.createSequentialGroup()
 							.addComponent(panelMathPlot, GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
@@ -912,12 +923,13 @@ public class Interface extends JFrame {
 							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+							.addGap(12)))
 					.addGap(577))
 		);
 		evolTab.setLayout(gl_evolTab);
@@ -930,7 +942,6 @@ public class Interface extends JFrame {
 			new Object[][] {
 				{"N\u00FAm Pista", "1", null},
 				{"Vuelo", "Nombre", "TLA"},
-				{"", "", ""},
 			},
 			new String[] {
 				"New column", "New column", "New column"
@@ -948,43 +959,41 @@ public class Interface extends JFrame {
 		
 		solTablePista2 = new JTable();
 		solTablePista2.setModel(new DefaultTableModel(
-				new Object[][] {
-					{"N\u00FAm Pista", "2", null},
-					{"Vuelo", "Nombre", "TLA"},
-					{"", "", ""},
-				},
-				new String[] {
-					"New column", "New column", "New column"
-				}
-			) {
-				boolean[] columnEditables = new boolean[] {
-					false, false, false
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-			});
+			new Object[][] {
+				{"N\u00FAm Pista", "2", null},
+				{"Vuelo", "Nombre", "TLA"},
+			},
+			new String[] {
+				"New column", "New column", "New column"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		solTablePista2.setRowHeight(tamCell);
 		solTablePista2.setFont(new Font("Georgia", Font.PLAIN, 18));
 		
 		solTablePista3 = new JTable();
 		solTablePista3.setModel(new DefaultTableModel(
-				new Object[][] {
-					{"N\u00FAm Pista", "3", null},
-					{"Vuelo", "Nombre", "TLA"},
-					{"", "", ""},
-				},
-				new String[] {
-					"New column", "New column", "New column"
-				}
-			) {
-				boolean[] columnEditables = new boolean[] {
-					false, false, false
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-			});
+			new Object[][] {
+				{"N\u00FAm Pista", "3", null},
+				{"Vuelo", "Nombre", "TLA"},
+			},
+			new String[] {
+				"New column", "New column", "New column"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		solTablePista3.setRowHeight(tamCell);
 		solTablePista3.setFont(new Font("Georgia", Font.PLAIN, 18));
 		
@@ -1026,11 +1035,11 @@ public class Interface extends JFrame {
 					.addGap(4)
 					.addComponent(startButton_1)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_solTab.createParallelGroup(Alignment.LEADING)
-						.addComponent(solTablePista3, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-						.addComponent(solTablePista2, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-						.addComponent(solTablePista1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(1092, Short.MAX_VALUE))
+					.addGroup(gl_solTab.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(solTablePista3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(solTablePista2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(solTablePista1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(1122, Short.MAX_VALUE))
 		);
 		solTab.setLayout(gl_solTab);
 		
@@ -1140,22 +1149,30 @@ public class Interface extends JFrame {
 		}
 	}
 	
-	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[]  worst, double[] avarage, double solution, List<Gen> sol, int numCrosses, int numMutations) {
+	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[]  worst, double[] avarage, double solutionBest, double solutionWorst, List<Gen> sol, int numCrosses, int numMutations) {
 
 		panelMathPlot.removeAllPlots();
 		double [] x = new double[bestAbs.length];
 		for(int i = 0; i < x.length; i++) x[i] = i+1;
 
-		maxAbsSol.setEditable(true);
-		maxAbsSol.setText(String.valueOf(solution));
+		mutField.setEditable(true);
+		mutField.setText(String.valueOf(numMutations));
+		mutField.setEditable(false);
+		
+		crosField.setEditable(true);
+		crosField.setText(String.valueOf(numCrosses));
+		crosField.setEditable(false);
+		
 		solutionList.removeAllItems();
-		maxAbsSol.setEditable(false);
+		
+		solutionList.addItem("Best: " +  solutionBest);
+		solutionList.addItem("Worst: " +  solutionWorst);
 		
 		int i = 0;
 		String solu = "";
 		for(Gen d : sol) {
 			FlightGen vuelo = (FlightGen) d;
-			solu += vuelo.pos_vuelo;	
+			solu += vuelo.pos_vuelo + " ";	
 		}
 		
 		System.out.println("Sol : {" + solu + "}");
@@ -1176,10 +1193,36 @@ public class Interface extends JFrame {
 	private void MostrarTabla(List<FlightGen> vuelos) {
 		//Los vuelos vienen ordenados de menor a mayor TLA
 		
-		
-		
-		
-		
+		//Los vuelos se ordenan de menor a mayor TLA
+		   Collections.sort(vuelos, new Comparator<FlightGen>() {
+				//Para quitar los warning
+				@SuppressWarnings("removal")
+				@Override
+			    public int compare(FlightGen c1, FlightGen c2) {
+			        return new Double(c1.TLA).compareTo(new Double(c2.TLA));
+			    }
+			});
+		   
+		   for(FlightGen g : vuelos) {
+			   
+			   switch(g.pistaAsignada) {
+			   		case 0:{
+			   			DefaultTableModel model = (DefaultTableModel) solTablePista1.getModel();
+			   			model.addRow(new Object[]{g.pos_vuelo, TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+			   		}
+			   		break;
+			   		case 1:{
+			   			DefaultTableModel model = (DefaultTableModel) solTablePista2.getModel();
+			   			model.addRow(new Object[]{g.pos_vuelo, TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+			   		}
+			   		break;
+			   		case 2:{
+			   			DefaultTableModel model = (DefaultTableModel) solTablePista3.getModel();
+			   			model.addRow(new Object[]{g.pos_vuelo, TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+			   		}
+			   		break;
+			   };
+		   }
 	}
 	
 	private void getFunctionType() {

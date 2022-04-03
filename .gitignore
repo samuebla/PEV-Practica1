@@ -1,6 +1,8 @@
 .metadata
 tmp/
 *.tmp
+*.class/
+.class/
 *.bak
 *.swp
 *~.nib
@@ -62,3 +64,5 @@ local.properties
 #.project
 
 /.classpath
+bin/
+*.class
