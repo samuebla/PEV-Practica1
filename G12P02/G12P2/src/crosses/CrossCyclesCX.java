@@ -26,7 +26,7 @@ public class CrossCyclesCX extends Cross {
 
 
         //-1 Si no se ha modificado el gen todavia
-        for(int i = 0; i < gens1.size()-1; i++){
+        for(int i = 0; i < gens1.size(); i++){
             son1.get(i).setGenotype(-1);
             son2.get(i).setGenotype(-1);
         }
@@ -61,7 +61,7 @@ public class CrossCyclesCX extends Cross {
         }
 
         //Luego colocamos los restantes tal cual
-        for(int i = 0; i < son1.size()-1; i++){
+        for(int i = 0; i < son1.size(); i++){
         	//Si no ha conseguido entrar en el ciclo...
             if(son1.get(i).getGenFenotype() == -1){
             	//Lo colocamos tal cual

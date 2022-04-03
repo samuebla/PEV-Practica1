@@ -59,25 +59,7 @@ public class FlightGen extends Gen {
 	//CONVERSIÓN DE DECIMAL A BINARIO
 	@Override
 	public void setGenotype(double valor) {
-		// TODO Auto-generated method stub
-		if(valor < 0) {
-			this.isNegative_ = true;
-			valor = -valor;
-		}else this.isNegative_ = false;
-
-		int l = (int) (valor/this.precision);
-
-		String arr = Integer.toBinaryString(l);
-		this.alleles = new ArrayList<>(arr.length());
-		
-		//En caso de que sea menor el numero. Se añaden ceros al inicio
-		int sizeAlleles = this.maxCodificationSize - arr.length();
-		for(int i = 0; i < sizeAlleles; i++)
-			alleles.add(0);
-		
-		//Y aqui hace la conversion char por char
-		for(int i = 0; i < arr.length(); i++)
-			alleles.add(Character.getNumericValue(arr.charAt(i)));
+		pos_vuelo = (int) valor;
 	}
 
 }
