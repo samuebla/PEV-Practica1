@@ -14,4 +14,6 @@ public class Params {
 	public FunctionType f_type;
 	public FunctionP2 funct2;
 	public double beta;
+	public int numCrosses;
+	public int numMutations;
 }

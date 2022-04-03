@@ -25,6 +25,9 @@ public class FlightGen extends Gen {
 		this.precision = copyGen.getPrec();
 		this.alleles = new ArrayList<>();
 		this.alleles.addAll(copyGen.getAlleles());
+		this.pos_vuelo = copyGen.pos_vuelo;
+		this.pistaAsignada = copyGen.pistaAsignada;
+		this.TLA = copyGen.TLA;
 	}
 	
 	@Override
