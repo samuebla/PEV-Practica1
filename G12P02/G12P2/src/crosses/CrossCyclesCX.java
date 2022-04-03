@@ -5,11 +5,12 @@ import java.util.List;
 
 import genetics.Gen;
 import individual.Chromosome;
+import utils.Params;
 
 public class CrossCyclesCX extends Cross {
 
 	@Override
-	public void cruzar(Chromosome father1, Chromosome father2) {
+	public void cruzar(Chromosome father1, Chromosome father2, Object params_) {
 
         Chromosome h1 = new Chromosome(father1);
         Chromosome h2 = new Chromosome(father2);
@@ -37,6 +38,10 @@ public class CrossCyclesCX extends Cross {
         //Y del otro
         cycle(gens2, gens1, son2);
 
+        
+		Params params = (Params) params_;
+		params.numCrosses++;
+		
         //Y apañao, los 2 para dentro
         this.sons = new ArrayList<>();
 

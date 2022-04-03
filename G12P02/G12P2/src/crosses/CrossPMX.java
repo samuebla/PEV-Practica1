@@ -6,11 +6,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import genetics.Gen;
 import individual.Chromosome;
+import utils.Params;
 
 public class CrossPMX extends Cross {
 
 	@Override
-	public void cruzar(Chromosome padre1, Chromosome padre2) {
+	public void cruzar(Chromosome padre1, Chromosome padre2, Object params_) {
 
 		Chromosome h1 = new Chromosome(padre1);
 		Chromosome h2 = new Chromosome(padre2);
@@ -88,6 +89,11 @@ public class CrossPMX extends Cross {
 			}
 
 		}
+		
+		Params params = (Params) params_;
+		params.numCrosses++;
+        
+		
 		// Por ultimo añadimos los dos hijos
 		this.sons = new ArrayList<>();
 		this.sons.add(new Chromosome(hijo1));

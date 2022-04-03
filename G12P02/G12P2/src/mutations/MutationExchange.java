@@ -21,6 +21,7 @@ public class MutationExchange extends Mutation {
 			double random = Math.random();
 			// Si hay mutacion...
 			if (random < probabilidad) {
+            	params.numMutations++;
 				int pos1, pos2;
 				int size = i.getGens().size();
 

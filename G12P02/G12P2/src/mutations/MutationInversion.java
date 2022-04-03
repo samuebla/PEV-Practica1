@@ -19,6 +19,7 @@ public class MutationInversion extends Mutation {
         for(Chromosome ind : poblation){
             double random = Math.random();
             if(random < probabilidad){
+            	params.numMutations++;
                 int pos1, pos2;
                 int size = ind.getGens().size();
 

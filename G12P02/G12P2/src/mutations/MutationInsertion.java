@@ -23,6 +23,7 @@ public class MutationInsertion extends Mutation {
             double random = ThreadLocalRandom.current().nextDouble(0, 1);
             //Si se llega a mutar...
             if(random < prob){
+            	params.numMutations++;
             	int pos1 = 0;
                 int pos2 = 0;
                 

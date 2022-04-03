@@ -6,11 +6,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import genetics.Gen;
 import individual.Chromosome;
+import utils.Params;
 
 public class CrossCOOrdinalEncoding extends Cross {
 
 	@Override
-	public void cruzar(Chromosome father1, Chromosome father2) {
+	public void cruzar(Chromosome father1, Chromosome father2, Object params_) {
 
 		// Creamos los cromosomas del hijo
 		Chromosome h1 = new Chromosome(father1);
@@ -49,6 +50,10 @@ public class CrossCOOrdinalEncoding extends Cross {
 		decoding(son1, monopoint1);
 		decoding(son2, monopoint2);
 
+		
+		Params params = (Params) params_;
+		params.numCrosses++;
+		
 		// Y añadimos los dos as always
 		this.sons = new ArrayList<>();
 

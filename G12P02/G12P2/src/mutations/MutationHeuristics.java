@@ -25,6 +25,7 @@ public class MutationHeuristics extends Mutation {
 			double random = Math.random();
 			// Si muta...
 			if (random < probabilidad) {
+            	params.numMutations++;
 				// Cogemos 3 posiciones aleatorias (En el video pone entre 2/3)
 				int pos1, pos2, pos3;
 				int size = ind.getGens().size();

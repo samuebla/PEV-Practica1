@@ -99,7 +99,6 @@ public class GeneticAlgorithm {
 			poblation.sort();
 			if(elitism_) insertElite(elite);
 			totalFitness = Evaluate();
-			System.out.println(i);
 		}
 		
 		showSolution();
@@ -297,7 +296,7 @@ public class GeneticAlgorithm {
 	}
 	
 	private Population Cross(Population pop) {
-		return new Population(cross.reproduce(pop.getPopulation(), param.crossProb), pop);
+		return new Population(cross.reproduce(pop.getPopulation(), param.crossProb,param), pop);
 	}
 	
 	private Population Mutate() {

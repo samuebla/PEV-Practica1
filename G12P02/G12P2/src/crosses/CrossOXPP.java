@@ -7,11 +7,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import genetics.Gen;
 import individual.Chromosome;
+import utils.Params;
 
 public class CrossOXPP extends Cross {
 
 	@Override
-	public void cruzar(Chromosome father1, Chromosome father2) {
+	public void cruzar(Chromosome father1, Chromosome father2, Object params_) {
 		//Aunque deba ser en funcion del tamaño Carlos dijo que con 3 servia
         final int numCuts = 3;
         
@@ -71,6 +72,11 @@ public class CrossOXPP extends Cross {
         //Y repetimos con el otro hijo
         complete(genes2, son2, i, acum);
 
+        
+		Params params = (Params) params_;
+		params.numCrosses++;
+        
+        
         //Metemos los dos hijos
         this.sons = new ArrayList<>();
         this.sons.add(new Chromosome(son1));
