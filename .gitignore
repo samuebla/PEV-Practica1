@@ -64,5 +64,4 @@ local.properties
 #.project
 
 /.classpath
-bin/
 *.class
