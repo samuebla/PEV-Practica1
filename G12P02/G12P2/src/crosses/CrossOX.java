@@ -26,7 +26,7 @@ public class CrossOX extends Cross {
 		List<Gen> hijo2 = h2.getGens();
 
 		
-		for (int i = 1; i < genes1.size() - 1; i++) {
+		for (int i = 0; i < genes1.size(); i++) {
 			hijo1.get(i).setGenotype(-1);
 			hijo2.get(i).setGenotype(-1);
 		}
@@ -66,7 +66,7 @@ public class CrossOX extends Cross {
 	
 	private void fill(List<Gen> genes, List<Gen> hijo, int c1, int c2, int i, int acum, int size) {
 		//Desde el corte de la derecha hasta el final
-		while (i < hijo.size() - 1) {
+		while (i < hijo.size()) {
 			if (!hijo.contains(genes.get(acum))) {
 				hijo.set(i, genes.get(acum));
 				i++;
@@ -74,7 +74,7 @@ public class CrossOX extends Cross {
 
 			acum++;
 			//Al final del todo vuelve a comenzar
-			if (acum == size - 1)
+			if (acum == size)
 				acum = 0;
 		}
 

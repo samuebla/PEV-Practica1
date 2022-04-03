@@ -30,7 +30,7 @@ public class CrossOXPP extends Cross {
         List<Gen> son2 = h2.getGens();
 
 
-        for (int i = 0; i < genes1.size() - 1; i++) {
+        for (int i = 0; i < genes1.size(); i++) {
             son1.get(i).setGenotype(-1);
             son2.get(i).setGenotype(-1);
         }
@@ -80,7 +80,7 @@ public class CrossOXPP extends Cross {
     private void complete(List<Gen> gens, List<Gen> son1, int i, int acum) {
     	
     	//Hasta el final de la lista
-        while (i < son1.size() - 1) {
+        while (i < son1.size()) {
             if (!son1.contains(gens.get(acum))) {
                 son1.set(i, gens.get(acum));
                 i++;
@@ -93,7 +93,7 @@ public class CrossOXPP extends Cross {
         //Volvemos al inicio
         i = 0;
 
-        while (i < son1.size() - 1) {
+        while (i < son1.size()) {
         	//Solo cambia el valor en los casos en los que no se haya cambiado ya (Para dejar los cortes intactos)
             if (son1.get(i).getGenFenotype() == -1) {
                 if (!son1.contains(gens.get(acum))) {
