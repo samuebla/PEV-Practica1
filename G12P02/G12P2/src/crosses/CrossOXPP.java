@@ -16,8 +16,6 @@ public class CrossOXPP extends Cross {
         final int numCuts = 3;
         
         List<Integer> cutPoints = new ArrayList<>();
-        int min = (int) father1.getGens().get(0).getMin();
-        int max = (int) father1.getGens().get(0).getMax();
 
         Chromosome h1 = new Chromosome(father1);
         Chromosome h2 = new Chromosome(father2);
@@ -32,19 +30,19 @@ public class CrossOXPP extends Cross {
         List<Gen> son2 = h2.getGens();
 
 
-        for (int i = 1; i < genes1.size() - 1; i++) {
+        for (int i = 0; i < genes1.size() - 1; i++) {
             son1.get(i).setGenotype(-1);
-            son2.get(i).setGenotype(max);
+            son2.get(i).setGenotype(-1);
         }
 
 
         //Calculamos el numero de cortes...
         for (int i = 0; i < numCuts; i++) {
-            int c = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
+            int c = ThreadLocalRandom.current().nextInt( 1, genes1.size() - 1);
 
             //Se repite para que no den cortes iguales
             while (cutPoints.contains(c))
-                c = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
+                c = ThreadLocalRandom.current().nextInt(1, genes1.size() - 1);
             
             //Y lo añadimos
             cutPoints.add(c);
@@ -60,7 +58,7 @@ public class CrossOXPP extends Cross {
         }
 
         //Ahora comenzamos con el corte más a la derecha y vamos de derecha a izquierda
-        int i = cutPoints.get(numCuts - 1) + 1;
+        int i = cutPoints.get(numCuts - 1)+1;
         int acum = i;
 
         //Ponemos el resto de valores en orden
@@ -88,11 +86,12 @@ public class CrossOXPP extends Cross {
                 i++;
             }
             acum++;
-            if (acum == gens.size() - 1) acum = 1;
+            if (acum == gens.size()) 
+            	acum = 0;
         }
 
         //Volvemos al inicio
-        i = 1;
+        i = 0;
 
         while (i < son1.size() - 1) {
         	//Solo cambia el valor en los casos en los que no se haya cambiado ya (Para dejar los cortes intactos)
@@ -102,8 +101,7 @@ public class CrossOXPP extends Cross {
                     i++;
                 }
                 acum++;
-                //SIGO PENSANDO QUE ESTO AQUI NO TIENE NINGUN TIPO DE LOGICA AAAAAAAAAAAA
-                if (acum == gens.size() - 1) acum = 1;
+               
             }
             //Si ha topado con un corte avanzamos sin modificarlo
             else i++;

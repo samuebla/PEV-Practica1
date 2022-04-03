@@ -75,7 +75,7 @@ public class CrossOX extends Cross {
 			acum++;
 			//Al final del todo vuelve a comenzar
 			if (acum == size - 1)
-				acum = 1;
+				acum = 0;
 		}
 
 		//Volvemos a comenzar por la izquierda
