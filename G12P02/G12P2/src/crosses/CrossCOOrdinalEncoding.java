@@ -38,7 +38,7 @@ public class CrossCOOrdinalEncoding extends Cross {
 		encoding(genes2, son1, list2);
 
 		// Ahora preparamos el cruce monopunto COMO LA PRACTICA 1, es igual
-		int random = ThreadLocalRandom.current().nextInt(01, genes1.size() - 1);
+		int random = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
 
 		// Cambiamos la mitad de uno
 		List<Integer> monopoint1 = list1.subList(0, random);

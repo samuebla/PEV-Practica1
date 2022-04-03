@@ -11,6 +11,10 @@ public class CrossOX extends Cross {
 
 	@Override
 	public void cruzar(Chromosome padre1, Chromosome padre2) {
+		
+		//Cogemos el minimo y el maximo para el rango
+		int min = (int) padre1.getGens().get(0).getMin();
+		int max = (int) padre1.getGens().get(0).getMax();
 
 		Chromosome h1 = new Chromosome(padre1);
 		Chromosome h2 = new Chromosome(padre2);
@@ -26,18 +30,18 @@ public class CrossOX extends Cross {
 		List<Gen> hijo2 = h2.getGens();
 
 		
-		for (int i = 0; i < genes1.size() - 1; i++) {
-			hijo1.get(i).setGenotype(-1);
+		for (int i = 1; i < genes1.size() - 1; i++) {
+			hijo1.get(i).setGenotype(max);
 			hijo2.get(i).setGenotype(-1);
 		}
 
 		//Preparamos el corte doble
-		int c1 = ThreadLocalRandom.current().nextInt( 1, genes1.size() - 1);
+		int c1 = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
 		int c2 = c1;
 
 		//Hasta que no sean distintos no se deja de hacer
 		while (c1 == c2)
-			c2 = ThreadLocalRandom.current().nextInt(1, genes1.size() - 1);
+			c2 = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
 
 		//Intercambiamos los genes de dentro del corte
 		for (int i = Math.min(c1, c2); i < Math.max(c1, c2); i++) {
@@ -65,24 +69,21 @@ public class CrossOX extends Cross {
 	}
 	
 	private void fill(List<Gen> genes, List<Gen> hijo, int c1, int c2, int i, int acum, int size) {
-		
 		//Desde el corte de la derecha hasta el final
 		while (i < hijo.size() - 1) {
-			//Si no está el valor ya metido
 			if (!hijo.contains(genes.get(acum))) {
-				//Pues lo pongo yo
 				hijo.set(i, genes.get(acum));
 				i++;
 			}
 
 			acum++;
 			//Al final del todo vuelve a comenzar
-			if (acum == size)
-				acum = 0;
+			if (acum == size - 1)
+				acum = 1;
 		}
 
 		//Volvemos a comenzar por la izquierda
-		i = 0;
+		i = 1;
 
 		//Y desde 0 hasta el primer corte
 		while (i < Math.min(c1, c2)) {
@@ -91,6 +92,11 @@ public class CrossOX extends Cross {
 				i++;
 			}
 			acum++;
+			
+			//AAAAAAAAAAAAAAAAA ESTA CONDICION NO TIENE SENTIDO PORQUE NUNCA VA A LLEGAR AQUI ATYAYAYAYAY
+			if (acum == size - 1)
+				acum = 1;
 		}
 	}
+
 }
