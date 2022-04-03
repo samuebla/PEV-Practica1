@@ -12,10 +12,6 @@ public class CrossCOOrdinalEncoding extends Cross {
 	@Override
 	public void cruzar(Chromosome father1, Chromosome father2) {
 
-		// Cogemos el rango
-		int min = (int) father1.getGens().get(0).getMin();
-		int max = (int) father1.getGens().get(0).getMax();
-
 		// Creamos los cromosomas del hijo
 		Chromosome h1 = new Chromosome(father1);
 		Chromosome h2 = new Chromosome(father2);
@@ -38,16 +34,16 @@ public class CrossCOOrdinalEncoding extends Cross {
 		encoding(genes2, son1, list2);
 
 		// Ahora preparamos el cruce monopunto COMO LA PRACTICA 1, es igual
-		int random = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
+		int random = ThreadLocalRandom.current().nextInt(1, genes1.size() - 1);
 
 		// Cambiamos la mitad de uno
 		List<Integer> monopoint1 = list1.subList(0, random);
 		// Por la mitad del otro
-		monopoint1.addAll(list2.subList(random, max - 1));
+		monopoint1.addAll(list2.subList(random, genes1.size() - 1));
 
 		// Y viceversa
 		List<Integer> monopoint2 = list2.subList(0, random);
-		monopoint2.addAll(list1.subList(random, max - 1));
+		monopoint2.addAll(list1.subList(random, genes1.size() - 1));
 
 		// Y descodificamos
 		decoding(son1, monopoint1);
@@ -70,10 +66,10 @@ public class CrossCOOrdinalEncoding extends Cross {
 			pos.add(i);
 
 		//Decodificamos
-		for (int i = 1; i < son1.size() - 1; i++) {
+		for (int i = 0; i < son1.size() - 1; i++) {
 			//Cogemos la lista de monopunto
 			//REVISAR POR QUE TIENE I=1 PERO LUEGO MERE UN I-1 POR QUE ES TAN NAZI AAAAAAAAAAA
-			son1.get(i).setGenotype(pos.get(monopoint.get(i - 1)));
+			son1.get(i).setGenotype(pos.get(monopoint.get(i)));
 			//Y lo borramos de la lista
 			pos.remove(son1.get(i).getGenFenotype());
 		}
@@ -88,7 +84,7 @@ public class CrossCOOrdinalEncoding extends Cross {
 			pos.add(i);
 
 		// Orden
-		for (int i = 1; i < genes1.size() - 1; i++) {
+		for (int i = 0; i < genes1.size() - 1; i++) {
 			Gen g = genes1.get(i);
 			// Buscamos el valor del gen en la lista ordenada y se añade en esa misma
 			// posicion

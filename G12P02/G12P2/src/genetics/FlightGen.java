@@ -49,21 +49,10 @@ public class FlightGen extends Gen {
 		this.setGenotype(aux);
 	}
 
-	//CONVERSIÓN DE BINARIO A DECIMAL
 	@Override
 	public double getGenFenotype() {
 		
-		 double result = 0;
-		 int p = 0;
-         
-         for(int i = this.alleles.size() - 1; i >= 0; i--){
-        	 result += (int)alleles.get(i) * Math.pow(2,p);
-             p++;
-         }
-         if(this.isNegative_)
-        	 return -(result * this.precision);
-         else
-         return result * this.precision;
+		 return pos_vuelo;
 	}
 	
 	

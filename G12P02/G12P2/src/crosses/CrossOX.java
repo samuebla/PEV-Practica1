@@ -11,10 +11,6 @@ public class CrossOX extends Cross {
 
 	@Override
 	public void cruzar(Chromosome padre1, Chromosome padre2) {
-		
-		//Cogemos el minimo y el maximo para el rango
-		int min = (int) padre1.getGens().get(0).getMin();
-		int max = (int) padre1.getGens().get(0).getMax();
 
 		Chromosome h1 = new Chromosome(padre1);
 		Chromosome h2 = new Chromosome(padre2);
@@ -31,17 +27,17 @@ public class CrossOX extends Cross {
 
 		
 		for (int i = 1; i < genes1.size() - 1; i++) {
-			hijo1.get(i).setGenotype(max);
+			hijo1.get(i).setGenotype(-1);
 			hijo2.get(i).setGenotype(-1);
 		}
 
 		//Preparamos el corte doble
-		int c1 = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
+		int c1 = ThreadLocalRandom.current().nextInt(1, genes1.size() - 1);
 		int c2 = c1;
 
 		//Hasta que no sean distintos no se deja de hacer
 		while (c1 == c2)
-			c2 = ThreadLocalRandom.current().nextInt(min + 1, max - 1);
+			c2 = ThreadLocalRandom.current().nextInt(1, genes1.size() - 1);
 
 		//Intercambiamos los genes de dentro del corte
 		for (int i = Math.min(c1, c2); i < Math.max(c1, c2); i++) {
@@ -83,7 +79,7 @@ public class CrossOX extends Cross {
 		}
 
 		//Volvemos a comenzar por la izquierda
-		i = 1;
+		i = 0;
 
 		//Y desde 0 hasta el primer corte
 		while (i < Math.min(c1, c2)) {
@@ -92,10 +88,6 @@ public class CrossOX extends Cross {
 				i++;
 			}
 			acum++;
-			
-			//AAAAAAAAAAAAAAAAA ESTA CONDICION NO TIENE SENTIDO PORQUE NUNCA VA A LLEGAR AQUI ATYAYAYAYAY
-			if (acum == size - 1)
-				acum = 1;
 		}
 	}
 
