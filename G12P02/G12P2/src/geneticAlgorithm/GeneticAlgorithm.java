@@ -69,6 +69,8 @@ public class GeneticAlgorithm {
 		param.f_type = f_Type;
 		param.truncProb = truncProbability;
 		param.beta = betaValue;
+		param.numMutations = 0;
+		param.numCrosses = 0;
 		
 		//AAAAAAAAAA Igual poner algun if de que si el tipo es heuristica se guarda y asi no 
 		//Guardamos la función para la heurística
@@ -121,16 +123,25 @@ public class GeneticAlgorithm {
 	}
 	
 	private void showSolution() {
-		int numGen = param.numGenerations;
+		int numGen = generations.size();
 		//Quedaria la solucion de aquel que sea el mejor/peor segun la funcion
-		List<Double> sol = new ArrayList<Double>();
+		List<Gen> sol = new ArrayList<Gen>();
 		
 		double maxAbs;
-		if(funct.maximize) maxAbs = Double.NEGATIVE_INFINITY;
-		else maxAbs =  Double.POSITIVE_INFINITY;
+		double minAbs;
+		if(funct.maximize) {
+			maxAbs = Double.NEGATIVE_INFINITY;
+			minAbs = Double.POSITIVE_INFINITY;
+		}
+		else {
+			maxAbs =  Double.POSITIVE_INFINITY;
+			minAbs = Double.NEGATIVE_INFINITY;
+		}
 		
 		double[] best = new double[numGen];
+		double[] worst = new double[numGen];
 		double[] bestPob = new double[numGen];
+		double[] worstPob = new double[numGen];
         double[] avarage = new double[numGen];
         
         int i = 0;
@@ -145,18 +156,25 @@ public class GeneticAlgorithm {
         			maxAbs = generations.get(i).best;
         			sol = generations.get(i).sol;
         		}
+        		if(minAbs < generations.get(i).worst) {
+        			minAbs = generations.get(i).worst;
+        		}
+        		
         	}
         	
         	Generation gen = generations.get(i);
         	bestPob[i] = maxAbs;
+        	worstPob[i] = minAbs;
         	avarage[i] = gen.avarage;
 			best[i] = gen.best;
+			worst[i] = gen.worst;
 			
         	i++;
         }
         
         //Muestra la grafica
-        interface_.showGraph(bestPob, best, avarage, maxAbs, sol);
+        double solutionFitness = maxAbs;
+        interface_.showGraph(bestPob, best, worstPob, worst, avarage, maxAbs, sol, param.numCrosses, param.numMutations);
 	};
 	
 	private double Evaluate() {

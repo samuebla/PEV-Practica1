@@ -4,11 +4,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -32,13 +33,17 @@ import javax.swing.table.DefaultTableModel;
 import org.math.plot.Plot2DPanel;
 
 import geneticAlgorithm.GeneticAlgorithm;
+import genetics.BinaryGen;
+import genetics.FlightGen;
+import genetics.Gen;
+import genetics.RealGen;
+import individual.Chromosome;
 import utils.CrossType;
 import utils.FunctionType;
 import utils.MutationType;
 import utils.SelectionType;
 import utilsFlight.FlightType;
 import utilsFlight.TVuelo;
-import javax.swing.SpinnerModel;
 
 public class Interface extends JFrame {
 
@@ -983,22 +988,44 @@ public class Interface extends JFrame {
 		solTablePista3.setRowHeight(tamCell);
 		solTablePista3.setFont(new Font("Georgia", Font.PLAIN, 18));
 		
+		JButton startButton_1 = new JButton("Evolute");
+		startButton_1.setBackground(new Color(175, 238, 238));
+		startButton_1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {			
+				try {
+					processData();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}		
+			}
+		});
+		
 		GroupLayout gl_solTab = new GroupLayout(solTab);
 		gl_solTab.setHorizontalGroup(
 			gl_solTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_solTab.createSequentialGroup()
-					.addGap(22)
-					.addComponent(solTablePista1, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
-					.addGap(29)
-					.addComponent(solTablePista2, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
-					.addGap(30)
-					.addComponent(solTablePista3, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_solTab.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_solTab.createSequentialGroup()
+							.addGap(22)
+							.addComponent(solTablePista1, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
+							.addGap(29)
+							.addComponent(solTablePista2, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
+							.addGap(30)
+							.addComponent(solTablePista3, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_solTab.createSequentialGroup()
+							.addGap(508)
+							.addComponent(startButton_1, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(1405, Short.MAX_VALUE))
 		);
 		gl_solTab.setVerticalGroup(
 			gl_solTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_solTab.createSequentialGroup()
-					.addGap(33)
+					.addGap(4)
+					.addComponent(startButton_1)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_solTab.createParallelGroup(Alignment.LEADING)
 						.addComponent(solTablePista3, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 						.addComponent(solTablePista2, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
@@ -1113,7 +1140,7 @@ public class Interface extends JFrame {
 		}
 	}
 	
-	public void showGraph(double[] bestAbs, double[]  best, double[] avarage, double solution, List<Double> sol) {
+	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[]  worst, double[] avarage, double solution, List<Gen> sol, int numCrosses, int numMutations) {
 
 		panelMathPlot.removeAllPlots();
 		double [] x = new double[bestAbs.length];
@@ -1125,18 +1152,34 @@ public class Interface extends JFrame {
 		maxAbsSol.setEditable(false);
 		
 		int i = 0;
-		for(Double d : sol) {
-			i++;
-			d = Math.floor(d / 0.0001) * 0.0001;
-
-			String text = "X" + i + ": " + d;
-			solutionList.addItem(text);
+		String solu = "";
+		for(Gen d : sol) {
+			FlightGen vuelo = (FlightGen) d;
+			solu += vuelo.pos_vuelo;	
 		}
-
+		
+		System.out.println("Sol : {" + solu + "}");
+		
 		panelMathPlot.addLegend("SOUTH");
 		panelMathPlot.addLinePlot("Best So Far", Color.BLUE, x, bestAbs);
 		panelMathPlot.addLinePlot("Best Individual", Color.RED, x, best);
+		panelMathPlot.addLinePlot("Worst Individual", Color.ORANGE, x, worst);
+		panelMathPlot.addLinePlot("Worst So Far", Color.MAGENTA, x, worstAbs);
 		panelMathPlot.addLinePlot("Avarage", Color.GREEN, x, avarage);
+		
+		
+		List<FlightGen> vuelos = new ArrayList<>();
+		for (Gen g : sol) vuelos.add(new FlightGen((FlightGen) g));
+		MostrarTabla(vuelos);
+	}
+	
+	private void MostrarTabla(List<FlightGen> vuelos) {
+		//Los vuelos vienen ordenados de menor a mayor TLA
+		
+		
+		
+		
+		
 	}
 	
 	private void getFunctionType() {
