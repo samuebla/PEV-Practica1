@@ -1037,9 +1037,9 @@ public class Interface extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_solTab.createParallelGroup(Alignment.TRAILING, false)
 						.addComponent(solTablePista3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(solTablePista2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(solTablePista1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addContainerGap(1122, Short.MAX_VALUE))
+						.addComponent(solTablePista1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(solTablePista2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(1128, Short.MAX_VALUE))
 		);
 		solTab.setLayout(gl_solTab);
 		
@@ -1172,7 +1172,7 @@ public class Interface extends JFrame {
 		String solu = "";
 		for(Gen d : sol) {
 			FlightGen vuelo = (FlightGen) d;
-			solu += vuelo.pos_vuelo + " ";	
+			solu += (vuelo.pos_vuelo + 1) + " ";	
 		}
 		
 		System.out.println("Sol : {" + solu + "}");
@@ -1192,6 +1192,26 @@ public class Interface extends JFrame {
 	
 	private void MostrarTabla(List<FlightGen> vuelos) {
 		//Los vuelos vienen ordenados de menor a mayor TLA
+		DefaultTableModel model_ = (DefaultTableModel) solTablePista1.getModel();
+		int rowCount = model_.getRowCount();
+		//Remove rows one by one from the end of the table
+		for (int i = rowCount - 1; i >= 2; i--) {
+			model_.removeRow(i);
+		}
+		
+		model_ = (DefaultTableModel) solTablePista2.getModel();
+		rowCount = model_.getRowCount();
+		//Remove rows one by one from the end of the table
+		for (int i = rowCount - 1; i >= 2; i--) {
+			model_.removeRow(i);
+		}
+		
+		model_ = (DefaultTableModel) solTablePista3.getModel();
+		rowCount = model_.getRowCount();
+		//Remove rows one by one from the end of the table
+		for (int i = rowCount - 1; i >= 2; i--) {
+			model_.removeRow(i);
+		}
 		
 		//Los vuelos se ordenan de menor a mayor TLA
 		   Collections.sort(vuelos, new Comparator<FlightGen>() {
@@ -1208,17 +1228,17 @@ public class Interface extends JFrame {
 			   switch(g.pistaAsignada) {
 			   		case 0:{
 			   			DefaultTableModel model = (DefaultTableModel) solTablePista1.getModel();
-			   			model.addRow(new Object[]{g.pos_vuelo, TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+			   			model.addRow(new Object[]{ (g.pos_vuelo + 1), TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
 			   		}
 			   		break;
 			   		case 1:{
 			   			DefaultTableModel model = (DefaultTableModel) solTablePista2.getModel();
-			   			model.addRow(new Object[]{g.pos_vuelo, TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+			   			model.addRow(new Object[]{ (g.pos_vuelo + 1) , TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
 			   		}
 			   		break;
 			   		case 2:{
 			   			DefaultTableModel model = (DefaultTableModel) solTablePista3.getModel();
-			   			model.addRow(new Object[]{g.pos_vuelo, TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+			   			model.addRow(new Object[]{ (g.pos_vuelo + 1) , TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
 			   		}
 			   		break;
 			   };
