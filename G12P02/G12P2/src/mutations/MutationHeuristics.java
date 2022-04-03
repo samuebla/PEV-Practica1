@@ -10,17 +10,17 @@ import utils.Params;
 
 public class MutationHeuristics extends Mutation {
 
-	 private Chromosome best;
-	 
+	private Chromosome best;
+
 	@Override
 	public void mutate(List<Chromosome> poblation, Object params_) {
 		// Cogemos la probabilidad seleccionada
 		Params params = (Params) params_;
 		double probabilidad = params.mutProb;
-		
-		//Guardamos la funcion para la euristica
+
+		// Guardamos la funcion para la euristica
 		FunctionP2 function = params.funct2;
-		
+
 		for (Chromosome ind : poblation) {
 			double random = Math.random();
 			// Si muta...
@@ -48,7 +48,7 @@ public class MutationHeuristics extends Mutation {
 				posiciones.add(pos2);
 				posiciones.add(pos3);
 
-				//Metemos los 3 valores para hacer la permutacion
+				// Metemos los 3 valores para hacer la permutacion
 				List<Gen> conjunto = new ArrayList<>();
 				conjunto.add(ind.getGens().get(pos1));
 				conjunto.add(ind.getGens().get(pos2));
@@ -58,7 +58,7 @@ public class MutationHeuristics extends Mutation {
 
 				Chromosome indCopy = new Chromosome(new ArrayList<>(ind.getGens()));
 
-				permutaciones(indCopy, conjunto, resultado, posiciones,function);
+				permutaciones(indCopy, conjunto, resultado, posiciones, function);
 				ind.setGens(this.best.getGens());
 			}
 		}
@@ -66,27 +66,28 @@ public class MutationHeuristics extends Mutation {
 
 	}
 
-	private void permutaciones(Chromosome individual, List<Gen> conjunto, List<Gen> result,
-			List<Integer> positions,FunctionP2 func) {
-		 
+	private void permutaciones(Chromosome individual, List<Gen> conjunto, List<Gen> result, List<Integer> positions,
+			FunctionP2 func) {
 
-		 
-		 //COMO QUE SI CONJUNTO ES 0 NO TIENE SWENTIDO AAAAAAAAAA
+		//Cuando hayas permutado las 3
 		if (conjunto.size() == 0) {
-			
+
+			//Las añades 
 			individual.getGens().set(positions.get(0), result.get(0));
 			individual.getGens().set(positions.get(1), result.get(1));
 			individual.getGens().set(positions.get(2), result.get(2));
-			//Nos quedamos con el que tenga mejor fitness de la funcion
+			//Y Nos quedamos con el que tenga mejor fitness de la funcion
 			if (func.ejecutar(individual.getGens()) < func.ejecutar(this.best.getGens()))
 				// Nos guardamos el mejor cromosoma
 				this.best = new Chromosome(new ArrayList<>(individual.getGens()));
 		}
-		
+
 		for (int i = 0; i < conjunto.size(); i++) {
+			//Eliminamos uno de la permutacion
 			Gen b = conjunto.remove(i);
 			result.add(b);
-			permutaciones(individual, conjunto, result, positions,func);
+			//Y hacemos lo mismo
+			permutaciones(individual, conjunto, result, positions, func);
 			result.remove(b);
 			conjunto.add(i, b);
 		}
