@@ -26,9 +26,9 @@ public class SelectionRanking extends Selection {
 			prob = beta_ - prob;
 			prob = prob *  ((double)1/poblation.size());
 			
-			//Al estar ordenador de menor a mayor, hay que setear su probabilidad a la inversa
-			poblation.get(poblation.size() - 1 - i).setPuntuationAcc(accPunc);			
-			poblation.get(poblation.size() - 1 - i).setPuntuation(prob);			
+			//Al estar ordenador de mayor a menor
+			poblation.get(i).setPuntuationAcc(accPunc);			
+			poblation.get(i).setPuntuation(prob);			
 			
 			accPunc += prob;
 		}

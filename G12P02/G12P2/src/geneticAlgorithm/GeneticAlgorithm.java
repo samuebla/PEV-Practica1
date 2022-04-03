@@ -54,10 +54,10 @@ public class GeneticAlgorithm {
 		elitism_ = elitism;	
 		numPistas_ = numPistas;
 		minorTel_type_ = minorTel_type;
-		selectTypes();		
-		
 		TTEL_vuelo_ = TTEL_vuelo;
 		separations_ = separations;
+		selectTypes();		
+		
 		
 		//Contenedor de Parametros
 		param = new Params();
@@ -105,7 +105,7 @@ public class GeneticAlgorithm {
 	
 	private Population extractElite() {
 		
-		//As the elite is ordered from minor to major fitness, the best indivoduals are at the end of the list
+		//As the elite is ordered from major  to minor fitness, the best indivoduals are at the end of the list
 		Population elite = new Population(poblation.getPopulation().subList(poblation.getPopulation().size() - eliteSize, poblation.getPopulation().size()), poblation);	
 		return elite;
 	}
@@ -163,7 +163,6 @@ public class GeneticAlgorithm {
 		double puntuationAcc = 0;
 		double fitnessTotal = 0;
 		double fitnessDisplacedTotal = 0;
-		double bestFitness = 0;
 		int best_pos = 0;
 		//Para cada gen, evaluamos su valor con la funcion F.
 		for(Chromosome c : poblation.getPopulation()) {
@@ -174,9 +173,6 @@ public class GeneticAlgorithm {
 		
 		//obtenemos el mejor y el total
 		for(Chromosome c : poblation.getPopulation()) {
-			if(c.getFitness() > bestFitness) {
-				bestFitness = c.getFitness();
-			}
 			fitnessTotal += c.getFitness();
 			fitnessDisplacedTotal += c.getFitnessDisplaced();
 		}

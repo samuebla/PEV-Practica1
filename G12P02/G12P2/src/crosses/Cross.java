@@ -33,7 +33,7 @@ public abstract class Cross {
             elegidos.remove(elegidos.size() - 1);
         }
         
-        cut = ThreadLocalRandom.current().nextInt(0, population.get(0).getTam());
+        cut = ThreadLocalRandom.current().nextInt(0, population.get(0).getGens().size());
         
         for (int i = 0; i < elegidos.size(); i += 2){ 
         	cruzar(population.get(elegidos.get(i)), population.get(elegidos.get(i+1)));
@@ -43,14 +43,7 @@ public abstract class Cross {
         		population.set(elegidos.get(i + 1), this.sons.get(1));  
         	this.sons.clear();
         }
-//        
-//        if(probCross < 1) {
-//        	int pop = population.size();
-//        	int hij = sons.size();
-//        	int rest =  pop - hij;
-//        	
-//        	sons.addAll(population.subList(rest - 1, population.size() - 1));
-//        }
+
         	
         return population; //esto no esta bien, deberia ser nueva
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import genetics.BinaryGen;
+import genetics.FlightGen;
 import genetics.Gen;
 import genetics.RealGen;
 
@@ -27,6 +28,8 @@ public class Chromosome {
 				this.gens.add(new BinaryGen((BinaryGen) g));
 			else if (g instanceof RealGen)
 				this.gens.add(new RealGen((RealGen) g));
+			else if (g instanceof FlightGen)
+				this.gens.add(new FlightGen((FlightGen) g));
 		}
 
 		puntuation_acc = copyCrom.getPuntuationAcc();

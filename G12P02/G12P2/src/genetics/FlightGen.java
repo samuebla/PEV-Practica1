@@ -62,7 +62,7 @@ public class FlightGen extends Gen {
          else
          return result * this.precision;
 	}
-
+	
 	
 	//CONVERSIÓN DE DECIMAL A BINARIO
 	@Override

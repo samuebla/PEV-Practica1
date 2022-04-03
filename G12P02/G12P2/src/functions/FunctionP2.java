@@ -24,6 +24,7 @@ public class FunctionP2 extends Function {
 		info_vuelos_ = info_vuelos;
 		separations_ = separations;
 		menor_tel_type = menor_tel;
+		numPistas_ = numPistas;
 	}
 	
 
@@ -31,14 +32,19 @@ public class FunctionP2 extends Function {
 	@Override
 	public double ejecutar(List<Gen> individuo) {
 		double fitness = 0;
+		//Almacena el TLA de todas las pistas, en funcion de llegada de los aviones asignados
+		List<ArrayList<TAsignacion>> TLA_Pistas = new ArrayList<ArrayList<TAsignacion>>();
+		int k = 0;
+		while(k < numPistas_) {
+			TLA_Pistas.add(new ArrayList<TAsignacion>());
+			k++;
+		}
 		for(int i = 0; i < individuo.size(); i++) {
 			int pista_asignada = 0; 
-			//Almacena el TLA de todas las pistas, en funcion de llegada de los aviones asignados
-			List<ArrayList<Double>> TLA_Pistas = new ArrayList<ArrayList<Double>>();
+			
 			FlightGen vuelo = (FlightGen) individuo.get(i);
 			 
 			//Tipo del avion que ya está en la pista (anterior)
-			FlightType typeBefore_ = FlightType.G; //Compilation Purposes
 			//Para cada pista del vuelo i-ésimo. Se calcula el menor TLA 
 			List<Double> tel_pistas_cpy = info_vuelos_.get(vuelo.pos_vuelo).TTEL_vuelo;
 			
@@ -46,11 +52,9 @@ public class FunctionP2 extends Function {
 			double menor_tla = Double.POSITIVE_INFINITY;
 			//TEL definitivo a la pista asignada
 			double TEL_vuelo = Double.POSITIVE_INFINITY; 
+			FlightType typeCurrent_ = info_vuelos_.get(vuelo.pos_vuelo).type_;
 			for(int j = 0; j < tel_pistas_cpy.size(); j++) {
 				//Tipo del avion que viene
-				FlightType typeCurrent_ = info_vuelos_.get(vuelo.pos_vuelo).type_;
-				//Separacion del vuelo actual con el que ya esta en pista (actual con anterior)
-				double sep = separations_.get(typeBefore_.ordinal()).get(typeCurrent_.ordinal());
 				//TEL de la pista j-ésima
 				double TEL_pista = tel_pistas_cpy.get(j);
 				//Calculo del menor TEL de las 3 pistas
@@ -63,8 +67,11 @@ public class FunctionP2 extends Function {
 								//sep 0-> al no haber avion, no hay separacion
 					TLA = Math.max(0 + 0, TEL_pista);
 				}else{					
-									   		//Pista j-ésima | ultimo valor/vuelo añadido a esa pista
-					double beforeTLA = TLA_Pistas.get(j).get(TLA_Pistas.get(j).size() - 1);
+					FlightType typeBefore_ = TLA_Pistas.get(j).get(TLA_Pistas.get(j).size() - 1).type;
+					//Separacion del vuelo actual con el que ya esta en pista (actual con anterior)
+													//Pista j-ésima | ultimo valor/vuelo añadido a esa pista
+					double sep = separations_.get(typeBefore_.ordinal()).get(typeCurrent_.ordinal());
+					double beforeTLA = TLA_Pistas.get(j).get(TLA_Pistas.get(j).size() - 1).TLA;
 					//maximo del TLA anterior mas la separacion | Tel de esa pista
 					TLA = Math.max( beforeTLA + sep, TEL_pista);
 				}
@@ -77,7 +84,7 @@ public class FunctionP2 extends Function {
 			}
 			
 			//Añadimos el vuelo j-esimo a la pista asiganda (con menor TLA) 
-			TLA_Pistas.get(pista_asignada).add(menor_tla);
+			TLA_Pistas.get(pista_asignada).add(new TAsignacion(menor_tla, typeCurrent_));
 			vuelo.pistaAsignada = pista_asignada;
 			vuelo.TLA = menor_tla;
 			//Calculo del TEL que es basicamente su TEL de la pista asignada
@@ -118,9 +125,6 @@ public class FunctionP2 extends Function {
 		FlightType typeBefore_ = FlightType.G;
 		int pista = 0; //Pista 1
 		
-//		List<Double> telsVuelos 
-		
-		
 		for(List<TAsignacion> pista_ : pistas) {
 			int i = 0; //Numero de vuelo de cada pista
 			for(TAsignacion vuelo : pista_) {
@@ -143,9 +147,6 @@ public class FunctionP2 extends Function {
 			}
 			pista++;
 		}
-		
-		//Mirar el menor TEL
-		
 		
 		for(int j = 0; j < individuo.size(); j++) {
 			
