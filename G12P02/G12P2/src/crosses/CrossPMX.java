@@ -39,26 +39,45 @@ public class CrossPMX extends Cross {
 		int c2 = c1;
 
 		// Sigue haciendo numeros aleatorios hasta que son distintos
-		while (c1 == c2)
+		while (c1 == c2) {
 			c2 = ThreadLocalRandom.current().nextInt(1, genes1.size() - 1);
+		}
 
 		// Se recorre de izquierda a derecha
-		for (int i = Math.min(c1, c2); i <= Math.max(c1, c2); i++) {
+		for (int i = Math.min(c1, c2); i < Math.max(c1, c2); i++) {
 			// Y ponemos a un hijo los genes del otro y vicecersa
 			hijo1.set(i, genes2.get(i));
 			hijo2.set(i, genes1.get(i));
 		}
 		// Aqui los genes del corte ya están cruzados
 
-		for (int i = 0; i < hijo1.size(); i++) {
+		// Desde el segundo corte hasta el final
+		for (int i = Math.max(c1, c2); i < hijo1.size(); i++) {
+			if (hijo1.get(i).getGenFenotype() == -1 && !hijo1.contains(genes1.get(i))) {
+				// Lo cambio sin ningun problema
+				hijo1.set(1, genes1.get(i));
+			}
+			// Y lo mismo pero con el otro hijo
+			if (hijo2.get(i).getGenFenotype() == -1 && !hijo2.contains(genes2.get(i))) {
+
+				hijo2.set(i, genes2.get(i));
+			}
+		}
+		
+
+		//Y ahora desde el inicio hasta el primer corte
+		for (int i = 0; i < Math.min(c1,c2); i++) {
 			// Si el fenotipo correspondiente no está repetido en el corte que hicimos
 			// arriba
-			if (hijo1.get(i).getGenFenotype() == -1 && !hijo1.contains(genes1.get(i)))
+			if (hijo1.get(i).getGenFenotype() == -1 && !hijo1.contains(genes1.get(i))) {
 				// Lo cambio sin ningun problema
-				hijo1.set(i, genes1.get(i));
+				hijo1.set(1, genes1.get(i));
+			}
 			// Y lo mismo pero con el otro hijo
-			if (hijo2.get(i).getGenFenotype() == -1 && !hijo2.contains(genes2.get(i)))
+			if (hijo2.get(i).getGenFenotype() == -1 && !hijo2.contains(genes2.get(i))) {
+
 				hijo2.set(i, genes2.get(i));
+			}
 		}
 
 		// Aqui todos los genes no repetidos se han colocado correctamente
@@ -76,15 +95,14 @@ public class CrossPMX extends Cross {
 			}
 
 		}
-		
+
 		Params params = (Params) params_;
 		params.numCrosses++;
-        
-		
+
 		// Por ultimo añadimos los dos hijos
 		this.sons = new ArrayList<>();
 		this.sons.add(new Chromosome(hijo1));
 		this.sons.add(new Chromosome(hijo2));
 	}
-	
+
 }
