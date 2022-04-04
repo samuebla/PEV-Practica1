@@ -37,8 +37,6 @@ public class MutationInversion extends Mutation {
                 int max = Math.max(pos1, pos2);
 
                 //Y reescribe los valores pero al reves
-                //CREO QUYE ESTO DA ERRORES SI SON IMPARES O MIERDAS RARA AAAA
-                //En vdd creo que no pq si es impar el den medio no se moveria pero no se no se
                 while(min < max) {
                     Gen aux = ind.getGens().get(min);
                     ind.getGens().set(min, ind.getGens().get(max));

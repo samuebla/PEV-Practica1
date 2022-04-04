@@ -10,7 +10,6 @@ public class TVuelo {
 	public FlightType type_;
 	
 	public TVuelo() {
-		// TODO Auto-generated constructor stub
 	}
 
 }

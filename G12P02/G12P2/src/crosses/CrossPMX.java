@@ -67,25 +67,12 @@ public class CrossPMX extends Cross {
 			if (hijo1.get(i).getGenFenotype() == -1) {
 				// Te devuelve el indice de donde se encuentra el valor genes1.get(i)
 				// RECUERDA Que genes1 y genes2 son los del inicio sin cambiar nada
-
-				Gen ay = genes1.get(i);
-
-				int misChiles = genes2.indexOf(ay);
-				if (misChiles == -1) {
-					int ww = 4;
-				}
-				hijo1.set(i, genes1.get(misChiles));
+				hijo1.set(i, genes1.get(genes2.indexOf(genes1.get(i))));
 			}
 
 			// Y lo mismo pero con el otro hijo
 			if (hijo2.get(i).getGenFenotype() == -1) {
-				Gen ay = genes2.get(i);
-				int misChiles = genes1.indexOf(ay);
-				if (misChiles == -1) {
-					int jeowrgv = 23;
-				}
-
-				hijo2.set(i, genes2.get(misChiles));
+				hijo2.set(i, genes2.get(genes1.indexOf(genes2.get(i))));
 			}
 
 		}

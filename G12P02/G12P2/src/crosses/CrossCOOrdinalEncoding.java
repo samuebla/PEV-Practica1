@@ -73,7 +73,6 @@ public class CrossCOOrdinalEncoding extends Cross {
 		//Decodificamos
 		for (int i = 0; i < son1.size() - 1; i++) {
 			//Cogemos la lista de monopunto
-			//REVISAR POR QUE TIENE I=1 PERO LUEGO MERE UN I-1 POR QUE ES TAN NAZI AAAAAAAAAAA
 			son1.get(i).setGenotype(pos.get(monopoint.get(i)));
 			//Y lo borramos de la lista
 			pos.remove(son1.get(i).getGenFenotype());
@@ -97,8 +96,6 @@ public class CrossCOOrdinalEncoding extends Cross {
 
 			// Y borramos el valor y la posicion de ese fenotipo, disminuyendo el tamaño del
 			// array
-			// CREO QUE EL REMOVE TE DISMINUTE DIRECTAMENTE EL TAMAÑO DE LA LISTA, PROBAR EN
-			// DEPURACION AAAAAAAAAAA
 			pos.remove(g.getGenFenotype());
 		}
 	}

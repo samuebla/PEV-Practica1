@@ -707,7 +707,7 @@ public class Interface extends JFrame {
 		
 		crossDropdown = new JComboBox();
 		crossDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"PMX","Orden OX","Orden OX Priority Positions", "Cyles CX", "Ordinal Encoding"}));
+		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Orden OX","PMX","Orden OX Priority Positions", "Cyles CX", "Ordinal Encoding"}));
 		
 		GroupLayout gl_crossPanel = new GroupLayout(crossPanel);
 		gl_crossPanel.setHorizontalGroup(

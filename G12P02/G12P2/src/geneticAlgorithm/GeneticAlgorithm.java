@@ -72,7 +72,6 @@ public class GeneticAlgorithm {
 		param.numMutations = 0;
 		param.numCrosses = 0;
 		
-		//AAAAAAAAAA Igual poner algun if de que si el tipo es heuristica se guarda y asi no 
 		//Guardamos la función para la heurística
 		param.funct2 = (FunctionP2)funct;
 		

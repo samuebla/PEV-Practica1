@@ -3,10 +3,8 @@ package individual;
 import java.util.ArrayList;
 import java.util.List;
 
-import genetics.BinaryGen;
 import genetics.FlightGen;
 import genetics.Gen;
-import genetics.RealGen;
 
 //CROMOSOMA
 public class Chromosome {
@@ -24,11 +22,7 @@ public class Chromosome {
 		gens = new ArrayList<>();
 
 		for (Gen g : copyCrom.getGens()) {
-			if (g instanceof BinaryGen)
-				this.gens.add(new BinaryGen((BinaryGen) g));
-			else if (g instanceof RealGen)
-				this.gens.add(new RealGen((RealGen) g));
-			else if (g instanceof FlightGen)
+			if (g instanceof FlightGen)
 				this.gens.add(new FlightGen((FlightGen) g));
 		}
 
