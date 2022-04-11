@@ -1174,8 +1174,13 @@ public class Interface extends JFrame {
 			FlightGen vuelo = (FlightGen) d;
 			solu += (vuelo.pos_vuelo + 1) + " ";	
 		}
-		
+		System.out.println("==========================");
+		System.out.println("");
+		System.out.println("");
 		System.out.println("Sol : {" + solu + "}");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("==========================");
 		
 		panelMathPlot.addLegend("SOUTH");
 		panelMathPlot.addLinePlot("Best So Far", Color.BLUE, x, bestAbs);

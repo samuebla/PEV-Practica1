@@ -2,10 +2,6 @@ package launcher;
 
 import java.awt.EventQueue;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import graph.LinePlotExample;
 import ui.Interface;
