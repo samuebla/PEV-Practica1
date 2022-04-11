@@ -101,7 +101,7 @@ public class CrossOXPP extends Cross {
 
         while (i < son1.size()) {
         	//Solo cambia el valor en los casos en los que no se haya cambiado ya (Para dejar los cortes intactos)
-            if (son1.get(i).getGenFenotype() == -1) {
+            if (son1.get(i).getGenGenotype() == -1) {
                 if (!son1.contains(gens.get(acum))) {
                     son1.set(i, gens.get(acum));
                     i++;

@@ -30,36 +30,23 @@ public class FlightGen extends Gen {
 		this.TLA = copyGen.TLA;
 	}
 	
-	@Override
-	public void randomize(double min, double max) {
-		this.max_range = max;
-		this.min_range = min;
-
-		//Coge un numero aleatorio entre el min y el max
-		double aux = ThreadLocalRandom.current().nextDouble(min, max);
-		
-
-		//Obtenemos las cadenas de bits de los extremos del intervalo 
-		String arrmax = Integer.toBinaryString((int) (max/this.precision));
-		String arrmin = Integer.toBinaryString((int) (min/this.precision));
-		//Determinamos el maximo tamaño posible
-		this.maxCodificationSize = Math.max(arrmax.length(), arrmin.length());
-		
-		this.genotype = aux;
-		this.setGenotype(aux);
-	}
 
 	@Override
-	public double getGenFenotype() {
+	public double getGenGenotype() {
 		
 		 return pos_vuelo;
 	}
 	
 	
-	//CONVERSIÓN DE DECIMAL A BINARIO
 	@Override
 	public void setGenotype(double valor) {
 		pos_vuelo = (int) valor;
+	}
+
+	@Override
+	public void randomize(double min, double max) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

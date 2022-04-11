@@ -19,7 +19,7 @@ public abstract class Gen {
 	
 	//GETTERS
 	
-	public abstract double getGenFenotype();
+	public abstract double getGenGenotype();
 
 	public abstract void setGenotype(double aux);
 	
@@ -46,13 +46,13 @@ public abstract class Gen {
 		if(!(o instanceof  Gen)) return false;
 
 		Gen g = (Gen)o;
-		return g.getGenFenotype() == this.getGenFenotype();
+		return g.getGenGenotype() == this.getGenGenotype();
 	}
 	
 	public void setAlleles(List<Object> alelos) {
 		this.alleles = alelos;
 		//Para ver si es valor negativo o no
-		if(this.getGenFenotype() < this.min_range || this.getGenFenotype() > this.max_range) this.isNegative_ = !this.isNegative_;
+		if(this.getGenGenotype() < this.min_range || this.getGenGenotype() > this.max_range) this.isNegative_ = !this.isNegative_;
 	}	
 	
 	public void setMin(double min) {

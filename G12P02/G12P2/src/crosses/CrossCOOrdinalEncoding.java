@@ -31,8 +31,8 @@ public class CrossCOOrdinalEncoding extends Cross {
 		List<Integer> list2 = new ArrayList<>();
 
 		// Codificamos
-		encoding(genes1, son1, list1);
-		encoding(genes2, son1, list2);
+		encoding(genes1, list1);
+		encoding(genes2, list2);
 
 		// Ahora preparamos el cruce monopunto COMO LA PRACTICA 1, es igual
 		int random = ThreadLocalRandom.current().nextInt(1, genes1.size() - 1);
@@ -40,11 +40,11 @@ public class CrossCOOrdinalEncoding extends Cross {
 		// Cambiamos la mitad de uno
 		List<Integer> monopoint1 = list1.subList(0, random);
 		// Por la mitad del otro
-		monopoint1.addAll(list2.subList(random, genes1.size() - 1));
+		monopoint1.addAll(list2.subList(random, genes1.size()));
 
 		// Y viceversa
 		List<Integer> monopoint2 = list2.subList(0, random);
-		monopoint2.addAll(list1.subList(random, genes1.size() - 1));
+		monopoint2.addAll(list1.subList(random, genes1.size()));
 
 		// Y descodificamos
 		decoding(son1, monopoint1);
@@ -71,32 +71,36 @@ public class CrossCOOrdinalEncoding extends Cross {
 			pos.add(i);
 
 		//Decodificamos
-		for (int i = 0; i < son1.size() - 1; i++) {
+		for (int i = 0; i < son1.size(); i++) {
 			//Cogemos la lista de monopunto
-			son1.get(i).setGenotype(pos.get(monopoint.get(i)));
+			int index = monopoint.get(i);
+			double feno = pos.get(index);
+		    son1.get(i).setGenotype(feno);
 			//Y lo borramos de la lista
-			pos.remove(son1.get(i).getGenFenotype());
+			pos.remove(index);
 		}
 
 	}
 
-	private void encoding(List<Gen> genes1, List<Gen> hijo1, List<Integer> rec1) {
-		List<Integer> pos = new ArrayList<>();
+	private void encoding(List<Gen> genes, List<Integer> aux) {
+		List<Integer> listIndex = new ArrayList<>();
 
 		// Creamos un array con numeros de 0 al tamaño del hijo
-		for (int i = 0; i < hijo1.size(); i++)
-			pos.add(i);
+		for (int i = 0; i < genes.size(); i++)
+			listIndex.add(i);
 
 		// Orden
-		for (int i = 0; i < genes1.size() - 1; i++) {
-			Gen g = genes1.get(i);
+		for (int i = 0; i < genes.size(); i++) {
+			Gen g = genes.get(i);
 			// Buscamos el valor del gen en la lista ordenada y se añade en esa misma
 			// posicion
-			rec1.add(pos.indexOf((int) g.getGenFenotype()));
+			double feno = g.getGenGenotype();
+			int index = listIndex.indexOf((int) feno); 
+			aux.add(index);
 
 			// Y borramos el valor y la posicion de ese fenotipo, disminuyendo el tamaño del
 			// array
-			pos.remove(g.getGenFenotype());
+			listIndex.remove(index);
 		}
 	}
 

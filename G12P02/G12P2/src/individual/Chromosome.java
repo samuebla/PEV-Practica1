@@ -38,7 +38,7 @@ public class Chromosome {
 		List<Double> fenotype_ = new ArrayList<>();
 
 		for (Gen g : gens)
-			fenotype_.add(g.getGenFenotype());
+			fenotype_.add(g.getGenGenotype());
 		return fenotype_;
 	}
 
