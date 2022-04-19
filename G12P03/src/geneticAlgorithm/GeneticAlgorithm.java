@@ -73,7 +73,7 @@ public class GeneticAlgorithm {
 		param.numCrosses = 0;
 		
 		//Guardamos la función para la heurística
-		param.funct2 = (FunctionP2)funct;
+//		param.funct2 = (FunctionP2)funct;
 		
 		eliteSize = (int)(sizePopulation * eliPercentage);
 		
@@ -206,7 +206,7 @@ public class GeneticAlgorithm {
 	}
 	
 	private void selectTypes() {
-		funct = new FunctionP2(numPistas_, TTEL_vuelo_,separations_,minorTel_type_); //Compilation Purposes
+//		funct = new FunctionP2(numPistas_, TTEL_vuelo_,separations_,minorTel_type_); //Compilation Purposes
 		
 		select = new SelectionRoulette(); //Compilation Purposes
 		switch (SelecType_) {
@@ -230,40 +230,19 @@ public class GeneticAlgorithm {
 				break;
 		}
 		
-		cross = new CrossPMX(); //Compilation Purposes
-		switch (CrossType_) {
-			case PMX :
-				cross = new CrossPMX();
-				break;
-			case OX:
-				cross = new CrossOX();
-				break;
-			case OX_PP:
-				cross = new CrossOXPP();
-				break;
-			case Cycles_CX:
-				cross = new CrossCyclesCX();
-				break;
-			case CO_Ordinal_Encoding:
-				cross = new CrossCOOrdinalEncoding();
-				break;
-		}
+//		cross = new CrossPMX(); //Compilation Purposes
+//		switch (CrossType_) {
+//			case PMX :
+//				cross = new CrossPMX();
+//				break;
+//		}
 		
-		mut = new MutationInsertion(); //Compilation Purposes
-		switch (MutType_) {
-			case Insertion :
-				mut = new MutationInsertion();
-				break;
-			case Exchange:
-				mut = new MutationExchange();
-				break;
-			case Inversion:
-				mut = new MutationInversion();
-				break;
-			case Heuristics:
-				mut = new MutationHeuristics();
-				break;
-		}
+//		mut = new MutationInsertion(); //Compilation Purposes
+//		switch (MutType_) {
+//			case Insertion :
+//				mut = new MutationInsertion();
+//				break;
+//		}
 	}
 	
 	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct) {
