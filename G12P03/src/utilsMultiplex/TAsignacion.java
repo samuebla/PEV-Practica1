@@ -1,4 +1,4 @@
-package utilsFlight;
+package utilsMultiplex;
 
 public class TAsignacion {
 	public double TLA;

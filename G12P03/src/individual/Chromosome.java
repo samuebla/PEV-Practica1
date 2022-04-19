@@ -3,14 +3,17 @@ package individual;
 import java.util.ArrayList;
 import java.util.List;
 
-import genetics.FlightGen;
 import genetics.Gen;
+import utilsMultiplex.TArbol;
 
 //CROMOSOMA
 public class Chromosome {
 
 	// Contiene una lista de genes. En total suelen ser 2.
 	private List<Gen> gens;
+	
+	private TArbol tree;
+	
 	private double fitness;
 	private double puntuation;
 	private double puntuation_acc;
@@ -21,10 +24,7 @@ public class Chromosome {
 	public Chromosome(Chromosome copyCrom) {
 		gens = new ArrayList<>();
 
-		for (Gen g : copyCrom.getGens()) {
-			if (g instanceof FlightGen)
-				this.gens.add(new FlightGen((FlightGen) g));
-		}
+		tree = copyCrom.tree;
 
 		puntuation_acc = copyCrom.getPuntuationAcc();
 		fitness = copyCrom.getFitness();

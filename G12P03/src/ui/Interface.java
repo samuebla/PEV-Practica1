@@ -34,14 +34,14 @@ import javax.swing.table.TableModel;
 import org.math.plot.Plot2DPanel;
 
 import geneticAlgorithm.GeneticAlgorithm;
-import genetics.FlightGen;
+//import genetics.FlightGen;
 import genetics.Gen;
 import utils.CrossType;
 import utils.FunctionType;
 import utils.MutationType;
 import utils.SelectionType;
-import utilsFlight.FlightType;
-import utilsFlight.TVuelo;
+import utilsMultiplex.FlightType;
+import utilsMultiplex.TVuelo;
 
 public class Interface extends JFrame {
 
@@ -1168,16 +1168,16 @@ public class Interface extends JFrame {
 		solutionList.addItem("Best: " +  solutionBest);
 		solutionList.addItem("Worst: " +  solutionWorst);
 		
-		int i = 0;
-		String solu = "";
-		for(Gen d : sol) {
-			FlightGen vuelo = (FlightGen) d;
-			solu += (vuelo.pos_vuelo + 1) + " ";	
-		}
+//		int i = 0;
+//		String solu = "";
+//		for(Gen d : sol) {
+//			FlightGen vuelo = (FlightGen) d;
+//			solu += (vuelo.pos_vuelo + 1) + " ";	
+//		}
 		System.out.println("==========================");
 		System.out.println("");
 		System.out.println("");
-		System.out.println("Sol : {" + solu + "}");
+//		System.out.println("Sol : {" + solu + "}");
 		System.out.println("");
 		System.out.println("");
 		System.out.println("==========================");
@@ -1190,65 +1190,65 @@ public class Interface extends JFrame {
 		panelMathPlot.addLinePlot("Avarage", Color.GREEN, x, avarage);
 		
 		
-		List<FlightGen> vuelos = new ArrayList<>();
-		for (Gen g : sol) vuelos.add(new FlightGen((FlightGen) g));
-		MostrarTabla(vuelos);
+//		List<FlightGen> vuelos = new ArrayList<>();
+//		for (Gen g : sol) vuelos.add(new FlightGen((FlightGen) g));
+//		MostrarTabla(vuelos);
 	}
 	
-	private void MostrarTabla(List<FlightGen> vuelos) {
-		//Los vuelos vienen ordenados de menor a mayor TLA
-		DefaultTableModel model_ = (DefaultTableModel) solTablePista1.getModel();
-		int rowCount = model_.getRowCount();
-		//Remove rows one by one from the end of the table
-		for (int i = rowCount - 1; i >= 2; i--) {
-			model_.removeRow(i);
-		}
-		
-		model_ = (DefaultTableModel) solTablePista2.getModel();
-		rowCount = model_.getRowCount();
-		//Remove rows one by one from the end of the table
-		for (int i = rowCount - 1; i >= 2; i--) {
-			model_.removeRow(i);
-		}
-		
-		model_ = (DefaultTableModel) solTablePista3.getModel();
-		rowCount = model_.getRowCount();
-		//Remove rows one by one from the end of the table
-		for (int i = rowCount - 1; i >= 2; i--) {
-			model_.removeRow(i);
-		}
-		
-		//Los vuelos se ordenan de menor a mayor TLA
-		   Collections.sort(vuelos, new Comparator<FlightGen>() {
-				//Para quitar los warning
-				@SuppressWarnings("removal")
-				@Override
-			    public int compare(FlightGen c1, FlightGen c2) {
-			        return new Double(c1.TLA).compareTo(new Double(c2.TLA));
-			    }
-			});
-		   
-		   for(FlightGen g : vuelos) {
-			   
-			   switch(g.pistaAsignada) {
-			   		case 0:{
-			   			DefaultTableModel model = (DefaultTableModel) solTablePista1.getModel();
-			   			model.addRow(new Object[]{ (g.pos_vuelo + 1), TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
-			   		}
-			   		break;
-			   		case 1:{
-			   			DefaultTableModel model = (DefaultTableModel) solTablePista2.getModel();
-			   			model.addRow(new Object[]{ (g.pos_vuelo + 1) , TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
-			   		}
-			   		break;
-			   		case 2:{
-			   			DefaultTableModel model = (DefaultTableModel) solTablePista3.getModel();
-			   			model.addRow(new Object[]{ (g.pos_vuelo + 1) , TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
-			   		}
-			   		break;
-			   };
-		   }
-	}
+//	private void MostrarTabla(List<FlightGen> vuelos) {
+//		//Los vuelos vienen ordenados de menor a mayor TLA
+//		DefaultTableModel model_ = (DefaultTableModel) solTablePista1.getModel();
+//		int rowCount = model_.getRowCount();
+//		//Remove rows one by one from the end of the table
+//		for (int i = rowCount - 1; i >= 2; i--) {
+//			model_.removeRow(i);
+//		}
+//		
+//		model_ = (DefaultTableModel) solTablePista2.getModel();
+//		rowCount = model_.getRowCount();
+//		//Remove rows one by one from the end of the table
+//		for (int i = rowCount - 1; i >= 2; i--) {
+//			model_.removeRow(i);
+//		}
+//		
+//		model_ = (DefaultTableModel) solTablePista3.getModel();
+//		rowCount = model_.getRowCount();
+//		//Remove rows one by one from the end of the table
+//		for (int i = rowCount - 1; i >= 2; i--) {
+//			model_.removeRow(i);
+//		}
+//		
+//		//Los vuelos se ordenan de menor a mayor TLA
+//		   Collections.sort(vuelos, new Comparator<FlightGen>() {
+//				//Para quitar los warning
+//				@SuppressWarnings("removal")
+//				@Override
+//			    public int compare(FlightGen c1, FlightGen c2) {
+//			        return new Double(c1.TLA).compareTo(new Double(c2.TLA));
+//			    }
+//			});
+//		   
+//		   for(FlightGen g : vuelos) {
+//			   
+//			   switch(g.pistaAsignada) {
+//			   		case 0:{
+//			   			DefaultTableModel model = (DefaultTableModel) solTablePista1.getModel();
+//			   			model.addRow(new Object[]{ (g.pos_vuelo + 1), TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+//			   		}
+//			   		break;
+//			   		case 1:{
+//			   			DefaultTableModel model = (DefaultTableModel) solTablePista2.getModel();
+//			   			model.addRow(new Object[]{ (g.pos_vuelo + 1) , TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+//			   		}
+//			   		break;
+//			   		case 2:{
+//			   			DefaultTableModel model = (DefaultTableModel) solTablePista3.getModel();
+//			   			model.addRow(new Object[]{ (g.pos_vuelo + 1) , TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
+//			   		}
+//			   		break;
+//			   };
+//		   }
+//	}
 	
 	private void getFunctionType() {
 		int index = functionDropdown.getSelectedIndex();

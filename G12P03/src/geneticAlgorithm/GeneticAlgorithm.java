@@ -10,7 +10,7 @@ import individual.*;
 import mutations.*;
 import selection.*;
 import utils.*;
-import utilsFlight.TVuelo;
+import utilsMultiplex.TVuelo;
 import ui.Interface;
 
 public class GeneticAlgorithm {
@@ -257,11 +257,11 @@ public class GeneticAlgorithm {
 			for(int j = 0; j < TTEL_vuelo_.size(); j++) {
 				int index = ThreadLocalRandom.current().nextInt(0, vuelos.size());
 				
-				FlightGen gen = new FlightGen((float) precision);
-				gen.pos_vuelo = vuelos.get(index);
-//				gen.pistaAsignada = ThreadLocalRandom.current().nextInt(0, 3);
-				vuelos.remove(index);
-				genes.add(gen);
+//				FlightGen gen = new FlightGen((float) precision);
+//				gen.pos_vuelo = vuelos.get(index);
+////				gen.pistaAsignada = ThreadLocalRandom.current().nextInt(0, 3);
+//				vuelos.remove(index);
+//				genes.add(gen);
 			}
 			population.getPopulation().add(new Chromosome(genes));
 		}

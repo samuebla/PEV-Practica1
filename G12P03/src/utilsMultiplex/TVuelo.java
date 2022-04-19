@@ -1,8 +1,8 @@
-package utilsFlight;
+package utilsMultiplex;
 
 import java.util.List;
 
-import utilsFlight.FlightType;
+import utilsMultiplex.FlightType;
 
 public class TVuelo {
 	public String name_;
