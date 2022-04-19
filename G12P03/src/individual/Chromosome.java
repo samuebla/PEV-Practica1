@@ -9,6 +9,8 @@ import utilsMultiplex.TArbol;
 //CROMOSOMA
 public class Chromosome {
 
+	//TODO METER UN PUTO ARBOL Y QUITAR LOS PUTOS GENES
+	
 	// Contiene una lista de genes. En total suelen ser 2.
 	private List<Gen> gens;
 	
