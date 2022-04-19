@@ -230,19 +230,27 @@ public class GeneticAlgorithm {
 				break;
 		}
 		
-//		cross = new CrossPMX(); //Compilation Purposes
-//		switch (CrossType_) {
-//			case PMX :
-//				cross = new CrossPMX();
-//				break;
-//		}
+		cross = new CrossTree(); //Compilation Purposes
+
 		
-//		mut = new MutationInsertion(); //Compilation Purposes
-//		switch (MutType_) {
-//			case Insertion :
-//				mut = new MutationInsertion();
-//				break;
-//		}
+		mut = new Terminal(); //Compilation Purposes
+		switch (MutType_) {
+			case Terminal :
+				mut = new Terminal();
+			case Functional :
+				mut = new Functional();
+			case TreeSubtree :
+				mut = new TreeSubtree();
+			case Permutation :
+				mut = new Permutation();
+			case Hoist :
+				mut = new Hoist();
+			case Expansion :
+				mut = new Expansion();
+			case Contraction :
+				mut = new Contraction();
+				break;
+		}
 	}
 	
 	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct) {

@@ -561,7 +561,7 @@ public class Interface extends JFrame {
 		
 		functionDropdown = new JComboBox();
 		functionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		functionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Function Practice 2"}));
+		functionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Function Multiplexor"}));
 				
 		GroupLayout gl_functionPanel = new GroupLayout(functionPanel);
 		gl_functionPanel.setHorizontalGroup(
@@ -707,7 +707,7 @@ public class Interface extends JFrame {
 		
 		crossDropdown = new JComboBox();
 		crossDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Orden OX","PMX","Orden OX Priority Positions", "Cyles CX", "Ordinal Encoding"}));
+		crossDropdown.setModel(new DefaultComboBoxModel(new String[] {"Tree"}));
 		
 		GroupLayout gl_crossPanel = new GroupLayout(crossPanel);
 		gl_crossPanel.setHorizontalGroup(
@@ -743,7 +743,7 @@ public class Interface extends JFrame {
 		
 		mutationDropdown = new JComboBox();
 		mutationDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Insertion", "Exchange", "Inversion", "Heuristics"}));
+		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Terminal", "Functional", "TreeSubtree", "Permutation", "Hoist", "Expansion", "Contraction"}));
 		
 		GroupLayout gl_MutationPanel = new GroupLayout(MutationPanel);
 		gl_MutationPanel.setHorizontalGroup(
