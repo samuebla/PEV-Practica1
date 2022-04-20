@@ -182,7 +182,7 @@ public class GeneticAlgorithm {
 		int best_pos = 0;
 		//Para cada gen, evaluamos su valor con la funcion F.
 		for(Chromosome c : poblation.getPopulation()) {
-			c.setFitness(funct.ejecutar(c.getGens()));
+//			c.setFitness(funct.ejecutar(c.getGens()));
 		}
 		
 		poblation.displaceFitness();
@@ -271,7 +271,7 @@ public class GeneticAlgorithm {
 //				vuelos.remove(index);
 //				genes.add(gen);
 			}
-			population.getPopulation().add(new Chromosome(genes));
+//			population.getPopulation().add(new Chromosome(genes));
 		}
 		return population;
 	}

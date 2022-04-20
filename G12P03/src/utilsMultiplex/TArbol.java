@@ -1,74 +1,238 @@
 package utilsMultiplex;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import individual.Chromosome;
+
 public class TArbol {
-	String data; //operator o operand
-	
-	TArbol Hi;
-	TArbol Hc;	//Central
-	TArbol Hd;
-	
-	int num_nodes;
-	int depth;
-	
-	TArbol buildTree(TArbol tree, int depth_min, int depth_max) {
-		
-		//Sigue creando hijos si no ha llegado a la profundidad minima	
-		if(depth_min > 0) {
-			//Generamos un subarbol del operador
-			//operador = operadorAleatorio;
-			
-			//Ponemos el simbolo del operador aleatorio
-			//tree.data = operador;
-			
-			//Generamos los hijos
-			Hi = buildTree(tree.Hi, depth_min-1, depth_max-1);
-			
-			//Le sumamos los nodos de sus hijos
-			tree.num_nodes += tree.Hi.num_nodes;
-			
-			//Si el operador tiene 3 operandos (Un IF)
-			//TODO FALTA POR HACER COÑO
-			if(true) {
-				//Tb creamos en la raiz
-				Hc = buildTree(tree.Hc, depth_min-1, depth_max-1);
-				tree.num_nodes += tree.Hc.num_nodes;
+	private String valor;
+	private ArrayList<TArbol> hijos;
+	private int numHijos;
+	private int numNodos;
+	private int max_prof;
+	private int profundidad;
+	private boolean useIF;
+	private boolean esHoja;
+	private boolean esRaiz;
+
+	// Devuelve el arbol en forma de array
+	public ArrayList<String> toArray() {
+		ArrayList<String> array = new ArrayList<String>();
+		toArrayAux(array, this);
+		return array;
+	}
+
+	// Constructora por defecto
+	public TArbol() {
+
+		valor = "";
+		hijos = new ArrayList<TArbol>();
+		numHijos = 0;
+		numNodos = 0;
+
+	}
+
+	public TArbol(String v) {
+		valor = v;
+		hijos = new ArrayList<TArbol>();
+		numHijos = 0;
+	}
+
+	// Para los IF
+	public TArbol(int depth, boolean useIF_) {
+		valor = "";
+		hijos = new ArrayList<TArbol>();
+		numHijos = 0;
+		max_prof = depth;
+		setProfundidad(0);
+		numNodos = 0;
+		useIF = useIF_;
+	}
+
+	// Insertar un valor en el arbol (nodo simple)
+	public TArbol insert(String v, int index) {
+		TArbol a = new TArbol(v);
+		if (index == -1) {
+			hijos.add(a);
+			setNumHijos(hijos.size());
+		} else
+			hijos.set(index, a);
+		return a;
+	}
+
+	// Insertar un arbol en otro arbol.
+	public void insert(TArbol a, int index) {
+		if (index == -1) {
+			hijos.add(a);
+			setNumHijos(hijos.size());
+		} else
+			hijos.set(index, a);
+	}
+
+	public TArbol at(int index) {
+		return at(this, 0, index);
+	}
+
+	private TArbol at(TArbol a, int pos, int index) {
+		TArbol s = null;
+		if (pos >= index)
+			s = a;
+		else if (a.getNumHijos() > 0) {
+			for (int i = 0; i < a.getNumHijos(); i++)
+				if (s == null)
+					s = at(a.getHijos().get(i), pos + i + 1, index);
+		}
+		return s;
+	}
+
+	private void toArrayAux(ArrayList<String> array, TArbol a) {
+		array.add(a.valor);
+		for (int i = 0; i < a.hijos.size(); i++) {
+			toArrayAux(array, a.hijos.get(i));
+		}
+	}
+
+	public int inicializacionCompleta(int p, int nodos) {
+		int n = nodos;
+		int nHijos = 2;
+		if (p < max_prof) {
+			setProfundidad(p);
+			Random rnd = new Random();
+			int func = 0;
+			if (useIF) {
+				func = rnd.nextInt(Chromosome.funciones.length);
+			} else {
+				func = rnd.nextInt(Chromosome.funciones.length - 1);
 			}
-			Hd = buildTree(tree.Hd, depth_min-1, depth_max-1);
-
-			tree.num_nodes += tree.Hd.num_nodes;
-
+			this.valor = Chromosome.funciones[func];
+			this.setEsRaiz(true);
 		}
-		else
-			depth_min = 0;
-		
-		//Si has llegado al maximo
-		if(depth_max == 0) {
-			//Solo puede ser una hoja
-			
-			//Generamos un subarbol del operador
-			//operador = operadorAleatorio;
-			
-			//Ponemos el simbolo del operador aleatorio
-			//tree.data = operador;
-			
-			//Le sumamos el ultimo nodo
-			tree.num_nodes += 1;
-		}
+		//Si es una hoja
 		else {
-			//Decidimos aleatoriamente su operando u operador
-			//tipo = RANDOM DE 0 A 1;
-			//if(tipo == 1){
-			//Generamos un operador
-			//Seguimos con la generacion del subarbol de operador
-			//else
-			//generas un operando
-			//Seguimos con la generacion del subarbol de operando
+			setProfundidad(p);
+			Random rnd = new Random();
+			int terminal;
+			this.setEsHoja(true);
+			terminal = rnd.nextInt(Chromosome.terminales.length);
+			valor = Chromosome.terminales[terminal];
+			esHoja = true;
+			numHijos = 0;
+			
 		}
 		
+		setNumNodos(n);
 		
+		return n;
+	}
+	
+	
+	//TODO
+	public void inicializacionCreciente(int i) {
+		// TODO Auto-generated method stub
 		
-		//Provisional
-		return tree;
-		
+	}
+	
+//
+//	TArbol buildTree(TArbol tree, int depth_min, int depth_max) {
+//
+//		// Sigue creando hijos si no ha llegado a la profundidad minima
+//		if (depth_min > 0) {
+//			// Generamos un subarbol del operador
+//			// operador = operadorAleatorio;
+//
+//			// Ponemos el simbolo del operador aleatorio
+//			// tree.data = operador;
+//
+//			// Generamos los hijos
+//			Hi = buildTree(tree.Hi, depth_min - 1, depth_max - 1);
+//
+//			// Le sumamos los nodos de sus hijos
+//			tree.num_nodes += tree.Hi.num_nodes;
+//
+//			// Si el operador tiene 3 operandos (Un IF)
+//			// TODO FALTA POR HACER COÑO
+//			if (true) {
+//				// Tb creamos en la raiz
+//				Hc = buildTree(tree.Hc, depth_min - 1, depth_max - 1);
+//				tree.num_nodes += tree.Hc.num_nodes;
+//			}
+//			Hd = buildTree(tree.Hd, depth_min - 1, depth_max - 1);
+//
+//			tree.num_nodes += tree.Hd.num_nodes;
+//
+//		} else
+//			depth_min = 0;
+//
+//		// Si has llegado al maximo
+//		if (depth_max == 0) {
+//			// Solo puede ser una hoja
+//
+//			// Generamos un subarbol del operador
+//			// operador = operadorAleatorio;
+//
+//			// Ponemos el simbolo del operador aleatorio
+//			// tree.data = operador;
+//
+//			// Le sumamos el ultimo nodo
+//			tree.num_nodes += 1;
+//		} else {
+//			// Decidimos aleatoriamente su operando u operador
+//			// tipo = RANDOM DE 0 A 1;
+//			// if(tipo == 1){
+//			// Generamos un operador
+//			// Seguimos con la generacion del subarbol de operador
+//			// else
+//			// generas un operando
+//			// Seguimos con la generacion del subarbol de operando
+//		}
+//
+//		// Provisional
+//		return tree;
+//
+//	}
+
+	public int getNumHijos() {
+		return numHijos;
+	}
+
+	public void setNumHijos(int numHijos) {
+		this.numHijos = numHijos;
+	}
+
+	public int getNumNodos() {
+		return numNodos;
+	}
+
+	public void setNumNodos(int numNodos) {
+		this.numNodos = numNodos;
+	}
+
+	public int getProfundidad() {
+		return profundidad;
+	}
+
+	public void setProfundidad(int profundidad) {
+		this.profundidad = profundidad;
+	}
+
+	public ArrayList<TArbol> getHijos() {
+		return hijos;
+	}
+
+	public boolean isEsRaiz() {
+		return esRaiz;
+	}
+
+	public void setEsRaiz(boolean esRaiz) {
+		this.esRaiz = esRaiz;
+	}
+
+	public boolean isEsHoja() {
+		return esHoja;
+	}
+
+	public void setEsHoja(boolean esHoja) {
+		this.esHoja = esHoja;
 	}
 }

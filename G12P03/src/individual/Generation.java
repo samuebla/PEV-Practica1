@@ -19,6 +19,6 @@ public class Generation {
 		worst = population.get(0).getFitness();
 		
 		sol = new ArrayList<Gen>();
-		sol.addAll(population.get(size - 1).getGens());
+//		sol.addAll(population.get(size - 1).getGens());
 	}
 }

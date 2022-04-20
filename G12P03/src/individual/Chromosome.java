@@ -2,6 +2,7 @@ package individual;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import genetics.Gen;
 import utilsMultiplex.TArbol;
@@ -9,22 +10,43 @@ import utilsMultiplex.TArbol;
 //CROMOSOMA
 public class Chromosome {
 
-	//TODO METER UN PUTO ARBOL Y QUITAR LOS PUTOS GENES
-	
-	// Contiene una lista de genes. En total suelen ser 2.
-	private List<Gen> gens;
-	
+	public static String terminales[];
+	public static final String terminales6[] = { "A0", "A1", "D0", "D1", "D2", "D3" };
+	public static final String funciones[] = { "AND", "OR", "NOT", "IF" };
 	private TArbol tree;
-	
 	private double fitness;
 	private double puntuation;
 	private double puntuation_acc;
-
+	private String fenotipo;
 	private double fitnessDisplaced;
+
+
+	public Chromosome(int profundidad, int tipoCreacion, boolean useIf, int tipoMultiplexor) {
+
+		tree = new TArbol(profundidad, useIf);
+		switch (tipoCreacion) {
+		case 0:
+			tree.inicializacionCreciente(0);
+			break;
+		case 1:
+			tree.inicializacionCompleta(0, 0);
+			break;
+		case 2:
+			int ini = new Random().nextInt(2);
+			if (ini == 0)
+				tree.inicializacionCreciente(0);
+			else
+				tree.inicializacionCompleta(0, 0);
+			break;
+		}
+	}
+	
+
+
+
 
 	// Constructora por copia
 	public Chromosome(Chromosome copyCrom) {
-		gens = new ArrayList<>();
 
 		tree = copyCrom.tree;
 
@@ -32,46 +54,18 @@ public class Chromosome {
 		fitness = copyCrom.getFitness();
 	}
 
-	public Chromosome(List<Gen> genes) {
-		this.gens = genes;
-	}
 
-	public List<Double> getPhenotype() {
-		List<Double> fenotype_ = new ArrayList<>();
 
-		for (Gen g : gens)
-			fenotype_.add(g.getGenGenotype());
-		return fenotype_;
-	}
+	public String getPhenotype() {
 
-	// Devuelve una lista con todos los alelos de ambos genes
-	public List<Object> getAlleles() {
-		List<Object> alleles = new ArrayList<>();
-
-		for (Gen g : this.gens)
-			alleles.addAll(g.getAlleles());
-
-		return alleles;
+		return fenotipo;
 	}
 
 	// Tamaño total de ambos genes
 	public int getTam() {
-		int ret = 0;
-		if (!gens.isEmpty()) {
-			for (Gen g : this.gens) {
-				ret += g.getTam();
-			}
-		}
 
-		return ret;
-	}
-
-	public List<Gen> getGens() {
-		return gens;
-	}
-
-	public void setGens(List<Gen> aux) {
-		this.gens = aux;
+		//TODO AAA NO SE SI ES NUMNODOS O NUNHIJOS
+		return tree.getNumNodos();
 	}
 
 	public double getFitness() {
