@@ -40,10 +40,6 @@ public class Chromosome {
 			break;
 		}
 	}
-	
-
-
-
 
 	// Constructora por copia
 	public Chromosome(Chromosome copyCrom) {
