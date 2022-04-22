@@ -70,7 +70,6 @@ public class Interface extends JFrame {
 	JLabel truncLabel;
 	JComboBox fitnessTypeDropdown;
 	JComboBox caseDropdown;
-	JCheckBox readFileCheckbox;
 	
 	private int sizePop; 
 	private int numGenerations; 
@@ -81,16 +80,9 @@ public class Interface extends JFrame {
 	private double eliPercentage;
 	private JTextField mutField;
 	
-	JTable flightTable;
-	JTable telsTable;
-	JTable separationsTable;
-	
 	List<TVuelo> TTEL_vuelos;
 	List<ArrayList<Double>> separations;
 	final int numPistas = 3;
-	private JTable solTablePista1;
-	private JTable solTablePista2;
-	private JTable solTablePista3;
 	private JTextField crosField;
 	
 	
@@ -102,7 +94,7 @@ public class Interface extends JFrame {
 		setBounds(100, 100, 1080, 720);
 		contentPane = new JPanel();
 
-		String title = "Practica 1 - Programacion Evolutiva           |            Jose Daniel Rave Robayo - Samuel Blázquez";
+		String title = "Practica 3 - Programacion Evolutiva           |            Jose Daniel Rave Robayo - Samuel Blázquez";
 		contentPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		setContentPane(contentPane);
 		this.setTitle(title);
@@ -177,222 +169,24 @@ public class Interface extends JFrame {
 		JPanel entryTab = new JPanel();
 		tabbedPane.addTab("Entry", null, entryTab, null);
 		
-		flightTable = new JTable() {
-			
-			@Override
-			  	public boolean isCellEditable(int row, int column) {
-			       //Only the third column
-			       return row != 0;
-			   }
-		};
-		flightTable.setFont(new Font("Georgia", Font.PLAIN, 11));
-		flightTable.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"},
-				{"UA138", "UA532", "UA599", "NW358", "UA2987", "AA128", "UA1482", "NW357", "AA129", "UA2408", "UA805", "AA309"},
-				{"W", "G", "W", "W", "P", "W", "G", "W", "W", "P", "W", "G"},
-			},
-			new String[] {
-				"V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"
-			}
-		));
-		
-		telsTable = new JTable();
-		telsTable.setRowHeight(20);
-		telsTable.setFont(new Font("Georgia", Font.PLAIN, 11));
-		telsTable.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"11", "15", "6", "6", "9", "7", "15", "6", "6", "9", "7", "9"},
-				{"10", "17", "7", "7", "12", "6", "17", "7", "7", "12", "6", "7"},
-				{"9", "19", "8", "8", "15", "5", "19", "8", "8", "15", "5", "5"},
-			},
-			new String[] {
-				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
-			}
-		));
-		
-		separationsTable = new JTable(){
-			
-			@Override
-			  	public boolean isCellEditable(int row, int column) {
-			       //Only the third column
-					if(column == 0)
-						return false;
-					
-					if(row == 0)
-						return false;
-					
-					return true;
-			   }
-		};
-		separationsTable.setRowHeight(30);
-		separationsTable.setFont(new Font("Georgia", Font.PLAIN, 18));
-		separationsTable.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, "W", "G", "P"},
-				{"W", "1", "1.5", "2"},
-				{"G", "1", "1.5", "1.5"},
-				{"P", "1", "1", "1"},
-			},
-			new String[] {
-				"New column", "New column", "New column", "New column"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Object.class, String.class, Object.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		
-		JPanel sizePanel_1 = new JPanel();
-		sizePanel_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		sizePanel_1.setBackground(Color.LIGHT_GRAY);
-		
-		JLabel lblFlights = new JLabel("Flights");
-		lblFlights.setFont(new Font("Georgia", Font.PLAIN, 18));
-		GroupLayout gl_sizePanel_1 = new GroupLayout(sizePanel_1);
-		gl_sizePanel_1.setHorizontalGroup(
-			gl_sizePanel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_sizePanel_1.createSequentialGroup()
-					.addContainerGap(129, Short.MAX_VALUE)
-					.addComponent(lblFlights, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-					.addGap(127))
-		);
-		gl_sizePanel_1.setVerticalGroup(
-			gl_sizePanel_1.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_sizePanel_1.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblFlights)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		sizePanel_1.setLayout(gl_sizePanel_1);
-		
-		JPanel sizePanel_1_1 = new JPanel();
-		sizePanel_1_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		sizePanel_1_1.setBackground(Color.LIGHT_GRAY);
-		
-		JLabel lblTels = new JLabel("TELS");
-		lblTels.setFont(new Font("Georgia", Font.PLAIN, 18));
-		GroupLayout gl_sizePanel_1_1 = new GroupLayout(sizePanel_1_1);
-		gl_sizePanel_1_1.setHorizontalGroup(
-			gl_sizePanel_1_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_sizePanel_1_1.createSequentialGroup()
-					.addContainerGap(129, Short.MAX_VALUE)
-					.addComponent(lblTels, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-					.addGap(127))
-		);
-		gl_sizePanel_1_1.setVerticalGroup(
-			gl_sizePanel_1_1.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_sizePanel_1_1.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblTels)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		sizePanel_1_1.setLayout(gl_sizePanel_1_1);
-		
-		JPanel sizePanel_1_1_1 = new JPanel();
-		sizePanel_1_1_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		sizePanel_1_1_1.setBackground(Color.LIGHT_GRAY);
-		
-		JLabel lblWeights = new JLabel("Weights Separations");
-		lblWeights.setFont(new Font("Georgia", Font.PLAIN, 18));
-		GroupLayout gl_sizePanel_1_1_1 = new GroupLayout(sizePanel_1_1_1);
-		gl_sizePanel_1_1_1.setHorizontalGroup(
-			gl_sizePanel_1_1_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_sizePanel_1_1_1.createSequentialGroup()
-					.addContainerGap(81, Short.MAX_VALUE)
-					.addComponent(lblWeights, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-					.addGap(63))
-		);
-		gl_sizePanel_1_1_1.setVerticalGroup(
-			gl_sizePanel_1_1_1.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_sizePanel_1_1_1.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(lblWeights)
-					.addContainerGap())
-		);
-		sizePanel_1_1_1.setLayout(gl_sizePanel_1_1_1);
-		
-		readFileCheckbox = new JCheckBox("Read From File");
-		readFileCheckbox.setFont(new Font("Georgia", Font.BOLD, 12));
-		
-		readFileCheckbox.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		        int funct = selectionDropdown.getSelectedIndex();
-		        if(readFileCheckbox.isSelected()) {
-		        	caseDropdown.setEnabled(true);
-		        	flightTable.setEnabled(false);
-		        	separationsTable.setEnabled(false);
-		        	telsTable.setEnabled(false);
-		        }else {
-		        	caseDropdown.setEnabled(false);
-		        	flightTable.setEnabled(true);
-		        	separationsTable.setEnabled(true);
-		        	telsTable.setEnabled(true);
-		        }
-		    }
-		});
-		
 		caseDropdown = new JComboBox();
 		caseDropdown.setEnabled(false);
 		caseDropdown.setModel(new DefaultComboBoxModel(new String[] {"Case1", "Case2"}));
 		caseDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		GroupLayout gl_entryTab = new GroupLayout(entryTab);
 		gl_entryTab.setHorizontalGroup(
-			gl_entryTab.createParallelGroup(Alignment.LEADING)
+			gl_entryTab.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(361)
-					.addComponent(sizePanel_1_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1736, Short.MAX_VALUE))
-				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(370)
-					.addComponent(sizePanel_1_1_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1727, Short.MAX_VALUE))
-				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(228)
-					.addComponent(separationsTable, GroupLayout.PREFERRED_SIZE, 581, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1616, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_entryTab.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
-						.addComponent(flightTable, GroupLayout.DEFAULT_SIZE, 1049, Short.MAX_VALUE)
-						.addComponent(telsTable, GroupLayout.DEFAULT_SIZE, 1039, Short.MAX_VALUE))
-					.addGap(1376))
-				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(359)
-					.addComponent(sizePanel_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1738, Short.MAX_VALUE))
-				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(461)
-					.addComponent(readFileCheckbox)
-					.addContainerGap(1867, Short.MAX_VALUE))
-				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(442)
+					.addGap(64)
 					.addComponent(caseDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1824, Short.MAX_VALUE))
+					.addContainerGap(1839, Short.MAX_VALUE))
 		);
 		gl_entryTab.setVerticalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_entryTab.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(readFileCheckbox)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(48)
 					.addComponent(caseDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-					.addGap(45)
-					.addComponent(sizePanel_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(flightTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(sizePanel_1_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(31)
-					.addComponent(telsTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(62)
-					.addComponent(sizePanel_1_1_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(separationsTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(613, Short.MAX_VALUE))
+					.addContainerGap(1149, Short.MAX_VALUE))
 		);
 		entryTab.setLayout(gl_entryTab);
 		
@@ -933,115 +727,7 @@ public class Interface extends JFrame {
 					.addGap(577))
 		);
 		evolTab.setLayout(gl_evolTab);
-		
-		JPanel solTab = new JPanel();
-		tabbedPane.addTab("Solution", null, solTab, null);
 		int tamCell = 20;
-		solTablePista1 = new JTable();
-		solTablePista1.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"N\u00FAm Pista", "1", null},
-				{"Vuelo", "Nombre", "TLA"},
-			},
-			new String[] {
-				"New column", "New column", "New column"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		solTablePista1.setRowHeight(tamCell);
-		solTablePista1.setFont(new Font("Georgia", Font.PLAIN, 18));
-		
-		solTablePista2 = new JTable();
-		solTablePista2.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"N\u00FAm Pista", "2", null},
-				{"Vuelo", "Nombre", "TLA"},
-			},
-			new String[] {
-				"New column", "New column", "New column"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		solTablePista2.setRowHeight(tamCell);
-		solTablePista2.setFont(new Font("Georgia", Font.PLAIN, 18));
-		
-		solTablePista3 = new JTable();
-		solTablePista3.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"N\u00FAm Pista", "3", null},
-				{"Vuelo", "Nombre", "TLA"},
-			},
-			new String[] {
-				"New column", "New column", "New column"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		solTablePista3.setRowHeight(tamCell);
-		solTablePista3.setFont(new Font("Georgia", Font.PLAIN, 18));
-		
-		JButton startButton_1 = new JButton("Evolute");
-		startButton_1.setBackground(new Color(175, 238, 238));
-		startButton_1.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {			
-				try {
-					processData();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}		
-			}
-		});
-		
-		GroupLayout gl_solTab = new GroupLayout(solTab);
-		gl_solTab.setHorizontalGroup(
-			gl_solTab.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_solTab.createSequentialGroup()
-					.addGroup(gl_solTab.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_solTab.createSequentialGroup()
-							.addGap(22)
-							.addComponent(solTablePista1, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
-							.addGap(29)
-							.addComponent(solTablePista2, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE)
-							.addGap(30)
-							.addComponent(solTablePista3, GroupLayout.PREFERRED_SIZE, 313, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_solTab.createSequentialGroup()
-							.addGap(508)
-							.addComponent(startButton_1, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(1405, Short.MAX_VALUE))
-		);
-		gl_solTab.setVerticalGroup(
-			gl_solTab.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_solTab.createSequentialGroup()
-					.addGap(4)
-					.addComponent(startButton_1)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_solTab.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(solTablePista3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(solTablePista1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(solTablePista2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(1128, Short.MAX_VALUE))
-		);
-		solTab.setLayout(gl_solTab);
 		
 		contentPane.setLayout(gl_contentPane);		
 	}
@@ -1071,8 +757,7 @@ public class Interface extends JFrame {
 		
 		boolean typeFitness_minorTel = fitnessTypeDropdown.getSelectedIndex() == 0 ? true : false;
 		
-		readEntry();
-		
+//		readEntry();
 		getFunctionType();
 		getSelectionType();
 		getCrossType();
@@ -1083,71 +768,37 @@ public class Interface extends JFrame {
 				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations, numPistas, typeFitness_minorTel, betaValue);
 	}
 	
-	private void readEntry() throws IOException {
-		if(readFileCheckbox.isSelected()) {
-			String file = caseDropdown.getSelectedItem().toString();
-			BufferedReader br = new BufferedReader(new FileReader(file + ".txt"));
-			try {
-				int numFlights = Integer.parseInt(br.readLine());
-				TTEL_vuelos = new ArrayList<TVuelo>();
-				for(int i = 0; i < numFlights ; i++) {
-					int j = 1;
-					TVuelo vuelo = new TVuelo();
-					String data = br.readLine();
-					String[] tokens = data.split(" ");
-					vuelo.name_ = tokens[0];
-					vuelo.type_ = FlightType.valueOf(tokens[1]);
-					vuelo.TTEL_vuelo = new ArrayList<Double>();
-					int tok = 2;
-					for(int k = 0; k < numPistas; k++) {
-						double tel = Double.parseDouble(tokens[tok++]);
-						vuelo.TTEL_vuelo.add(tel);
-					}
-					TTEL_vuelos.add(vuelo);
-				}
-				
-			} finally {
-			    br.close();
-			}
-		}else {
-			readFlightsNTels();
-		}
-		readSeparations();
-	}
-	
-	private void readFlightsNTels() {
-		int numRows = flightTable.getRowCount();
-		int numCols = flightTable.getColumnCount();
-		
-		TTEL_vuelos = new ArrayList<TVuelo>();
-		for(int i = 0; i < numCols ; i++) {
-			int j = 1;
-			TVuelo vuelo = new TVuelo();
-			vuelo.name_ = flightTable.getModel().getValueAt(j++ ,i).toString();
-			vuelo.type_ = FlightType.valueOf(flightTable.getModel().getValueAt(j, i).toString());
-			vuelo.TTEL_vuelo = new ArrayList<Double>();
-			for(int k = 0; k < numPistas; k++) {
-				double tel = Double.parseDouble(telsTable.getModel().getValueAt(k , i).toString());
-				vuelo.TTEL_vuelo.add(tel);
-			}
-			TTEL_vuelos.add(vuelo);
-		}
-	}
-	
-	private void readSeparations() {
-		int numRows = separationsTable.getRowCount();
-		int numCols = separationsTable.getColumnCount();
-		
-		separations = new ArrayList<ArrayList<Double>>();
-		
-		for(int i = 1; i < numRows; i++) {
-			ArrayList<Double>  sep = new ArrayList<Double>();
-			for(int j = 1; j < numCols; j++) {
-				sep.add(Double.parseDouble(separationsTable.getModel().getValueAt(i, j).toString()));
-			}
-			separations.add(sep);
-		}
-	}
+//	private void readEntry() throws IOException {
+//		if(readFileCheckbox.isSelected()) {
+//			String file = caseDropdown.getSelectedItem().toString();
+//			BufferedReader br = new BufferedReader(new FileReader(file + ".txt"));
+//			try {
+//				int numFlights = Integer.parseInt(br.readLine());
+//				TTEL_vuelos = new ArrayList<TVuelo>();
+//				for(int i = 0; i < numFlights ; i++) {
+//					int j = 1;
+//					TVuelo vuelo = new TVuelo();
+//					String data = br.readLine();
+//					String[] tokens = data.split(" ");
+//					vuelo.name_ = tokens[0];
+//					vuelo.type_ = FlightType.valueOf(tokens[1]);
+//					vuelo.TTEL_vuelo = new ArrayList<Double>();
+//					int tok = 2;
+//					for(int k = 0; k < numPistas; k++) {
+//						double tel = Double.parseDouble(tokens[tok++]);
+//						vuelo.TTEL_vuelo.add(tel);
+//					}
+//					TTEL_vuelos.add(vuelo);
+//				}
+//				
+//			} finally {
+//			    br.close();
+//			}
+//		}else {
+//			readFlightsNTels();
+//		}
+//		readSeparations();
+//	}
 	
 	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[]  worst, double[] avarage, double solutionBest, double solutionWorst, List<Gen> sol, int numCrosses, int numMutations) {
 
@@ -1194,61 +845,6 @@ public class Interface extends JFrame {
 //		for (Gen g : sol) vuelos.add(new FlightGen((FlightGen) g));
 //		MostrarTabla(vuelos);
 	}
-	
-//	private void MostrarTabla(List<FlightGen> vuelos) {
-//		//Los vuelos vienen ordenados de menor a mayor TLA
-//		DefaultTableModel model_ = (DefaultTableModel) solTablePista1.getModel();
-//		int rowCount = model_.getRowCount();
-//		//Remove rows one by one from the end of the table
-//		for (int i = rowCount - 1; i >= 2; i--) {
-//			model_.removeRow(i);
-//		}
-//		
-//		model_ = (DefaultTableModel) solTablePista2.getModel();
-//		rowCount = model_.getRowCount();
-//		//Remove rows one by one from the end of the table
-//		for (int i = rowCount - 1; i >= 2; i--) {
-//			model_.removeRow(i);
-//		}
-//		
-//		model_ = (DefaultTableModel) solTablePista3.getModel();
-//		rowCount = model_.getRowCount();
-//		//Remove rows one by one from the end of the table
-//		for (int i = rowCount - 1; i >= 2; i--) {
-//			model_.removeRow(i);
-//		}
-//		
-//		//Los vuelos se ordenan de menor a mayor TLA
-//		   Collections.sort(vuelos, new Comparator<FlightGen>() {
-//				//Para quitar los warning
-//				@SuppressWarnings("removal")
-//				@Override
-//			    public int compare(FlightGen c1, FlightGen c2) {
-//			        return new Double(c1.TLA).compareTo(new Double(c2.TLA));
-//			    }
-//			});
-//		   
-//		   for(FlightGen g : vuelos) {
-//			   
-//			   switch(g.pistaAsignada) {
-//			   		case 0:{
-//			   			DefaultTableModel model = (DefaultTableModel) solTablePista1.getModel();
-//			   			model.addRow(new Object[]{ (g.pos_vuelo + 1), TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
-//			   		}
-//			   		break;
-//			   		case 1:{
-//			   			DefaultTableModel model = (DefaultTableModel) solTablePista2.getModel();
-//			   			model.addRow(new Object[]{ (g.pos_vuelo + 1) , TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
-//			   		}
-//			   		break;
-//			   		case 2:{
-//			   			DefaultTableModel model = (DefaultTableModel) solTablePista3.getModel();
-//			   			model.addRow(new Object[]{ (g.pos_vuelo + 1) , TTEL_vuelos.get(g.pos_vuelo).name_, g.TLA});
-//			   		}
-//			   		break;
-//			   };
-//		   }
-//	}
 	
 	private void getFunctionType() {
 		int index = functionDropdown.getSelectedIndex();
