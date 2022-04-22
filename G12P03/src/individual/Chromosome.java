@@ -39,8 +39,16 @@ public class Chromosome {
 				tree.inicializacionCompleta(0, 0);
 			break;
 		}
+		
+		
+		//TODO CREO QUE FALTAN COSAS
 	}
 
+	//Constructora por defecto
+	public Chromosome() {
+		this.tree = new TArbol();
+	} 
+	
 	// Constructora por copia
 	public Chromosome(Chromosome copyCrom) {
 
