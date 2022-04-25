@@ -56,6 +56,27 @@ public class TArbol {
 		useIF = useIF_;
 	}
 
+	//El equivalente a la constructora por copia
+	public TArbol copia(){
+		TArbol copia = new TArbol(this.max_prof, this.useIF);
+		
+		//Copiamos todas las variables
+		copia.setEsHoja(this.esHoja);
+		copia.setEsRaiz(this.esRaiz);
+		copia.setNumHijos(this.numHijos);
+		copia.setNumNodos(this.numNodos);
+		copia.setProfundidad(this.profundidad);
+		copia.setValor(this.valor);
+		
+		ArrayList<TArbol> aux = new ArrayList<TArbol>();
+		
+		aux = copiaHijos();
+		copia.setHijos(aux);
+		
+		return copia;
+	}
+
+	
 	// Insertar un valor en el arbol (nodo simple)
 	public TArbol insert(String v, int index) {
 		TArbol a = new TArbol(v);
@@ -288,9 +309,62 @@ public class TArbol {
 		return n;
 	}
 
+	public void getTerminales(ArrayList<TArbol> hijos, ArrayList<TArbol> nodos) {
+		
+		for(int i = 0; i < hijos.size(); i++){
+			//Si es una hoja...
+			if(hijos.get(i).isEsHoja()){
+				//Lo añadimos
+				nodos.add(hijos.get(i).copia());
+			}
+			//Si no he llegado al final
+			else
+			{
+				//Seguimos indagando
+				getTerminales(hijos.get(i).getHijos(), nodos);
+			}
+		}
+	}
+	
+	public int insertTerminal(ArrayList<TArbol> list_hijos, TArbol terminal, int index, int pos){
+		//Para la recursion
+		int p = pos;
+		
+		//Recorremos los hijos
+		for(int i = 0; i < list_hijos.size() && p != -1; i++){
+			
+			//Si he llegado a un terminal y estamos en el index indicado...
+			if(list_hijos.get(i).isEsHoja() && (p == index)){
+				
+				//Le cambiamos el terminal
+				list_hijos.set(i, terminal.copia());
+				
+				//Y con esto detenemos la recursion
+				p = -1;
+			}
+			//Si estas en una hoja pero no en la indicada...
+			else if(list_hijos.get(i).esHoja && (p != index)){
+				//Seguimos avanzando
+				p++;	
+			}
+			//Si ni si quiera he llegado a una hoja
+			else
+			{
+				//Seguimos profundizando con sus hijos...
+				p = insertTerminal(list_hijos.get(i).hijos,terminal, index, p);
+			}
+		}
+		
+		return p;
+	}
+	
+	public String getValor(){ return valor; }
+	public void setValor(String aux){ valor = aux; }
+
 	public int getNumHijos() {
 		return numHijos;
 	}
+
 
 	public void setNumHijos(int numHijos) {
 		this.numHijos = numHijos;
@@ -315,7 +389,24 @@ public class TArbol {
 	public ArrayList<TArbol> getHijos() {
 		return hijos;
 	}
-
+	
+	public void setHijos(ArrayList<TArbol> hijos) {
+		this.hijos = hijos;
+	}
+	
+	//Copiamos los hijos
+	private ArrayList<TArbol> copiaHijos() {
+		ArrayList<TArbol> sonsCopy = new ArrayList<TArbol>();
+		
+		//Recorremos todos los hijos
+		for(int i = 0; i < this.hijos.size(); i++){
+			//Y los añadimos al array
+			sonsCopy.add(this.hijos.get(i).copia());
+		}
+		
+		return sonsCopy;
+	}
+	
 	public boolean isEsRaiz() {
 		return esRaiz;
 	}
