@@ -26,8 +26,9 @@ public class Terminal extends Mutation {
 			{
 				//Aumentamos el contador de mutaciones
             	params.numMutations++;
-
-				Chromosome c = poblation[i].copia();
+            	
+            	//Copiamos el arbol del cromosoma
+				Chromosome c = poblation.get(i).copia();
 				TArbol a = c.getArbol().copia();
 				
 				//Selecciona los terminales del árbol
@@ -56,10 +57,12 @@ public class Terminal extends Mutation {
 				//Inserta el nuevo árbol
 				c.setArbol(a.copia());
 				
+				//AAA TODO No se que hace
 				c.evalua();
 				
-				poblation[i] = c.copia();
-				poblation[i].evalua();
+				//Y asigna a poblation el nuevo cromosoma mutado
+//				poblation.get(i) = c.copia();
+				poblation.get(i).evalua();
 			}
 		}
 	}

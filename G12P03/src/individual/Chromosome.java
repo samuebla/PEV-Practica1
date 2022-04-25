@@ -58,8 +58,51 @@ public class Chromosome {
 		fitness = copyCrom.getFitness();
 	}
 
+	//Equivalente a constuctora por copia
+	public Chromosome copia() {
+		Chromosome c = new Chromosome();
+	
+		c.setArbol(this.tree.copia());
+		c.setFitness(this.fitness);
+		
+		//AAAAAAAAAAAAAAAAAA TODO QUE HABRIA AQUI
+//		c.setFitness_bruto(this.fitness_bruto);
+		
+		c.setPuntuation(this.puntuation);
+		c.setPuntuationAcc(this.puntuation_acc);
+		
+		return c;
+	}
+	
+	//AAAAAA TODO QUE MIERDA ES ESTO LUEGO LO MIRO
+	public double evalua() {
+//		ArrayList<String> func = tree.toArray();
+//		int fallos = numSoluciones;
+//		for(int i = 0; i < numSoluciones; i++){
+//			ArrayList<String> f = convFuncion(func, i);
+//			int res = evaluar(f, 0);
+//			if(numSoluciones == 64){
+//				if(res == soluciones[i][6]) fallos--;
+//			}
+//			else if(numSoluciones == 2048){
+//				if(res == soluciones[i][11]) fallos--;
+//			}		
+//		}
+//		fitness_bruto = fallos;
+//		fitness = fallos;
+//		return fallos;
+		return 0;
+	}
 
-
+	
+	public void setArbol(TArbol treeAux) {
+		this.tree = treeAux;
+	}
+	
+	public TArbol getArbol() {
+		return this.tree;
+	}
+	
 	public String getPhenotype() {
 
 		return fenotipo;
