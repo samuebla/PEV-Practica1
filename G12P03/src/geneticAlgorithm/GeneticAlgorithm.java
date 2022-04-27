@@ -282,7 +282,6 @@ public class GeneticAlgorithm {
 	private Population InitPopulation(int pobSize, double precision, int minDepth, int maxDepth) {
 		Population population = new Population();
 		
-		OperatorType = Random.
 		
 		for(int i = 0; i < pobSize; i++) {
 			
