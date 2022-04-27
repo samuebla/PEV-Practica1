@@ -69,8 +69,6 @@ public class Interface extends JFrame {
 	JLabel truncLabel;
 	JComboBox creationTypeDropdown;
 	JComboBox entriesDropdown;
-	
-	JSpinner minDepthSpinner;
 	JSpinner maxDepthSpinner;
 	
 	private int sizePop; 
@@ -173,7 +171,6 @@ public class Interface extends JFrame {
 		tabbedPane.addTab("Entry", null, entryTab, null);
 		
 		entriesDropdown = new JComboBox();
-		entriesDropdown.setEnabled(false);
 		entriesDropdown.setModel(new DefaultComboBoxModel(new String[] {"6 entries", "11 entries"}));
 		entriesDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
@@ -206,47 +203,15 @@ public class Interface extends JFrame {
 		JLabel lblNumEntries = new JLabel("Num Entries");
 		lblNumEntries.setFont(new Font("Georgia", Font.PLAIN, 18));
 		
-		minDepthSpinner = new JSpinner();
-		minDepthSpinner.setModel(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
-		JComponent comp = minDepthSpinner.getEditor();
-	    JFormattedTextField field = (JFormattedTextField) comp.getComponent(0);
-	    DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();
-	    formatter.setCommitsOnValidEdit(true);
-	    minDepthSpinner.addChangeListener(new ChangeListener() {
-	    	@Override
-	    	public void stateChanged(ChangeEvent e) {
-	    		int value = (int)minDepthSpinner.getValue();
-	    		int maxValue = (int)maxDepthSpinner.getValue();
-	    		
-	    		if(value >= maxValue) {
-	    			minDepthSpinner.setValue(maxValue - 1);
-	    		}
-	        }
-	    });
-		
 		maxDepthSpinner = new JSpinner();
-		maxDepthSpinner.setValue((int)(minDepthSpinner.getValue()) + 1);
-		JComponent comp_ = maxDepthSpinner.getEditor();
-	    JFormattedTextField field_ = (JFormattedTextField) comp_.getComponent(0);
-	    DefaultFormatter formatter_ = (DefaultFormatter) field_.getFormatter();
-	    formatter_.setCommitsOnValidEdit(true);
-	    maxDepthSpinner.addChangeListener(new ChangeListener() {
-	    	@Override
-	        public void stateChanged(ChangeEvent e) {
-	    		int value = (int)maxDepthSpinner.getValue();
-	    		int minValue = (int)minDepthSpinner.getValue();
-	    		
-	    		if(value <= minValue) {
-	    			maxDepthSpinner.setValue(minValue + 1);
-	    		}
-	        }
-	    });
-		
-		JLabel lblMinDepth = new JLabel("Min Depth");
-		lblMinDepth.setFont(new Font("Georgia", Font.PLAIN, 18));
+		maxDepthSpinner.setModel(new SpinnerNumberModel(new Integer(2), null, null, new Integer(1)));
 		
 		JLabel lblNumEntries_1_1 = new JLabel("Max Depth");
 		lblNumEntries_1_1.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		JCheckBox IFCheckBox = new JCheckBox("Use Operator IF");
+		IFCheckBox.setFont(new Font("Georgia", Font.PLAIN, 14));
+		IFCheckBox.setBackground(Color.LIGHT_GRAY);
 		GroupLayout gl_entryTab = new GroupLayout(entryTab);
 		gl_entryTab.setHorizontalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
@@ -263,54 +228,52 @@ public class Interface extends JFrame {
 									.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblExpressionResult, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
 										.addComponent(expressionField, 499, 499, 499)))
-								.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_entryTab.createSequentialGroup()
 									.addGap(314)
 									.addComponent(startButton_1, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_entryTab.createSequentialGroup()
-							.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING, false)
+							.addGap(311)
+							.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_entryTab.createSequentialGroup()
-									.addGap(286)
+									.addComponent(lblNumEntries_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(maxDepthSpinner, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_entryTab.createSequentialGroup()
 									.addComponent(lblNumEntries, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED))
-								.addGroup(Alignment.TRAILING, gl_entryTab.createSequentialGroup()
-									.addContainerGap(278, Short.MAX_VALUE)
-									.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
-										.addComponent(lblNumEntries_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblMinDepth, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-									.addGap(18)))
-							.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(minDepthSpinner, Alignment.TRAILING)
-								.addComponent(entriesDropdown, Alignment.TRAILING, 0, 159, Short.MAX_VALUE)
-								.addComponent(maxDepthSpinner, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(1610, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(entriesDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_entryTab.createSequentialGroup()
+							.addGap(125)
+							.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_entryTab.createSequentialGroup()
+							.addGap(384)
+							.addComponent(IFCheckBox, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(1616, Short.MAX_VALUE))
 		);
 		gl_entryTab.setVerticalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_entryTab.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblMultiplexorSimulator, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-					.addGap(30)
+					.addGap(18)
 					.addGroup(gl_entryTab.createParallelGroup(Alignment.BASELINE)
 						.addComponent(entriesDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNumEntries, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
-						.addComponent(minDepthSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblMinDepth, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
 						.addComponent(maxDepthSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNumEntries_1_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(48)
-					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
+					.addComponent(IFCheckBox, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addGap(46)
+					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(35)
 					.addComponent(lblExpressionResult, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(expressionField, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(startButton_1)
-					.addContainerGap(774, Short.MAX_VALUE))
+					.addContainerGap(772, Short.MAX_VALUE))
 		);
 		entryTab.setLayout(gl_entryTab);
 		
@@ -911,11 +874,12 @@ public class Interface extends JFrame {
 		index = creationTypeDropdown.getSelectedIndex();
 		creationType_ = CreationType.values()[index];
 		
-		int minDepth = (int)minDepthSpinner.getValue();
 		int maxDepth = (int)maxDepthSpinner.getValue();
 		
+		boolean useIF = this.elitismCheckBox.isSelected();
+		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, multiplexType, creationType_, minDepth , maxDepth , betaValue);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, multiplexType, creationType_,maxDepth , useIF , betaValue);
 	}
 	
 //	private void readEntry() throws IOException {

@@ -1,5 +1,6 @@
 package individual;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import utilsMultiplex.CreationType;
@@ -9,8 +10,7 @@ import utilsMultiplex.TArbol;
 //CROMOSOMA
 public class Chromosome {
 
-	public static String terminales[];
-	public static final String terminales6[] = { "A0", "A1", "D0", "D1", "D2", "D3" };
+	public static final String terminales[] = { "A0", "A1", "D0", "D1", "D2", "D3" };
 	public static final String funciones[] = { "AND", "OR", "NOT", "IF" };
 	private TArbol tree;
 	private double fitness;

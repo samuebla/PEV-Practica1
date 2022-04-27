@@ -60,7 +60,8 @@ public class GeneticAlgorithm {
 	private int sizePop_;
 	private int eliteSize;
 	private double totalFitness;
-	int minDepth, maxDepth;
+	int maxDepth;
+	public boolean useIF_;
 	
 	public GeneticAlgorithm(Interface inter) {
 		interface_ = inter;
@@ -68,17 +69,16 @@ public class GeneticAlgorithm {
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
-						double eliPercentage, int truncProbability,MultiplexType multType, CreationType creatType, int min_depth, int max_depth, double betaValue) {
+						double eliPercentage, int truncProbability,MultiplexType multType, CreationType creatType,int max_depth, boolean useIF, double betaValue) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
 		MutType_ = m_Type;
 		elitism_ = elitism;	
-		minDepth = min_depth;
 		maxDepth = max_depth;
 		multType_ = multType;
 		creatType_ = creatType;
-		
+		useIF_ = useIF;
 		selectTypes();		
 		
 		//Contenedor de Parametros
@@ -97,7 +97,7 @@ public class GeneticAlgorithm {
 		eliteSize = (int)(sizePopulation * eliPercentage);
 		
 		//INIT POPULATION
-		poblation = InitPopulation(sizePopulation, precision, minDepth, maxDepth);
+		poblation = InitPopulation(sizePopulation, precision);
 		//INIT ELITE
 		Population elite = new Population();
 		
@@ -279,13 +279,29 @@ public class GeneticAlgorithm {
 		}
 	}
 	
-	private Population InitPopulation(int pobSize, double precision, int minDepth, int maxDepth) {
+	private Population InitPopulation(int pobSize, double precision) {
 		Population population = new Population();
-		
-		
-		for(int i = 0; i < pobSize; i++) {
-			
-			
+		if(creatType_ != CreationType.RampedNHalf)
+			for(int i = 0; i < pobSize; i++)
+				population.getPopulation().add(new Chromosome(maxDepth, creatType_, useIF_, multType_));
+		else{
+			int groups = maxDepth - 1;
+			int sizePopulation = pobSize/ groups;
+			int restPop = pobSize % groups;
+			int depthGroup = 2; //Profundidad inicial
+			for(int i = 0; i < groups; i++) {
+				int half = sizePopulation / 2;
+				for(int j = 0; j < sizePopulation; j++) {
+					if( j <= half) { //Primera mitad
+						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Full, useIF_, multType_));
+					}else { //Segunda mitad
+						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Grow, useIF_, multType_));
+					}
+				}
+				depthGroup++;
+				if(i == groups - 1) //Ultimo grupo se lleva al resto de la poblacion que no entro en la division decimal
+					sizePopulation += restPop;
+			}
 		}
 		return population;
 	}
