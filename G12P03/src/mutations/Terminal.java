@@ -57,12 +57,13 @@ public class Terminal extends Mutation {
 				//Inserta el nuevo árbol
 				c.setArbol(a.copia());
 				
-				//AAA TODO No se que hace
+				//Y evalua
 				c.evalua();
 				
 				//Y asigna a poblation el nuevo cromosoma mutado
-//				poblation.get(i) = c.copia();
-				poblation.get(i).evalua();
+				 Chromosome aux = poblation.get(i);
+				 aux = c.copia();
+				 aux.evalua();
 			}
 		}
 	}
