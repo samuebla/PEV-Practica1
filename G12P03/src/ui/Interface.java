@@ -3,13 +3,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -18,18 +14,21 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultFormatter;
 
 import org.math.plot.Plot2DPanel;
 
@@ -40,8 +39,8 @@ import utils.CrossType;
 import utils.FunctionType;
 import utils.MutationType;
 import utils.SelectionType;
-import utilsMultiplex.FlightType;
-import utilsMultiplex.TVuelo;
+import utilsMultiplex.CreationType;
+import utilsMultiplex.MultiplexType;
 
 public class Interface extends JFrame {
 
@@ -68,8 +67,11 @@ public class Interface extends JFrame {
 	JComboBox solutionList;
 	JComboBox truncDropdown;
 	JLabel truncLabel;
-	JComboBox fitnessTypeDropdown;
-	JComboBox caseDropdown;
+	JComboBox creationTypeDropdown;
+	JComboBox entriesDropdown;
+	
+	JSpinner minDepthSpinner;
+	JSpinner maxDepthSpinner;
 	
 	private int sizePop; 
 	private int numGenerations; 
@@ -79,11 +81,12 @@ public class Interface extends JFrame {
 	private boolean elitism;
 	private double eliPercentage;
 	private JTextField mutField;
+	public JProgressBar progressBar;
 	
-	List<TVuelo> TTEL_vuelos;
 	List<ArrayList<Double>> separations;
 	final int numPistas = 3;
 	private JTextField crosField;
+	private JTextField expressionField;
 	
 	
 	/**
@@ -169,24 +172,145 @@ public class Interface extends JFrame {
 		JPanel entryTab = new JPanel();
 		tabbedPane.addTab("Entry", null, entryTab, null);
 		
-		caseDropdown = new JComboBox();
-		caseDropdown.setEnabled(false);
-		caseDropdown.setModel(new DefaultComboBoxModel(new String[] {"Case1", "Case2"}));
-		caseDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		entriesDropdown = new JComboBox();
+		entriesDropdown.setEnabled(false);
+		entriesDropdown.setModel(new DefaultComboBoxModel(new String[] {"6 entries", "11 entries"}));
+		entriesDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		JButton startButton_1 = new JButton("Evolute");
+		startButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {			
+				try {
+					processData();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}		
+			}
+		});
+		startButton_1.setBackground(new Color(175, 238, 238));
+		
+		expressionField = new JTextField();
+		expressionField.setEditable(false);
+		expressionField.setColumns(10);
+		
+		JLabel lblExpressionResult = new JLabel("Expression Result:");
+		lblExpressionResult.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		progressBar = new JProgressBar();
+		
+		JLabel lblMultiplexorSimulator = new JLabel("Multiplexor Simulator");
+		lblMultiplexorSimulator.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		JLabel lblNumEntries = new JLabel("Num Entries");
+		lblNumEntries.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		minDepthSpinner = new JSpinner();
+		minDepthSpinner.setModel(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
+		JComponent comp = minDepthSpinner.getEditor();
+	    JFormattedTextField field = (JFormattedTextField) comp.getComponent(0);
+	    DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();
+	    formatter.setCommitsOnValidEdit(true);
+	    minDepthSpinner.addChangeListener(new ChangeListener() {
+	    	@Override
+	    	public void stateChanged(ChangeEvent e) {
+	    		int value = (int)minDepthSpinner.getValue();
+	    		int maxValue = (int)maxDepthSpinner.getValue();
+	    		
+	    		if(value >= maxValue) {
+	    			minDepthSpinner.setValue(maxValue - 1);
+	    		}
+	        }
+	    });
+		
+		maxDepthSpinner = new JSpinner();
+		maxDepthSpinner.setValue((int)(minDepthSpinner.getValue()) + 1);
+		JComponent comp_ = maxDepthSpinner.getEditor();
+	    JFormattedTextField field_ = (JFormattedTextField) comp_.getComponent(0);
+	    DefaultFormatter formatter_ = (DefaultFormatter) field_.getFormatter();
+	    formatter_.setCommitsOnValidEdit(true);
+	    maxDepthSpinner.addChangeListener(new ChangeListener() {
+	    	@Override
+	        public void stateChanged(ChangeEvent e) {
+	    		int value = (int)maxDepthSpinner.getValue();
+	    		int minValue = (int)minDepthSpinner.getValue();
+	    		
+	    		if(value <= minValue) {
+	    			maxDepthSpinner.setValue(minValue + 1);
+	    		}
+	        }
+	    });
+		
+		JLabel lblMinDepth = new JLabel("Min Depth");
+		lblMinDepth.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		JLabel lblNumEntries_1_1 = new JLabel("Max Depth");
+		lblNumEntries_1_1.setFont(new Font("Georgia", Font.PLAIN, 18));
 		GroupLayout gl_entryTab = new GroupLayout(entryTab);
 		gl_entryTab.setHorizontalGroup(
-			gl_entryTab.createParallelGroup(Alignment.TRAILING)
+			gl_entryTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_entryTab.createSequentialGroup()
-					.addGap(64)
-					.addComponent(caseDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1839, Short.MAX_VALUE))
+					.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_entryTab.createSequentialGroup()
+							.addGap(378)
+							.addComponent(lblMultiplexorSimulator, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_entryTab.createSequentialGroup()
+							.addGap(134)
+							.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_entryTab.createSequentialGroup()
+									.addGap(110)
+									.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblExpressionResult, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+										.addComponent(expressionField, 499, 499, 499)))
+								.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_entryTab.createSequentialGroup()
+									.addGap(314)
+									.addComponent(startButton_1, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_entryTab.createSequentialGroup()
+							.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_entryTab.createSequentialGroup()
+									.addGap(286)
+									.addComponent(lblNumEntries, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED))
+								.addGroup(Alignment.TRAILING, gl_entryTab.createSequentialGroup()
+									.addContainerGap(278, Short.MAX_VALUE)
+									.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
+										.addComponent(lblNumEntries_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblMinDepth, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+									.addGap(18)))
+							.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(minDepthSpinner, Alignment.TRAILING)
+								.addComponent(entriesDropdown, Alignment.TRAILING, 0, 159, Short.MAX_VALUE)
+								.addComponent(maxDepthSpinner, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap(1610, Short.MAX_VALUE))
 		);
 		gl_entryTab.setVerticalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_entryTab.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblMultiplexorSimulator, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+					.addGap(30)
+					.addGroup(gl_entryTab.createParallelGroup(Alignment.BASELINE)
+						.addComponent(entriesDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNumEntries, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
+						.addComponent(minDepthSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblMinDepth, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
+						.addComponent(maxDepthSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNumEntries_1_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
 					.addGap(48)
-					.addComponent(caseDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(1149, Short.MAX_VALUE))
+					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(lblExpressionResult, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(expressionField, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(startButton_1)
+					.addContainerGap(774, Short.MAX_VALUE))
 		);
 		entryTab.setLayout(gl_entryTab);
 		
@@ -342,14 +466,6 @@ public class Interface extends JFrame {
 		functionPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		functionPanel.setBackground(Color.LIGHT_GRAY);
 		
-		fitnessTypeDropdown = new JComboBox();
-		fitnessTypeDropdown.setModel(new DefaultComboBoxModel(new String[] {"Minor TEL", "TEL Assigned"}));
-		fitnessTypeDropdown.setToolTipText("");
-		fitnessTypeDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		
-		JLabel fitnessType = new JLabel("Fitness Type");
-		fitnessType.setFont(new Font("Georgia", Font.PLAIN, 13));
-		
 		JLabel functionLabel = new JLabel("Function Type");
 		functionLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
@@ -362,15 +478,9 @@ public class Interface extends JFrame {
 			gl_functionPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_functionPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_functionPanel.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_functionPanel.createSequentialGroup()
-							.addComponent(fitnessType, GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(fitnessTypeDropdown, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_functionPanel.createSequentialGroup()
-							.addComponent(functionLabel)
-							.addPreferredGap(ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-							.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)))
+					.addComponent(functionLabel)
+					.addPreferredGap(ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+					.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		gl_functionPanel.setVerticalGroup(
@@ -380,11 +490,7 @@ public class Interface extends JFrame {
 					.addGroup(gl_functionPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(functionDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
 						.addComponent(functionLabel))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_functionPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(fitnessType, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-						.addComponent(fitnessTypeDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(34, Short.MAX_VALUE))
+					.addContainerGap(33, Short.MAX_VALUE))
 		);
 		functionPanel.setLayout(gl_functionPanel);
 		
@@ -597,22 +703,6 @@ public class Interface extends JFrame {
 		);
 		elitismPanel.setLayout(gl_elitismPanel);
 		
-		JButton startButton = new JButton("Evolute");
-		startButton.setBackground(new Color(175, 238, 238));
-		
-		startButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {			
-				try {
-					processData();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}		
-			}
-		});
-		
 		JLabel solutionLabel = new JLabel("Solution:");
 		solutionLabel.setFont(new Font("Georgia", Font.PLAIN, 18));
 		
@@ -636,6 +726,52 @@ public class Interface extends JFrame {
 		crosField = new JTextField();
 		crosField.setEditable(false);
 		crosField.setColumns(10);
+		
+		JPanel functionPanel_1 = new JPanel();
+		functionPanel_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		functionPanel_1.setBackground(Color.LIGHT_GRAY);
+		
+		JLabel creationType = new JLabel("Creation Type");
+		creationType.setFont(new Font("Georgia", Font.PLAIN, 13));
+		
+		creationTypeDropdown = new JComboBox();
+		creationTypeDropdown.setModel(new DefaultComboBoxModel(new String[] {"Grow", "Full", "Ramped & Half"}));
+		creationTypeDropdown.setToolTipText("");
+		creationTypeDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		GroupLayout gl_functionPanel_1 = new GroupLayout(functionPanel_1);
+		gl_functionPanel_1.setHorizontalGroup(
+			gl_functionPanel_1.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_functionPanel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(creationType, GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+					.addGap(18)
+					.addComponent(creationTypeDropdown, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_functionPanel_1.setVerticalGroup(
+			gl_functionPanel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_functionPanel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_functionPanel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(creationType, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+						.addComponent(creationTypeDropdown, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(38, Short.MAX_VALUE))
+		);
+		functionPanel_1.setLayout(gl_functionPanel_1);
+		
+		JButton startButton = new JButton("Evolute");
+		startButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {			
+				try {
+					processData();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}		
+			}
+		});
+		startButton.setBackground(new Color(175, 238, 238));
 		GroupLayout gl_evolTab = new GroupLayout(evolTab);
 		gl_evolTab.setHorizontalGroup(
 			gl_evolTab.createParallelGroup(Alignment.LEADING)
@@ -658,28 +794,30 @@ public class Interface extends JFrame {
 								.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 								.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
 								.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
+								.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+								.addComponent(functionPanel_1, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE))
 							.addGroup(gl_evolTab.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_evolTab.createSequentialGroup()
-									.addGap(310)
-									.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_evolTab.createSequentialGroup()
+								.addGroup(gl_evolTab.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_evolTab.createSequentialGroup()
+										.addGap(103)
+										.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(lblNcross, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+										.addGap(10)
+										.addComponent(crosField, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(lblNmut)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(mutField, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(graphTitle, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_evolTab.createSequentialGroup()
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(panelMathPlot, GroupLayout.PREFERRED_SIZE, 686, GroupLayout.PREFERRED_SIZE)))
+								.addGroup(Alignment.TRAILING, gl_evolTab.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_evolTab.createParallelGroup(Alignment.TRAILING, false)
-										.addGroup(gl_evolTab.createSequentialGroup()
-											.addGap(97)
-											.addComponent(solutionList, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-											.addComponent(lblNcross, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
-											.addGap(10)
-											.addComponent(crosField, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblNmut)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(mutField, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-											.addGap(18)
-											.addComponent(graphTitle, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
-										.addComponent(panelMathPlot, GroupLayout.PREFERRED_SIZE, 686, GroupLayout.PREFERRED_SIZE))))))
+									.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
+									.addGap(279)))))
 					.addGap(1385))
 		);
 		gl_evolTab.setVerticalGroup(
@@ -700,11 +838,10 @@ public class Interface extends JFrame {
 						.addComponent(lblNcross, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_evolTab.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_evolTab.createSequentialGroup()
-							.addComponent(panelMathPlot, GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
-							.addGap(18)
-							.addComponent(startButton)
-							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(Alignment.LEADING, gl_evolTab.createSequentialGroup()
+							.addComponent(panelMathPlot, GroupLayout.PREFERRED_SIZE, 558, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(startButton))
 						.addGroup(gl_evolTab.createSequentialGroup()
 							.addComponent(sizePanel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -714,8 +851,10 @@ public class Interface extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(crossPercentagePanel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+							.addComponent(functionPanel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(functionPanel_1, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
 							.addComponent(selectionPanel, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(crossPanel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
@@ -723,7 +862,7 @@ public class Interface extends JFrame {
 							.addComponent(MutationPanel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(elitismPanel, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)))
+							.addGap(45)))
 					.addGap(577))
 		);
 		evolTab.setLayout(gl_evolTab);
@@ -755,7 +894,7 @@ public class Interface extends JFrame {
 		elitism = this.elitismCheckBox.isSelected(); 
 		eliPercentage =	((double)this.elitismSpinner.getValue())/100.0;
 		
-		boolean typeFitness_minorTel = fitnessTypeDropdown.getSelectedIndex() == 0 ? true : false;
+		boolean typeFitness_minorTel = creationTypeDropdown.getSelectedIndex() == 0 ? true : false;
 		
 //		readEntry();
 		getFunctionType();
@@ -764,8 +903,19 @@ public class Interface extends JFrame {
 		getMutationType();
 		gA = new GeneticAlgorithm(this);
 		
+		MultiplexType multiplexType;
+		int index = entriesDropdown.getSelectedIndex();
+		multiplexType = MultiplexType.values()[index];
+		
+		CreationType creationType_;
+		index = creationTypeDropdown.getSelectedIndex();
+		creationType_ = CreationType.values()[index];
+		
+		int minDepth = (int)minDepthSpinner.getValue();
+		int maxDepth = (int)maxDepthSpinner.getValue();
+		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, TTEL_vuelos, separations, numPistas, typeFitness_minorTel, betaValue);
+				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, multiplexType, creationType_, minDepth , maxDepth , betaValue);
 	}
 	
 //	private void readEntry() throws IOException {

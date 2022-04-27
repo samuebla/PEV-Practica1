@@ -1,10 +1,9 @@
 package individual;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import genetics.Gen;
+import utilsMultiplex.CreationType;
+import utilsMultiplex.MultiplexType;
 import utilsMultiplex.TArbol;
 
 //CROMOSOMA
@@ -24,17 +23,17 @@ public class Chromosome {
 	private static int soluciones[][];
 	private static int numSoluciones;
 
-	public Chromosome(int profundidad, int tipoCreacion, boolean useIf, int tipoMultiplexor) {
+	public Chromosome(int profundidad, CreationType type, boolean useIf, MultiplexType type_) {
 
 		tree = new TArbol(profundidad, useIf);
-		switch (tipoCreacion) {
-		case 0:
+		switch (type) {
+		case Grow:
 			tree.inicializacionCreciente(0);
 			break;
-		case 1:
+		case Full:
 			tree.inicializacionCompleta(0, 0);
 			break;
-		case 2:
+		case RampedNHalf:
 			int ini = new Random().nextInt(2);
 			if (ini == 0)
 				tree.inicializacionCreciente(0);

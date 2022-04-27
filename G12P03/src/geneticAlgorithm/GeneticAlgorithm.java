@@ -1,17 +1,39 @@
 package geneticAlgorithm;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
-import crosses.*;
-import functions.*;
-import genetics.*;
-import individual.*;
-import mutations.*;
-import selection.*;
-import utils.*;
-import utilsMultiplex.TVuelo;
+import crosses.Cross;
+import crosses.CrossTree;
+import functions.FunctMultiplexor;
+import functions.Function;
+import genetics.Gen;
+import individual.Chromosome;
+import individual.Generation;
+import individual.Population;
+import mutations.Contraction;
+import mutations.Expansion;
+import mutations.Functional;
+import mutations.Hoist;
+import mutations.Mutation;
+import mutations.Permutation;
+import mutations.Terminal;
+import mutations.TreeSubtree;
+import selection.Selection;
+import selection.SelectionProbTournament;
+import selection.SelectionRemains;
+import selection.SelectionRoulette;
+import selection.SelectionStochastic;
+import selection.SelectionTournament;
+import selection.SelectionTruncation;
 import ui.Interface;
+import utils.CrossType;
+import utils.FunctionType;
+import utils.MutationType;
+import utils.Params;
+import utils.SelectionType;
+import utilsMultiplex.CreationType;
+import utilsMultiplex.MultiplexType;
 
 public class GeneticAlgorithm {
 	
@@ -30,15 +52,15 @@ public class GeneticAlgorithm {
 	Cross cross;
 	Mutation mut;
 	
-	List<TVuelo> TTEL_vuelo_;
-	List<ArrayList<Double>> separations_;
+	MultiplexType multType_;
+	CreationType creatType_;
 	
 	Params param;
 	private boolean elitism_;
 	private int sizePop_;
 	private int eliteSize;
 	private double totalFitness;
-	int numPistas_;
+	int minDepth, maxDepth;
 	
 	public GeneticAlgorithm(Interface inter) {
 		interface_ = inter;
@@ -46,18 +68,18 @@ public class GeneticAlgorithm {
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
-						double eliPercentage, int truncProbability,List<TVuelo> TTEL_vuelo, List<ArrayList<Double>> separations, int numPistas, boolean minorTel_type, double betaValue) {
+						double eliPercentage, int truncProbability,MultiplexType multType, CreationType creatType, int min_depth, int max_depth, double betaValue) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
 		MutType_ = m_Type;
 		elitism_ = elitism;	
-		numPistas_ = numPistas;
-		minorTel_type_ = minorTel_type;
-		TTEL_vuelo_ = TTEL_vuelo;
-		separations_ = separations;
-		selectTypes();		
+		minDepth = min_depth;
+		maxDepth = max_depth;
+		multType_ = multType;
+		creatType_ = creatType;
 		
+		selectTypes();		
 		
 		//Contenedor de Parametros
 		param = new Params();
@@ -72,35 +94,39 @@ public class GeneticAlgorithm {
 		param.numMutations = 0;
 		param.numCrosses = 0;
 		
-		//Guardamos la función para la heurística
-//		param.funct2 = (FunctionP2)funct;
-		
 		eliteSize = (int)(sizePopulation * eliPercentage);
 		
 		//INIT POPULATION
-		poblation = InitPopulation(sizePopulation, precision,f_Type);
+		poblation = InitPopulation(sizePopulation, precision, minDepth, maxDepth);
 		//INIT ELITE
 		Population elite = new Population();
 		
 		poblation.maximizePopulation = funct.maximize;
 		//EVALUATE POPULATION
 		totalFitness = Evaluate();
-		
 		//Para almacenar el resolutado de cada generacion
 		generations = new ArrayList<>();
+		int valueProgress = 0;
 		//EVOLUTION
-		for(int i = 0; i < numGenerations; i++) {
-			generations.add(new Generation(poblation.getPopulation(), totalFitness));
-			if(elitism_) elite = extractElite();
-			Population selected = Selection();
-			poblation = Cross(selected);
-			poblation = Mutate();
-			poblation.sort();
-			if(elitism_) insertElite(elite);
-			totalFitness = Evaluate();
-		}
+//		for(int i = 0; i < numGenerations; i++) {
+//			generations.add(new Generation(poblation.getPopulation(), totalFitness));
+//			if(elitism_) elite = extractElite();
+//			Population selected = Selection();
+//			poblation = Cross(selected);
+//			poblation = Mutate();
+//			poblation.sort();
+//			if(elitism_) insertElite(elite);
+//			totalFitness = Evaluate();
+//			updateProgressBar(i * (100 / numGenerations));
+//		}
 		
+		updateProgressBar(100);
 		showSolution();
+	}
+	
+	private void updateProgressBar(int value) {
+		interface_.progressBar.setValue(value);
+		
 	}
 	
 	private Population extractElite() {
@@ -206,7 +232,7 @@ public class GeneticAlgorithm {
 	}
 	
 	private void selectTypes() {
-//		funct = new FunctionP2(numPistas_, TTEL_vuelo_,separations_,minorTel_type_); //Compilation Purposes
+		funct = new FunctMultiplexor(); //Compilation Purposes
 		
 		select = new SelectionRoulette(); //Compilation Purposes
 		switch (SelecType_) {
@@ -253,25 +279,14 @@ public class GeneticAlgorithm {
 		}
 	}
 	
-	private Population InitPopulation(int pobSize, double precision, FunctionType numFunct) {
+	private Population InitPopulation(int pobSize, double precision, int minDepth, int maxDepth) {
 		Population population = new Population();
+		
+		OperatorType = Random.
+		
 		for(int i = 0; i < pobSize; i++) {
-			List<Gen> genes = new ArrayList<>();
 			
-			List<Integer> vuelos = new ArrayList<>();
-			int number = 0;
-			while(vuelos.size() < TTEL_vuelo_.size()) vuelos.add(number++);
 			
-			for(int j = 0; j < TTEL_vuelo_.size(); j++) {
-				int index = ThreadLocalRandom.current().nextInt(0, vuelos.size());
-				
-//				FlightGen gen = new FlightGen((float) precision);
-//				gen.pos_vuelo = vuelos.get(index);
-////				gen.pistaAsignada = ThreadLocalRandom.current().nextInt(0, 3);
-//				vuelos.remove(index);
-//				genes.add(gen);
-			}
-//			population.getPopulation().add(new Chromosome(genes));
 		}
 		return population;
 	}
