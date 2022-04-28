@@ -51,8 +51,8 @@ public class Chromosome {
 			soluciones = soluciones6;
 		}
 		else {
-			soluciones = soluciones11;
 			numSolutions = (int) Math.pow(2, 11);
+			soluciones = soluciones11;
 		}
 	}
 	
@@ -285,6 +285,7 @@ public class Chromosome {
 		return this.tree;
 	}
 
+	//AAAAA TODO No se usa el fenotipo ni se cambia ni ostias xd
 	public String getPhenotype() {
 		fenotipo = parseToString();
 		return fenotipo;

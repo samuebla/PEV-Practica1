@@ -54,16 +54,13 @@ public class Terminal extends Mutation {
 				//Inserta el nuevo terminal
 				a.insertTerminal(a.getHijos(), terminals.get(selecc_terminal), selecc_terminal, 0);
 				
-				//Inserta el nuevo árbol
-				c.setArbol(a.copia());
 				
-				//Y evalua
-				c.evalua();
+				//No necesitamos evaluarlo pq despues de las mutaciones se evaluan todos los cromosomas
 				
-				//Y asigna a poblation el nuevo cromosoma mutado
-				 Chromosome aux = poblation.get(i);
-				 aux = c.copia();
-				 aux.evalua();
+				//Y asigna a poblation el nuevo arbol mutado
+				poblation.get(i).setArbol(a.copia());
+				
+				 //Y tampoco necesitamos evaluarlo, el fitness se calcula despues
 			}
 		}
 	}
