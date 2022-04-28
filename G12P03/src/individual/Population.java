@@ -11,7 +11,7 @@ public class Population {
 	private double fitness;
 	private double adaptedFitness;
 	
-	public boolean maximizePopulation;
+	public boolean maximizePopulation = false;
 	
 	public Population() {
 		// TODO Auto-generated constructor stub

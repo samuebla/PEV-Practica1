@@ -14,27 +14,23 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.DefaultFormatter;
 
 import org.math.plot.Plot2DPanel;
 
 import geneticAlgorithm.GeneticAlgorithm;
-//import genetics.FlightGen;
-import genetics.Gen;
+import individual.Chromosome;
 import utils.CrossType;
 import utils.FunctionType;
 import utils.MutationType;
@@ -84,13 +80,15 @@ public class Interface extends JFrame {
 	List<ArrayList<Double>> separations;
 	final int numPistas = 3;
 	private JTextField crosField;
-	private JTextField expressionField;
+	private JTextArea expressionField;
 	
 	
 	/**
 	 * Create the frame.
 	 */
 	public Interface() {
+		Chromosome.setUpData();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1080, 720);
 		contentPane = new JPanel();
@@ -188,7 +186,12 @@ public class Interface extends JFrame {
 		});
 		startButton_1.setBackground(new Color(175, 238, 238));
 		
-		expressionField = new JTextField();
+		expressionField = new JTextArea();
+		expressionField.setForeground(Color.BLACK);
+		expressionField.setBackground(Color.LIGHT_GRAY);
+		expressionField.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 18));
+		expressionField.setText("");
+		expressionField.setAlignmentY(TOP_ALIGNMENT);
 		expressionField.setEditable(false);
 		expressionField.setColumns(10);
 		
@@ -882,39 +885,7 @@ public class Interface extends JFrame {
 				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, multiplexType, creationType_,maxDepth , useIF , betaValue);
 	}
 	
-//	private void readEntry() throws IOException {
-//		if(readFileCheckbox.isSelected()) {
-//			String file = caseDropdown.getSelectedItem().toString();
-//			BufferedReader br = new BufferedReader(new FileReader(file + ".txt"));
-//			try {
-//				int numFlights = Integer.parseInt(br.readLine());
-//				TTEL_vuelos = new ArrayList<TVuelo>();
-//				for(int i = 0; i < numFlights ; i++) {
-//					int j = 1;
-//					TVuelo vuelo = new TVuelo();
-//					String data = br.readLine();
-//					String[] tokens = data.split(" ");
-//					vuelo.name_ = tokens[0];
-//					vuelo.type_ = FlightType.valueOf(tokens[1]);
-//					vuelo.TTEL_vuelo = new ArrayList<Double>();
-//					int tok = 2;
-//					for(int k = 0; k < numPistas; k++) {
-//						double tel = Double.parseDouble(tokens[tok++]);
-//						vuelo.TTEL_vuelo.add(tel);
-//					}
-//					TTEL_vuelos.add(vuelo);
-//				}
-//				
-//			} finally {
-//			    br.close();
-//			}
-//		}else {
-//			readFlightsNTels();
-//		}
-//		readSeparations();
-//	}
-	
-	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[]  worst, double[] avarage, double solutionBest, double solutionWorst, List<Gen> sol, int numCrosses, int numMutations) {
+	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[]  worst, double[] avarage, double solutionBest, double solutionWorst, Chromosome sol, int numCrosses, int numMutations) {
 
 		panelMathPlot.removeAllPlots();
 		double [] x = new double[bestAbs.length];
@@ -933,19 +904,7 @@ public class Interface extends JFrame {
 		solutionList.addItem("Best: " +  solutionBest);
 		solutionList.addItem("Worst: " +  solutionWorst);
 		
-//		int i = 0;
-//		String solu = "";
-//		for(Gen d : sol) {
-//			FlightGen vuelo = (FlightGen) d;
-//			solu += (vuelo.pos_vuelo + 1) + " ";	
-//		}
-		System.out.println("==========================");
-		System.out.println("");
-		System.out.println("");
-//		System.out.println("Sol : {" + solu + "}");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("==========================");
+		expressionField.setText(sol.getPhenotype());
 		
 		panelMathPlot.addLegend("SOUTH");
 		panelMathPlot.addLinePlot("Best So Far", Color.BLUE, x, bestAbs);

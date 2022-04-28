@@ -1,7 +1,9 @@
 package individual;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import utilsMultiplex.CreationType;
 import utilsMultiplex.MultiplexType;
@@ -13,15 +15,17 @@ public class Chromosome {
 	public static final String terminales[] = { "A0", "A1", "D0", "D1", "D2", "D3" };
 	public static final String funciones[] = { "AND", "OR", "NOT", "IF" };
 	private TArbol tree;
-	private double fitness;
 	private double puntuation;
 	private double puntuation_acc;
 	private String fenotipo;
+	private double fitness;
 	private double fitnessDisplaced;
 
 	// Para la tabla multiplexor
+	private static int soluciones6[][];
+	private static int soluciones11[][];
 	private static int soluciones[][];
-	private static int numSoluciones;
+	private static int numSolutions;
 
 	public Chromosome(int profundidad, CreationType type, boolean useIf, MultiplexType type_) {
 
@@ -41,10 +45,53 @@ public class Chromosome {
 				tree.inicializacionCompleta(0, 0);
 			break;
 		}
-
-		// TODO CREO QUE FALTAN COSAS
+		
+		if(type_ == MultiplexType.SixEntries) {
+			numSolutions = (int) Math.pow(2, 6);
+			soluciones = soluciones6;
+		}
+		else {
+			soluciones = soluciones11;
+			numSolutions = (int) Math.pow(2, 11);
+		}
 	}
-
+	
+	public static void setUpData() {
+		numSolutions = (int) Math.pow(2, 6);
+		fillTable();
+	    numSolutions = (int) Math.pow(2, 11);
+		fillTable();
+	}
+	
+	private static void fillTable() {
+		int rows = numSolutions;
+		int columns = (int)(Math.log(numSolutions) / Math.log(2)) + 1;
+		File archivo = null;
+	    Scanner in = null;
+	    try {
+	    	int fileNumber = columns - 1;
+	    	String file = "src/utilsMultiplex/multiplex" + String.valueOf(fileNumber) + ".txt";
+	        archivo = new File (file); 
+	        in = new Scanner(archivo);
+	        if(fileNumber == 6) {
+	        	soluciones6 = new int[rows][columns];
+		        for(int i = 0; i < rows; i++)
+		          	 for(int j = 0; j < columns; j++)
+		          		soluciones6[i][j] = in.nextInt(); 
+	        }else {
+	        	soluciones11 = new int[rows][columns];
+		        for(int i = 0; i < rows; i++)
+		          	 for(int j = 0; j < columns; j++)
+		          		soluciones11[i][j] = in.nextInt(); 
+	        }
+	        
+	        if (in != null) in.close();
+	      }
+	      catch(Exception e){
+	    	  System.out.println(e.getMessage());
+	      }
+	}
+	
 	// Constructora por defecto
 	public Chromosome() {
 		this.tree = new TArbol();
@@ -77,23 +124,16 @@ public class Chromosome {
 
 	public double evalua() {
 		ArrayList<String> func = tree.toArray();
-		int fallos = numSoluciones;
-		for (int i = 0; i < numSoluciones; i++) {
+		int lenght = soluciones[0].length;
+		
+		int fallos = numSolutions;
+		for (int i = 0; i < numSolutions; i++) {
 			ArrayList<String> f = convFuncion(func, i);
 			int res = evaluar(f, 0);
-			if (numSoluciones == 64) {
-				if (res == soluciones[i][6])
-					fallos--;
-			} else if (numSoluciones == 2048) {
-				if (res == soluciones[i][11])
-					fallos--;
-			}
+			if (res == soluciones[i][lenght - 1])
+				fallos--;
 		}
-		//AAAAA TODO
-//		fitness_bruto = fallos;
-		fitness = fallos;
 		return fallos;
-//		return 0;
 	}
 
 	// Definimos que se hace dependiendo del valor de la funcion (Definimos IF AND y OR)
@@ -154,7 +194,7 @@ public class Chromosome {
 			// Si estamos en los terminales (valores)
 			if (!n.equals("IF") && !n.equals("NOT") && !n.equals("OR") && !n.equals("AND")) {
 				// El multiplexor tiene 64 soluciones
-				if (numSoluciones == 64) {
+				if (numSolutions == 64) {
 					switch (n) {
 					case "A0": {
 						funcConvertida.add(Integer.toString(soluciones[sol][0]));
@@ -182,7 +222,7 @@ public class Chromosome {
 					}
 					}
 					//Para el apartado donde te piden más variables
-				} else if (numSoluciones == 2048) {
+				} else if (numSolutions == 2048) {
 					switch (n) {
 					case "A0": {
 						funcConvertida.add(Integer.toString(soluciones[sol][0]));
@@ -246,8 +286,20 @@ public class Chromosome {
 	}
 
 	public String getPhenotype() {
-
+		fenotipo = parseToString();
 		return fenotipo;
+	}
+	
+	private String parseToString() {
+		ArrayList<String> func = tree.toArray();
+		String s = "(";
+		int numParamOperator = 0;
+		for(int i = 0; i < func.size(); i++){
+			s += func.get(i);
+			if(i < func.size()-1) s += " ";
+		}
+		s+= ")";
+		return s;
 	}
 
 	// Tamaño total de ambos genes

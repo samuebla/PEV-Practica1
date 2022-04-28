@@ -109,7 +109,7 @@ public class GeneticAlgorithm {
 		int valueProgress = 0;
 		//EVOLUTION
 //		for(int i = 0; i < numGenerations; i++) {
-//			generations.add(new Generation(poblation.getPopulation(), totalFitness));
+			generations.add(new Generation(poblation.getPopulation(), totalFitness));
 //			if(elitism_) elite = extractElite();
 //			Population selected = Selection();
 //			poblation = Cross(selected);
@@ -149,7 +149,7 @@ public class GeneticAlgorithm {
 	private void showSolution() {
 		int numGen = generations.size();
 		//Quedaria la solucion de aquel que sea el mejor/peor segun la funcion
-		List<Gen> sol = new ArrayList<Gen>();
+		Chromosome sol = null;
 		
 		double maxAbs;
 		double minAbs;
@@ -208,7 +208,7 @@ public class GeneticAlgorithm {
 		int best_pos = 0;
 		//Para cada gen, evaluamos su valor con la funcion F.
 		for(Chromosome c : poblation.getPopulation()) {
-//			c.setFitness(funct.ejecutar(c.getGens()));
+			c.setFitness(c.evalua());
 		}
 		
 		poblation.displaceFitness();
@@ -293,9 +293,9 @@ public class GeneticAlgorithm {
 				int half = sizePopulation / 2;
 				for(int j = 0; j < sizePopulation; j++) {
 					if( j <= half) { //Primera mitad
-						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Full, useIF_, multType_));
+						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Full, useIF_,multType_));
 					}else { //Segunda mitad
-						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Grow, useIF_, multType_));
+						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Grow, useIF_,multType_));
 					}
 				}
 				depthGroup++;
