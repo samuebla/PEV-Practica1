@@ -970,11 +970,6 @@ public class Interface extends JFrame {
 		panelMathPlot.addLinePlot("Worst Individual", Color.ORANGE, x, worst);
 		panelMathPlot.addLinePlot("Worst So Far", Color.MAGENTA, x, worstAbs);
 		panelMathPlot.addLinePlot("Avarage", Color.GREEN, x, avarage);
-		
-		
-//		List<FlightGen> vuelos = new ArrayList<>();
-//		for (Gen g : sol) vuelos.add(new FlightGen((FlightGen) g));
-//		MostrarTabla(vuelos);
 	}
 	
 	private void getFunctionType() {

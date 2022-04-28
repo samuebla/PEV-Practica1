@@ -33,8 +33,6 @@ public abstract class Cross {
             elegidos.remove(elegidos.size() - 1);
         }
         
-//        cut = ThreadLocalRandom.current().nextInt(0, population.get(0).getGens().size());
-        
         for (int i = 0; i < elegidos.size(); i += 2){ 
         	cruzar(population.get(elegidos.get(i)), population.get(elegidos.get(i+1)),param);
         	//Reemplazamos a los padres por sus hijos

@@ -117,30 +117,28 @@ public class GeneticAlgorithm {
 		generations = new ArrayList<>();
 		int valueProgress = 0;
 		//EVOLUTION
-//		for(int i = 0; i < numGenerations; i++) {
+		for(int i = 0; i < numGenerations; i++) {
 			generations.add(new Generation(poblation.getPopulation(), totalFitness));
-//			if(elitism_) elite = extractElite();
-//			Population selected = Selection();
-//			poblation = Cross(selected);
+			if(elitism_) elite = extractElite();
+			Population selected = Selection();
+			poblation = Cross(selected);
 //			poblation = Mutate();
-//			poblation.sort();
-//			if(elitism_) insertElite(elite);
+			poblation.sort();
+			if(elitism_) insertElite(elite);
 			Bloat();
 //			totalFitness = Evaluate();
-//			updateProgressBar(i * (100 / numGenerations));
-//		}
+			updateProgressBar(i * (100 / numGenerations));
+		}
 		
-		updateProgressBar(100);
+		updateProgressBar(0);
 		showSolution();
 	}
 	
 	private void updateProgressBar(int value) {
 		interface_.progressBar.setValue(value);
-		
 	}
 	
 	private Population extractElite() {
-		
 		//As the elite is ordered from major  to minor fitness, the best indivoduals are at the end of the list
 		Population elite = new Population(poblation.getPopulation().subList(poblation.getPopulation().size() - eliteSize, poblation.getPopulation().size()), poblation);	
 		return elite;

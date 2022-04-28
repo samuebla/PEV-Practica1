@@ -25,11 +25,11 @@ public class Functional extends Mutation {
             	params.numMutations++;				
 			            	
 				Chromosome c = poblation.get(i).copia();
-				TArbol a = c.getArbol().copia();
+				TArbol a = c.getTree().copia();
 				
 				//Se obtienen las funciones del árbol
 				ArrayList<TArbol> funciones = new ArrayList<TArbol>();
-				a.getFunciones(a.getHijos(), funciones);
+				a.getFunciones(a.getSons(), funciones);
 				
 				//Con esto hacemos que el IF y el NOT no se puedan mutar, ya que no existiria otra opcion
 				//Con este metodo el array Funciones elimina los if y not y solo se guarda los AND/OR
@@ -49,7 +49,7 @@ public class Functional extends Mutation {
 					funciones.get(selecc_funcion).setValor(val);
 					
 					//Inserta la nueva función en el árbol
-					a.insertFuncion(a.getHijos(), funciones.get(selecc_funcion), selecc_funcion, 0);					
+					a.insertFuncion(a.getSons(), funciones.get(selecc_funcion), selecc_funcion, 0);					
 					
 					//Y añadimos el arbol al cromosoma
 					poblation.get(i).setArbol(a.copia());

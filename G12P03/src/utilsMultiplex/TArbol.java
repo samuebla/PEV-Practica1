@@ -107,7 +107,7 @@ public class TArbol {
 		else if (a.getNumHijos() > 0) {
 			for (int i = 0; i < a.getNumHijos(); i++)
 				if (s == null)
-					s = at(a.getHijos().get(i), pos + i + 1, index);
+					s = at(a.getSons().get(i), pos + i + 1, index);
 		}
 		return s;
 	}
@@ -312,14 +312,14 @@ public class TArbol {
 
 		for (int i = 0; i < hijos.size(); i++) {
 			// Si es una hoja...
-			if (hijos.get(i).isEsHoja()) {
+			if (hijos.get(i).isLeaf()) {
 				// Lo añadimos
 				nodos.add(hijos.get(i).copia());
 			}
 			// Si no he llegado al final
 			else {
 				// Seguimos indagando
-				getTerminales(hijos.get(i).getHijos(), nodos);
+				getTerminales(hijos.get(i).getSons(), nodos);
 			}
 		}
 	}
@@ -332,7 +332,7 @@ public class TArbol {
 		for (int i = 0; i < list_hijos.size() && p != -1; i++) {
 
 			// Si he llegado a un terminal y estamos en el index indicado...
-			if (list_hijos.get(i).isEsHoja() && (p == index)) {
+			if (list_hijos.get(i).isLeaf() && (p == index)) {
 
 				// Le cambiamos el terminal
 				list_hijos.set(i, terminal.copia());
@@ -360,7 +360,7 @@ public class TArbol {
 
 		for (int i = 0; i < hijos.size(); i++) {
 			// Si los hijos no son una terminal
-			if (hijos.get(i).isEsRaiz()) {
+			if (hijos.get(i).isRoot()) {
 				// Guardamos las funciones
 				nodos.add(hijos.get(i).copia());
 				// Y llamamos a los hijos de los hijos
@@ -422,7 +422,7 @@ public class TArbol {
 		this.profundidad = profundidad;
 	}
 
-	public ArrayList<TArbol> getHijos() {
+	public ArrayList<TArbol> getSons() {
 		return hijos;
 	}
 
@@ -443,7 +443,7 @@ public class TArbol {
 		return sonsCopy;
 	}
 
-	public boolean isEsRaiz() {
+	public boolean isRoot() {
 		return esRaiz;
 	}
 
@@ -451,7 +451,7 @@ public class TArbol {
 		this.esRaiz = esRaiz;
 	}
 
-	public boolean isEsHoja() {
+	public boolean isLeaf() {
 		return esHoja;
 	}
 

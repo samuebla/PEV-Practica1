@@ -33,7 +33,7 @@ public class Terminal extends Mutation {
 				
 				//Selecciona los terminales del árbol
 				ArrayList<TArbol> terminals = new ArrayList<TArbol>();
-				a.getTerminales(a.getHijos(), terminals);
+				a.getTerminales(a.getSons(), terminals);
 				
 				//Cogemos un terminal aleatorio de todos los que hay
 				int selecc_terminal = rnd.nextInt(terminals.size());
@@ -52,7 +52,7 @@ public class Terminal extends Mutation {
 				terminals.get(selecc_terminal).setValor(val);
 				
 				//Inserta el nuevo terminal
-				a.insertTerminal(a.getHijos(), terminals.get(selecc_terminal), selecc_terminal, 0);
+				a.insertTerminal(a.getSons(), terminals.get(selecc_terminal), selecc_terminal, 0);
 				
 				
 				//No necesitamos evaluarlo pq despues de las mutaciones se evaluan todos los cromosomas
