@@ -281,7 +281,7 @@ public class Chromosome {
 		this.tree = treeAux;
 	}
 
-	public TArbol getArbol() {
+	public TArbol getTree() {
 		return this.tree;
 	}
 
@@ -306,7 +306,7 @@ public class Chromosome {
 	public int getTam() {
 
 		// TODO AAA NO SE SI ES NUMNODOS O NUNHIJOS
-		return tree.getNumNodos();
+		return tree.getNumNodes();
 	}
 
 	public double getFitness() {

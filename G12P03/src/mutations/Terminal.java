@@ -29,7 +29,7 @@ public class Terminal extends Mutation {
             	
             	//Copiamos el arbol del cromosoma
 				Chromosome c = poblation.get(i).copia();
-				TArbol a = c.getArbol().copia();
+				TArbol a = c.getTree().copia();
 				
 				//Selecciona los terminales del árbol
 				ArrayList<TArbol> terminals = new ArrayList<TArbol>();

@@ -370,7 +370,7 @@ public class TArbol {
 		this.numHijos = numHijos;
 	}
 
-	public int getNumNodos() {
+	public int getNumNodes() {
 		return numNodos;
 	}
 

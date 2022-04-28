@@ -24,7 +24,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import org.math.plot.Plot2DPanel;
@@ -35,6 +34,7 @@ import utils.CrossType;
 import utils.FunctionType;
 import utils.MutationType;
 import utils.SelectionType;
+import utilsMultiplex.BloatingType;
 import utilsMultiplex.CreationType;
 import utilsMultiplex.MultiplexType;
 
@@ -66,6 +66,8 @@ public class Interface extends JFrame {
 	JComboBox creationTypeDropdown;
 	JComboBox entriesDropdown;
 	JSpinner maxDepthSpinner;
+	JComboBox bloatingDropdown;
+	JSpinner tarpeianSpinner;
 	
 	private int sizePop; 
 	private int numGenerations; 
@@ -215,43 +217,76 @@ public class Interface extends JFrame {
 		JCheckBox IFCheckBox = new JCheckBox("Use Operator IF");
 		IFCheckBox.setFont(new Font("Georgia", Font.PLAIN, 14));
 		IFCheckBox.setBackground(Color.LIGHT_GRAY);
+		
+		JLabel bloatingLabl = new JLabel("Bloating Type");
+		bloatingLabl.setFont(new Font("Georgia", Font.PLAIN, 18));
+		
+		JLabel tarpeianlabel = new JLabel("Tarpeian Factor (n)");
+		tarpeianlabel.setFont(new Font("Georgia", Font.PLAIN, 18));
+		tarpeianlabel.setEnabled(false);
+		
+		bloatingDropdown = new JComboBox();
+		bloatingDropdown.setModel(new DefaultComboBoxModel(new String[] {"None", "Tarpeian", "Well-Founded Penalty"}));
+		bloatingDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
+		bloatingDropdown.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        int select = bloatingDropdown.getSelectedIndex();
+	        	tarpeianSpinner.setEnabled(select == 1);
+	        	tarpeianlabel.setEnabled(select == 1);
+		    }
+		});
+		
+		
+		tarpeianSpinner = new JSpinner();
+		tarpeianSpinner.setEnabled(false);
+		tarpeianSpinner.setModel(new SpinnerNumberModel(new Integer(2), new Integer(1), null, new Integer(1)));
 		GroupLayout gl_entryTab = new GroupLayout(entryTab);
 		gl_entryTab.setHorizontalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_entryTab.createSequentialGroup()
 					.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_entryTab.createSequentialGroup()
-							.addGap(378)
-							.addComponent(lblMultiplexorSimulator, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_entryTab.createSequentialGroup()
-							.addGap(134)
+							.addGap(139)
 							.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_entryTab.createSequentialGroup()
-									.addGap(110)
+									.addGap(9)
 									.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblExpressionResult, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-										.addComponent(expressionField, 499, 499, 499)))
+										.addGroup(gl_entryTab.createSequentialGroup()
+											.addGap(110)
+											.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
+												.addComponent(lblExpressionResult, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+												.addComponent(expressionField, 499, 499, 499)))
+										.addGroup(gl_entryTab.createSequentialGroup()
+											.addGap(314)
+											.addComponent(startButton_1, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_entryTab.createSequentialGroup()
-									.addGap(314)
-									.addComponent(startButton_1, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))))
+									.addGap(279)
+									.addComponent(IFCheckBox, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_entryTab.createSequentialGroup()
-							.addGap(311)
-							.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
+							.addGap(339)
+							.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_entryTab.createSequentialGroup()
-									.addComponent(lblNumEntries_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(maxDepthSpinner, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_entryTab.createSequentialGroup()
-									.addComponent(lblNumEntries, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(entriesDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(gl_entryTab.createSequentialGroup()
-							.addGap(125)
-							.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_entryTab.createSequentialGroup()
-							.addGap(384)
-							.addComponent(IFCheckBox, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(1616, Short.MAX_VALUE))
+									.addGap(67)
+									.addComponent(lblMultiplexorSimulator, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_entryTab.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_entryTab.createSequentialGroup()
+										.addComponent(lblNumEntries_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(maxDepthSpinner, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_entryTab.createSequentialGroup()
+										.addComponent(lblNumEntries, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(entriesDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_entryTab.createSequentialGroup()
+										.addComponent(bloatingLabl, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+										.addGap(10)
+										.addComponent(bloatingDropdown, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_entryTab.createSequentialGroup()
+										.addComponent(tarpeianlabel, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+										.addGap(33)
+										.addComponent(tarpeianSpinner, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))))))
+					.addContainerGap(1602, Short.MAX_VALUE))
 		);
 		gl_entryTab.setVerticalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
@@ -267,8 +302,21 @@ public class Interface extends JFrame {
 						.addComponent(maxDepthSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNumEntries_1_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
+					.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
+						.addComponent(bloatingLabl, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_entryTab.createSequentialGroup()
+							.addGap(2)
+							.addComponent(bloatingDropdown, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
+					.addGroup(gl_entryTab.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_entryTab.createSequentialGroup()
+							.addGap(12)
+							.addComponent(tarpeianSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_entryTab.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(tarpeianlabel, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
+					.addGap(32)
 					.addComponent(IFCheckBox, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-					.addGap(46)
+					.addGap(18)
 					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(35)
 					.addComponent(lblExpressionResult, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
@@ -276,7 +324,7 @@ public class Interface extends JFrame {
 					.addComponent(expressionField, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(startButton_1)
-					.addContainerGap(772, Short.MAX_VALUE))
+					.addContainerGap(713, Short.MAX_VALUE))
 		);
 		entryTab.setLayout(gl_entryTab);
 		
@@ -881,8 +929,14 @@ public class Interface extends JFrame {
 		
 		boolean useIF = this.elitismCheckBox.isSelected();
 		
+		BloatingType bloatType;
+		index = bloatingDropdown.getSelectedIndex();
+		bloatType = BloatingType.values()[index];
+		
+		int factorBloatingTarpeian = (int) this.tarpeianSpinner.getValue();
+		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
-				   f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, multiplexType, creationType_,maxDepth , useIF , betaValue);
+				f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, multiplexType, creationType_, bloatType,factorBloatingTarpeian, maxDepth , useIF , betaValue);
 	}
 	
 	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[]  worst, double[] avarage, double solutionBest, double solutionWorst, Chromosome sol, int numCrosses, int numMutations) {
@@ -904,7 +958,11 @@ public class Interface extends JFrame {
 		solutionList.addItem("Best: " +  solutionBest);
 		solutionList.addItem("Worst: " +  solutionWorst);
 		
-		expressionField.setText(sol.getPhenotype());
+		String expression = sol.getPhenotype() + "\nFitness: " + sol.getFitness() + "\n"; 
+		expressionField.setText(expression);
+		System.out.print("========================================");
+		System.out.print("\n" + expression + "\n");
+		System.out.print("========================================");
 		
 		panelMathPlot.addLegend("SOUTH");
 		panelMathPlot.addLinePlot("Best So Far", Color.BLUE, x, bestAbs);

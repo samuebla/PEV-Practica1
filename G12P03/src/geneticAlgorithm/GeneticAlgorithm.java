@@ -1,13 +1,11 @@
 package geneticAlgorithm;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import crosses.Cross;
 import crosses.CrossTree;
 import functions.FunctMultiplexor;
 import functions.Function;
-import genetics.Gen;
 import individual.Chromosome;
 import individual.Generation;
 import individual.Population;
@@ -32,6 +30,8 @@ import utils.FunctionType;
 import utils.MutationType;
 import utils.Params;
 import utils.SelectionType;
+import utilsMultiplex.BloatingMethods;
+import utilsMultiplex.BloatingType;
 import utilsMultiplex.CreationType;
 import utilsMultiplex.MultiplexType;
 
@@ -54,6 +54,7 @@ public class GeneticAlgorithm {
 	
 	MultiplexType multType_;
 	CreationType creatType_;
+	BloatingType bloatType_;
 	
 	Params param;
 	private boolean elitism_;
@@ -62,6 +63,7 @@ public class GeneticAlgorithm {
 	private double totalFitness;
 	int maxDepth;
 	public boolean useIF_;
+	int tarpeianFactor_;
 	
 	public GeneticAlgorithm(Interface inter) {
 		interface_ = inter;
@@ -69,7 +71,7 @@ public class GeneticAlgorithm {
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
-						double eliPercentage, int truncProbability,MultiplexType multType, CreationType creatType,int max_depth, boolean useIF, double betaValue) {
+						double eliPercentage, int truncProbability,MultiplexType multType, CreationType creatType, BloatingType bloatType, int tarpeianFactor, int max_depth, boolean useIF, double betaValue) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;
@@ -79,6 +81,8 @@ public class GeneticAlgorithm {
 		multType_ = multType;
 		creatType_ = creatType;
 		useIF_ = useIF;
+		bloatType_ = bloatType;
+		tarpeianFactor_ = tarpeianFactor; 
 		selectTypes();		
 		
 		//Contenedor de Parametros
@@ -94,10 +98,15 @@ public class GeneticAlgorithm {
 		param.numMutations = 0;
 		param.numCrosses = 0;
 		
+		BloatingMethods.SetUpData(max_depth, creatType, multType, useIF);
+		
 		eliteSize = (int)(sizePopulation * eliPercentage);
 		
 		//INIT POPULATION
 		poblation = InitPopulation(sizePopulation, precision);
+		
+		//BLOAT POPULATION
+		Bloat();
 		//INIT ELITE
 		Population elite = new Population();
 		
@@ -116,6 +125,7 @@ public class GeneticAlgorithm {
 //			poblation = Mutate();
 //			poblation.sort();
 //			if(elitism_) insertElite(elite);
+			Bloat();
 //			totalFitness = Evaluate();
 //			updateProgressBar(i * (100 / numGenerations));
 //		}
@@ -200,6 +210,25 @@ public class GeneticAlgorithm {
         double solutionFitness = maxAbs;
         interface_.showGraph(bestPob, best, worstPob, worst, avarage, maxAbs, minAbs, sol, param.numCrosses, param.numMutations);
 	};
+	
+	private void Bloat() {
+		double avarage_fitness = 0;
+		double avarage_size = 0;
+		double size;
+		size = poblation.getPopulation().size();
+		for(Chromosome c : poblation.getPopulation()) {
+			avarage_size += c.getTree().getNumNodes();
+			avarage_fitness += c.getFitness();
+		}
+		avarage_size /= size;
+		avarage_fitness /= size;
+		
+		if(bloatType_ != BloatingType.None) {
+			if(bloatType_ == BloatingType.Tarpeian)
+				BloatingMethods.Tarpeian(poblation, avarage_size, tarpeianFactor_);
+			else BloatingMethods.Penalty(poblation, avarage_fitness, avarage_size);
+		}
+	}
 	
 	private double Evaluate() {
 		double puntuationAcc = 0;
