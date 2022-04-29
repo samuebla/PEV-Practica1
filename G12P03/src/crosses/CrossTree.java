@@ -3,6 +3,7 @@ package crosses;
 import java.util.ArrayList;
 
 import individual.Chromosome;
+import utils.Params;
 import utilsMultiplex.TArbol;
 
 public class CrossTree extends Cross {
@@ -33,6 +34,9 @@ public class CrossTree extends Cross {
 		//Asignamos los nuevos numeros de nodos
 		son1.getTree().setNumNodos(son1.getTree().getNodos(son1.getTree(), 0));
 		son2.getTree().setNumNodos(son2.getTree().getNodos(son2.getTree(), 0));
+		
+		Params params_ = (Params) params;
+		params_.numCrosses++;
 		
 		//Evaluamos los hijos ya que se necesita actualizar su propio fitness de nuevo
 		this.sons = new ArrayList<>();		

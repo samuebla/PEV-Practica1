@@ -32,17 +32,17 @@ public class Chromosome {
 		tree = new TArbol(profundidad, useIf);
 		switch (type) {
 		case Grow:
-			tree.inicializacionCreciente(0);
+			tree.initGrow(0);
 			break;
 		case Full:
-			tree.inicializacionCompleta(0, 0);
+			tree.initComplete(0, 0);
 			break;
 		case RampedNHalf:
 			int ini = new Random().nextInt(2);
 			if (ini == 0)
-				tree.inicializacionCreciente(0);
+				tree.initGrow(0);
 			else
-				tree.inicializacionCompleta(0, 0);
+				tree.initComplete(0, 0);
 			break;
 		}
 		

@@ -13,7 +13,7 @@ public class TArbol {
 
 	private String valor;
 	private ArrayList<TArbol> hijos;
-	private int numHijos;
+	private int numSons;
 	private int numNodos;
 	private int max_prof;
 	private int profundidad;
@@ -34,7 +34,7 @@ public class TArbol {
 
 		valor = "";
 		hijos = new ArrayList<TArbol>();
-		numHijos = 0;
+		numSons = 0;
 		numNodos = 0;
 
 	}
@@ -42,14 +42,14 @@ public class TArbol {
 	public TArbol(String v) {
 		valor = v;
 		hijos = new ArrayList<TArbol>();
-		numHijos = 0;
+		numSons = 0;
 	}
 
 	// Para los IF
 	public TArbol(int depth, boolean useIF_) {
 		valor = "";
 		hijos = new ArrayList<TArbol>();
-		numHijos = 0;
+		numSons = 0;
 		max_prof = depth;
 		setProfundidad(0);
 		numNodos = 0;
@@ -63,7 +63,7 @@ public class TArbol {
 		// Copiamos todas las variables
 		copia.setEsHoja(this.esHoja);
 		copia.setEsRaiz(this.esRaiz);
-		copia.setNumHijos(this.numHijos);
+		copia.setNumHijos(this.numSons);
 		copia.setNumNodos(this.numNodos);
 		copia.setProfundidad(this.profundidad);
 		copia.setValor(this.valor);
@@ -120,20 +120,32 @@ public class TArbol {
 	}
 
 	// Creamos ramas hasta llegar siempre a la maxima profundidad
-	public int inicializacionCompleta(int p, int nodos) {
+	public int initComplete(int p, int nodos) {
 		int n = nodos;
-		int nHijos = 2;
+		int nSons = 2;
 		if (p < max_prof) {
 			setProfundidad(p);
 			Random rnd = new Random();
 			int func = 0;
-			if (useIF) {
-				func = rnd.nextInt(Chromosome.funciones.length);
-			} else {
-				func = rnd.nextInt(Chromosome.funciones.length - 1);
-			}
+			
+			if (useIF) func = rnd.nextInt(Chromosome.funciones.length);
+			else func = rnd.nextInt(Chromosome.funciones.length - 1);
+			
 			this.valor = Chromosome.funciones[func];
 			this.setEsRaiz(true);
+			
+			if(valor.equals("IF")) nSons = 3;
+			else if(valor.equals("NOT")) nSons = 1;
+			
+			for(int i = 0; i < nSons; i++){
+				TArbol son = new TArbol(max_prof, useIF);
+				//hijo.setPadre(this);
+				esRaiz = true;
+				n++;
+				n = son.initComplete(p+1, n);
+				hijos.add(son);
+				numSons++;
+			}
 		}
 		// Si es una hoja
 		else {
@@ -144,7 +156,7 @@ public class TArbol {
 			terminal = rnd.nextInt(Chromosome.terminales.length);
 			valor = Chromosome.terminales[terminal];
 			esHoja = true;
-			numHijos = 0;
+			numSons = 0;
 
 		}
 
@@ -154,7 +166,7 @@ public class TArbol {
 	}
 
 	// Creamos ramales hasta que se llegue por primera vez al máximo permitido
-	public void inicializacionCreciente(int i) {
+	public void initGrow(int i) {
 
 		int n = 0;
 
@@ -213,7 +225,7 @@ public class TArbol {
 			n = hijo.inicializacionCrecienteAux(p + 1, n);
 			// Le añadimos como hijo
 			hijos.add(hijo);
-			numHijos++;
+			numSons++;
 		}
 		return n;
 	}
@@ -399,11 +411,11 @@ public class TArbol {
 	}
 
 	public int getNumHijos() {
-		return numHijos;
+		return numSons;
 	}
 
 	public void setNumHijos(int numHijos) {
-		this.numHijos = numHijos;
+		this.numSons = numHijos;
 	}
 
 	public int getNumNodes() {

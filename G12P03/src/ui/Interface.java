@@ -223,10 +223,11 @@ public class Interface extends JFrame {
 		
 		JLabel tarpeianlabel = new JLabel("Tarpeian Factor (n)");
 		tarpeianlabel.setFont(new Font("Georgia", Font.PLAIN, 18));
-		tarpeianlabel.setEnabled(false);
+		tarpeianlabel.setEnabled(true);
 		
 		bloatingDropdown = new JComboBox();
 		bloatingDropdown.setModel(new DefaultComboBoxModel(new String[] {"None", "Tarpeian", "Well-Founded Penalty"}));
+		bloatingDropdown.setSelectedIndex(1);
 		bloatingDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		bloatingDropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -238,7 +239,7 @@ public class Interface extends JFrame {
 		
 		
 		tarpeianSpinner = new JSpinner();
-		tarpeianSpinner.setEnabled(false);
+		tarpeianSpinner.setEnabled(true);
 		tarpeianSpinner.setModel(new SpinnerNumberModel(new Integer(2), new Integer(1), null, new Integer(1)));
 		GroupLayout gl_entryTab = new GroupLayout(entryTab);
 		gl_entryTab.setHorizontalGroup(

@@ -63,6 +63,8 @@ public class Terminal extends Mutation {
 				 //Y tampoco necesitamos evaluarlo, el fitness se calcula despues
 			}
 		}
+		
+		this.mPoblation = poblation;
 	}
 
 }

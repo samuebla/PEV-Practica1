@@ -69,6 +69,9 @@ public class GeneticAlgorithm {
 		interface_ = inter;
 	}
 	
+	//El mejor de la poblacion no coincide con el mejor hasta ahora con elitisimo
+	//El mejor de la poblacion sube cuando deberia bajar
+	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
 						double eliPercentage, int truncProbability,MultiplexType multType, CreationType creatType, BloatingType bloatType, int tarpeianFactor, int max_depth, boolean useIF, double betaValue) {
@@ -122,13 +125,11 @@ public class GeneticAlgorithm {
 			if(elitism_) elite = extractElite();
 			Population selected = Selection();
 			poblation = Cross(selected);
-//			poblation = Mutate();
+			poblation = Mutate();
 			poblation.sort();
 			if(elitism_) insertElite(elite);
-			Bloat();
 			totalFitness = Evaluate();
-			updateProgressBar(i * (100 / numGenerations));
-			
+			updateProgressBar(i * (100 / numGenerations) + 1);
 			System.out.print(i + "\n");
 		}
 		
@@ -138,6 +139,7 @@ public class GeneticAlgorithm {
 	
 	private void updateProgressBar(int value) {
 		interface_.progressBar.setValue(value);
+		interface_.progressBar.update(interface_.progressBar.getGraphics());
 	}
 	
 	private Population extractElite() {
@@ -147,10 +149,9 @@ public class GeneticAlgorithm {
 	}
 	
 	private void insertElite(Population elite) {
-		//Se debe de llamar despues del primer Evaluate
 		//Los vamos a insertar al principio de la poblacion, reemplazando a los peores
 		for(int i = 0; i < elite.getPopulation().size() ; i++) {
-			poblation.getPopulation().add(i, elite.getPopulation().get(i));
+			poblation.getPopulation().set(i, elite.getPopulation().get(i));
 		}
 		
 		int n = 10;
@@ -242,6 +243,7 @@ public class GeneticAlgorithm {
 		
 		poblation.displaceFitness();
 		
+		Bloat();
 		//obtenemos el mejor y el total
 		for(Chromosome c : poblation.getPopulation()) {
 			fitnessTotal += c.getFitness();
@@ -292,16 +294,22 @@ public class GeneticAlgorithm {
 		switch (MutType_) {
 			case Terminal :
 				mut = new Terminal();
+				break;
 			case Functional :
 				mut = new Functional();
+				break;
 			case TreeSubtree :
 				mut = new TreeSubtree();
+				break;
 			case Permutation :
 				mut = new Permutation();
+				break;
 			case Hoist :
 				mut = new Hoist();
+				break;
 			case Expansion :
 				mut = new Expansion();
+				break;
 			case Contraction :
 				mut = new Contraction();
 				break;
@@ -322,9 +330,9 @@ public class GeneticAlgorithm {
 				int half = sizePopulation / 2;
 				for(int j = 0; j < sizePopulation; j++) {
 					if( j <= half) { //Primera mitad
-						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Full, useIF_,multType_));
-					}else { //Segunda mitad
 						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Grow, useIF_,multType_));
+					}else { //Segunda mitad
+						population.getPopulation().add(new Chromosome(depthGroup, CreationType.Full, useIF_,multType_));
 					}
 				}
 				depthGroup++;
