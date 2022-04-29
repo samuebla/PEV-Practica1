@@ -126,8 +126,10 @@ public class GeneticAlgorithm {
 			poblation.sort();
 			if(elitism_) insertElite(elite);
 			Bloat();
-//			totalFitness = Evaluate();
+			totalFitness = Evaluate();
 			updateProgressBar(i * (100 / numGenerations));
+			
+			System.out.print(i + "\n");
 		}
 		
 		updateProgressBar(0);

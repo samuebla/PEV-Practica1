@@ -34,6 +34,7 @@ public class CrossTree extends Cross {
 		son1.getTree().setNumNodos(son1.getTree().getNodos(son1.getTree(), 0));
 		son2.getTree().setNumNodos(son2.getTree().getNodos(son2.getTree(), 0));
 		
+		//Evaluamos los hijos ya que se necesita actualizar su propio fitness de nuevo
 		this.sons = new ArrayList<>();		
 		this.sons.add(new Chromosome(son1));
 		this.sons.add(new Chromosome(son2));
