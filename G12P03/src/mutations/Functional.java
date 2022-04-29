@@ -58,6 +58,8 @@ public class Functional extends Mutation {
 				}
 			}
 		}
+		
+		this.mPoblation = poblation;
 	}
 
 

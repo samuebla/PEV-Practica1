@@ -58,5 +58,7 @@ public class Permutation extends Mutation {
 				//Aunque lo hayamos cambiado no necesitamos evaluar nada
 			}
 		}
+		this.mPoblation = poblation;
 	}
+	
 }
