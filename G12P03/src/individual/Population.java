@@ -7,11 +7,8 @@ import java.util.List;
 public class Population {
 
 	private List<Chromosome> population_;
-	private double accumulatedFitness;
-	private double fitness;
-	private double adaptedFitness;
 	
-	public boolean maximizePopulation = false;
+	public boolean maximizePopulation;
 	
 	public Population() {
 		// TODO Auto-generated constructor stub
@@ -24,9 +21,6 @@ public class Population {
 			population_.add(new Chromosome(ind));
 		
 		maximizePopulation = popu.maximizePopulation;
-		accumulatedFitness = popu.accumulatedFitness;
-		fitness = popu.fitness;
-		adaptedFitness = popu.adaptedFitness;
 	}
 	
 	public void sort() {
@@ -35,7 +29,7 @@ public class Population {
 			@SuppressWarnings("removal")
 			@Override
 		    public int compare(Chromosome c1, Chromosome c2) {
-		        return new Double(c1.getFitnessDisplaced()).compareTo(new Double(c2.getFitnessDisplaced()));
+		        return new Double(c2.getFitness()).compareTo(new Double(c1.getFitness()));
 		    }
 		});
 	}

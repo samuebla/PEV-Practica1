@@ -13,6 +13,7 @@ import utilsMultiplex.TArbol;
 public class Chromosome {
 
 	public static final String terminales[] = { "A0", "A1", "D0", "D1", "D2", "D3" };
+	public static final String terminales11[] = { "A0", "A1","A2", "D0", "D1", "D2", "D3","D4", "D5", "D6", "D7"};
 	public static final String funciones[] = { "AND", "OR", "NOT", "IF" };
 	private TArbol tree;
 	private double puntuation;
@@ -32,17 +33,17 @@ public class Chromosome {
 		tree = new TArbol(profundidad, useIf);
 		switch (type) {
 		case Grow:
-			tree.initGrow(0);
+			tree.initGrow(0,type_);
 			break;
 		case Full:
-			tree.initComplete(0, 0);
+			tree.initComplete(0, 0,type_);
 			break;
 		case RampedNHalf:
 			int ini = new Random().nextInt(2);
 			if (ini == 0)
-				tree.initGrow(0);
+				tree.initGrow(0,type_);
 			else
-				tree.initComplete(0, 0);
+				tree.initComplete(0, 0,type_);
 			break;
 		}
 		

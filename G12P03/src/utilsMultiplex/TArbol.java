@@ -120,7 +120,7 @@ public class TArbol {
 	}
 
 	// Creamos ramas hasta llegar siempre a la maxima profundidad
-	public int initComplete(int p, int nodos) {
+	public int initComplete(int p, int nodos, MultiplexType type_) {
 		int n = nodos;
 		int nSons = 2;
 		if (p < max_prof) {
@@ -142,7 +142,7 @@ public class TArbol {
 				//hijo.setPadre(this);
 				esRaiz = true;
 				n++;
-				n = son.initComplete(p+1, n);
+				n = son.initComplete(p+1, n,type_);
 				hijos.add(son);
 				numSons++;
 			}
@@ -153,8 +153,15 @@ public class TArbol {
 			Random rnd = new Random();
 			int terminal;
 			this.setEsHoja(true);
-			terminal = rnd.nextInt(Chromosome.terminales.length);
-			valor = Chromosome.terminales[terminal];
+			if(type_ == MultiplexType.SixEntries) {
+				terminal = rnd.nextInt(Chromosome.terminales.length);
+				valor = Chromosome.terminales[terminal];
+			}
+			else {
+				terminal = rnd.nextInt(Chromosome.terminales11.length);
+				valor = Chromosome.terminales11[terminal];
+			}
+			
 			esHoja = true;
 			numSons = 0;
 
@@ -166,7 +173,7 @@ public class TArbol {
 	}
 
 	// Creamos ramales hasta que se llegue por primera vez al máximo permitido
-	public void initGrow(int i) {
+	public void initGrow(int i, MultiplexType type_) {
 
 		int n = 0;
 
@@ -188,15 +195,20 @@ public class TArbol {
 			// Le ponemos el valor seleccionado
 			this.valor = Chromosome.funciones[func];
 			esRaiz = true;
-			n = creaHijos(profundidad, n);
+			n = creaHijos(profundidad, n, type_);
 		}
 		// Si he llegado al final...
 		else {
 			setProfundidad(profundidad);
 			Random rnd = new Random();
 			int terminal;
-			terminal = rnd.nextInt(Chromosome.terminales.length);
-			valor = Chromosome.terminales[terminal];
+			if(type_ == MultiplexType.SixEntries) {
+				terminal = rnd.nextInt(Chromosome.terminales.length);
+				valor = Chromosome.terminales[terminal];
+			}else {
+				terminal = rnd.nextInt(Chromosome.terminales11.length);
+				valor = Chromosome.terminales11[terminal];
+			}
 			esHoja = true;
 			// Y no creo más ramas ni nada
 		}
@@ -204,7 +216,7 @@ public class TArbol {
 		setNumNodos(n);
 	}
 
-	private int creaHijos(int p, int nodos) {
+	private int creaHijos(int p, int nodos, MultiplexType type_) {
 		int n = nodos;
 
 		// Para establecer cuantos hijos hay que crear en funcion
@@ -222,7 +234,7 @@ public class TArbol {
 			// Un nodo mas
 			n++;
 			// Desarro
-			n = hijo.inicializacionCrecienteAux(p + 1, n);
+			n = hijo.inicializacionCrecienteAux(p + 1, n, type_);
 			// Le añadimos como hijo
 			hijos.add(hijo);
 			numSons++;
@@ -231,7 +243,7 @@ public class TArbol {
 	}
 
 	// Para crear terminales aleatorios o seguir creciendo el arbol poco a poco
-	private int inicializacionCrecienteAux(int p, int nodos) {
+	private int inicializacionCrecienteAux(int p, int nodos, MultiplexType type_) {
 
 		int n = nodos;
 
@@ -245,8 +257,9 @@ public class TArbol {
 			// Si hay 3 hijos...
 			if (useIF) {
 				// Se coge todo el rango
-				rango = Chromosome.funciones.length + Chromosome.terminales.length;
-
+				if(type_ == MultiplexType.SixEntries)
+					rango = Chromosome.funciones.length + Chromosome.terminales.length;
+				else rango = Chromosome.funciones.length + Chromosome.terminales11.length;
 				// Se coge uno aleatorio
 				int pos = rnd.nextInt(rango);
 
@@ -254,7 +267,9 @@ public class TArbol {
 				if (pos >= Chromosome.funciones.length) {
 
 					pos -= Chromosome.funciones.length;
-					valor = Chromosome.terminales[pos];
+					if(type_ == MultiplexType.SixEntries)
+						valor = Chromosome.terminales[pos];
+					else valor = Chromosome.terminales11[pos];
 					// Y es una hoja y ale
 					esHoja = true;
 
@@ -264,24 +279,27 @@ public class TArbol {
 					valor = Chromosome.funciones[pos];
 					esRaiz = true;
 					// Y sigo creando más hijos
-					n = creaHijos(p, n);
+					n = creaHijos(p, n, type_);
 				}
 			}
 			// No es un if
 			else {
 				// Lo mismo que arriba pero sin el if
-				rango = Chromosome.funciones.length + Chromosome.terminales.length - 1;
-
+				if(type_ == MultiplexType.SixEntries)
+					rango = Chromosome.funciones.length + Chromosome.terminales.length - 1;
+				else rango = Chromosome.funciones.length + Chromosome.terminales11.length - 1;
 				int pos = rnd.nextInt(rango);
 
 				if (pos >= (Chromosome.funciones.length - 1)) {
 					pos -= Chromosome.funciones.length - 1;
-					valor = Chromosome.terminales[pos];
+					if(type_ == MultiplexType.SixEntries)
+						valor = Chromosome.terminales[pos];
+					else valor = Chromosome.terminales11[pos];
 					esHoja = true;
 				} else {
 					valor = Chromosome.funciones[pos];
 					esRaiz = true;
-					n = creaHijos(p, n);
+					n = creaHijos(p, n,type_);
 				}
 			}
 		}
@@ -291,8 +309,14 @@ public class TArbol {
 			Random rnd = new Random();
 			int terminal;
 			// Seleccionamos un terminal aleatorio
-			terminal = rnd.nextInt(Chromosome.terminales.length);
-			valor = Chromosome.terminales[terminal];
+			if(type_ == MultiplexType.SixEntries) {
+				terminal = rnd.nextInt(Chromosome.terminales.length);
+				valor = Chromosome.terminales[terminal];
+			}
+			else {
+				terminal = rnd.nextInt(Chromosome.terminales11.length);
+				valor = Chromosome.terminales11[terminal];
+			}
 			esHoja = true;
 			// Y no creamos mas hijos
 		}

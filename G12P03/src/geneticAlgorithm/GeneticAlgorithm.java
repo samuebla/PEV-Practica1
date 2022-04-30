@@ -87,7 +87,6 @@ public class GeneticAlgorithm {
 		bloatType_ = bloatType;
 		tarpeianFactor_ = tarpeianFactor; 
 		selectTypes();		
-		
 		//Contenedor de Parametros
 		param = new Params();
 		param.numGenerations = numGenerations;
@@ -100,25 +99,18 @@ public class GeneticAlgorithm {
 		param.beta = betaValue;
 		param.numMutations = 0;
 		param.numCrosses = 0;
-		
+		double quantity = Math.ceil(sizePopulation * eliPercentage);
+		eliteSize = (int)quantity;
 		BloatingMethods.SetUpData(max_depth, creatType, multType, useIF);
-		
-		eliteSize = (int)(sizePopulation * eliPercentage);
-		
 		//INIT POPULATION
 		poblation = InitPopulation(sizePopulation, precision);
-		
-		//BLOAT POPULATION
-		Bloat();
 		//INIT ELITE
 		Population elite = new Population();
-		
 		poblation.maximizePopulation = funct.maximize;
 		//EVALUATE POPULATION
 		totalFitness = Evaluate();
 		//Para almacenar el resolutado de cada generacion
 		generations = new ArrayList<>();
-		int valueProgress = 0;
 		//EVOLUTION
 		for(int i = 0; i < numGenerations; i++) {
 			generations.add(new Generation(poblation.getPopulation(), totalFitness));
@@ -138,6 +130,9 @@ public class GeneticAlgorithm {
 	}
 	
 	private void updateProgressBar(int value) {
+		if(interface_.evolTab.isShowing())
+			return;
+		
 		interface_.progressBar.setValue(value);
 		interface_.progressBar.update(interface_.progressBar.getGraphics());
 	}
@@ -202,14 +197,13 @@ public class GeneticAlgorithm {
         	worstPob[i] = minAbs;
         	avarage[i] = gen.avarage;
 			best[i] = gen.best;
-			worst[i] = gen.worst;
 			
         	i++;
         }
         
         //Muestra la grafica
         double solutionFitness = maxAbs;
-        interface_.showGraph(bestPob, best, worstPob, worst, avarage, maxAbs, minAbs, sol, param.numCrosses, param.numMutations);
+        interface_.showGraph(bestPob, best, worstPob, avarage, maxAbs, minAbs, sol, param.numCrosses, param.numMutations);
 	};
 	
 	private void Bloat() {
@@ -241,9 +235,12 @@ public class GeneticAlgorithm {
 			c.setFitness(c.evalua());
 		}
 		
-		poblation.displaceFitness();
+		poblation.sort();
 		
 		Bloat();
+		
+		poblation.displaceFitness();
+		
 		//obtenemos el mejor y el total
 		for(Chromosome c : poblation.getPopulation()) {
 			fitnessTotal += c.getFitness();

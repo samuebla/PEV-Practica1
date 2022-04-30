@@ -21,14 +21,22 @@ public class BloatingMethods {
 	public static void Tarpeian(Population poblation, double avarage_size, int factorProbability) {
 		double prob = 1 / (double)factorProbability;
 		Random rnd = new Random();
+		int populationThreshold = 4;
+		double sizeThreshold = 3;
 		for(int i = 0; i < poblation.getPopulation().size(); i++){
 			TArbol a = poblation.getPopulation().get(i).getTree();
 			//Si su tamaño es mayor que el de la media
-			if(a.getNumNodes() > avarage_size){
+			double diff = a.getNumNodes() - avarage_size;
+			if(a.getNumNodes() > avarage_size){		
+				//Si se trata de los ultimos y su valor no es muy alto, no se borra
+				if((i > (poblation.getPopulation().size() - populationThreshold) && diff < sizeThreshold)) 
+					continue;
 				double p = rnd.nextDouble();
 				//Existe la probabilidad de que sea eliminado y reemplazado por otro
 				if(p < prob) {
-					poblation.getPopulation().set(i, new Chromosome(depth, creat, useIf, multType));
+					Chromosome c = new Chromosome(depth, creat, useIf, multType);
+					c.setFitness(c.evalua());
+					poblation.getPopulation().set(i,c);
 				}
 			}
 		}

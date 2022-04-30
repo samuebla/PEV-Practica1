@@ -33,11 +33,9 @@ public class Permutation extends Mutation {
 				TArbol aMutar = a.at(k);
 				
 				//Para evitar los NOT
-				if(aMutar.getNumHijos() > 1)
-				{
+				if(aMutar.getNumHijos() > 1) {
 					//Para los AND/OR
-					if(aMutar.getNumHijos() == 2)
-					{
+					if(aMutar.getNumHijos() == 2) {
 						//Cambiamos Izquierda por Derecha
 						TArbol aux = aMutar.getSons().get(0);
 						aMutar.getSons().set(0, aMutar.getSons().get(1));
@@ -58,7 +56,7 @@ public class Permutation extends Mutation {
 				//Aunque lo hayamos cambiado no necesitamos evaluar nada
 			}
 		}
-		this.mPoblation = poblation;
+		this.mPoblation = poblation;	
 	}
 	
 }

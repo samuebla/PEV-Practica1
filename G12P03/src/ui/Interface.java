@@ -49,6 +49,7 @@ public class Interface extends JFrame {
 	private MutationType m_type;
 	private CrossType c_type;
 	JCheckBox elitismCheckBox;
+	JCheckBox IFCheckBox;
 	JComboBox functionDropdown;
 	JSpinner spinnerNumGenerations;
 	JSpinner spinnerSizePopulation;
@@ -77,6 +78,7 @@ public class Interface extends JFrame {
 	private boolean elitism;
 	private double eliPercentage;
 	private JTextField mutField;
+	public JPanel evolTab;
 	public JProgressBar progressBar;
 	
 	List<ArrayList<Double>> separations;
@@ -214,7 +216,7 @@ public class Interface extends JFrame {
 		JLabel lblNumEntries_1_1 = new JLabel("Max Depth");
 		lblNumEntries_1_1.setFont(new Font("Georgia", Font.PLAIN, 18));
 		
-		JCheckBox IFCheckBox = new JCheckBox("Use Operator IF");
+		IFCheckBox = new JCheckBox("Use Operator IF");
 		IFCheckBox.setFont(new Font("Georgia", Font.PLAIN, 14));
 		IFCheckBox.setBackground(Color.LIGHT_GRAY);
 		
@@ -329,7 +331,7 @@ public class Interface extends JFrame {
 		);
 		entryTab.setLayout(gl_entryTab);
 		
-		JPanel evolTab = new JPanel();
+		evolTab = new JPanel();
 		tabbedPane.addTab("Evolution", null, evolTab, null);
 		
 		JLabel parametersLabel = new JLabel("Parameters");
@@ -449,7 +451,7 @@ public class Interface extends JFrame {
 		sizeLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
 		spinnerSizePopulation = new JSpinner();
-		spinnerSizePopulation.setModel(new SpinnerNumberModel(100, 10, 100, 1));
+		spinnerSizePopulation.setModel(new SpinnerNumberModel(100, 2, 100, 1));
 		GroupLayout gl_sizePanel = new GroupLayout(sizePanel);
 		gl_sizePanel.setHorizontalGroup(
 			gl_sizePanel.createParallelGroup(Alignment.LEADING)
@@ -658,7 +660,7 @@ public class Interface extends JFrame {
 		
 		mutationDropdown = new JComboBox();
 		mutationDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Terminal", "Functional", "TreeSubtree", "Permutation", "Hoist", "Expansion", "Contraction"}));
+		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Terminal", "Functional", "TreeSubtree", "Permutation"}));
 		
 		GroupLayout gl_MutationPanel = new GroupLayout(MutationPanel);
 		gl_MutationPanel.setHorizontalGroup(
@@ -928,7 +930,7 @@ public class Interface extends JFrame {
 		
 		int maxDepth = (int)maxDepthSpinner.getValue();
 		
-		boolean useIF = this.elitismCheckBox.isSelected();
+		boolean useIF = this.IFCheckBox.isSelected();
 		
 		BloatingType bloatType;
 		index = bloatingDropdown.getSelectedIndex();
@@ -940,7 +942,7 @@ public class Interface extends JFrame {
 				f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, multiplexType, creationType_, bloatType,factorBloatingTarpeian, maxDepth , useIF , betaValue);
 	}
 	
-	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[]  worst, double[] avarage, double solutionBest, double solutionWorst, Chromosome sol, int numCrosses, int numMutations) {
+	public void showGraph(double[] bestAbs, double[]  best,double[] worstAbs, double[] avarage, double solutionBest, double solutionWorst, Chromosome sol, int numCrosses, int numMutations) {
 
 		panelMathPlot.removeAllPlots();
 		double [] x = new double[bestAbs.length];
@@ -968,7 +970,6 @@ public class Interface extends JFrame {
 		panelMathPlot.addLegend("SOUTH");
 		panelMathPlot.addLinePlot("Best So Far", Color.BLUE, x, bestAbs);
 		panelMathPlot.addLinePlot("Best Individual", Color.RED, x, best);
-		panelMathPlot.addLinePlot("Worst Individual", Color.ORANGE, x, worst);
 		panelMathPlot.addLinePlot("Worst So Far", Color.MAGENTA, x, worstAbs);
 		panelMathPlot.addLinePlot("Avarage", Color.GREEN, x, avarage);
 	}
