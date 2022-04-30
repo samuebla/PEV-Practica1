@@ -31,12 +31,10 @@ public class TArbol {
 
 	// Constructora por defecto
 	public TArbol() {
-
 		valor = "";
 		hijos = new ArrayList<TArbol>();
 		numSons = 0;
 		numNodos = 0;
-
 	}
 
 	public TArbol(String v) {
@@ -104,8 +102,8 @@ public class TArbol {
 		TArbol s = null;
 		if (pos >= index)
 			s = a;
-		else if (a.getNumHijos() > 0) {
-			for (int i = 0; i < a.getNumHijos(); i++)
+		else if (a.getNumSons() > 0) {
+			for (int i = 0; i < a.getNumSons(); i++)
 				if (s == null)
 					s = at(a.getSons().get(i), pos + i + 1, index);
 		}
@@ -139,7 +137,6 @@ public class TArbol {
 			
 			for(int i = 0; i < nSons; i++){
 				TArbol son = new TArbol(max_prof, useIF);
-				//hijo.setPadre(this);
 				esRaiz = true;
 				n++;
 				n = son.initComplete(p+1, n,type_);
@@ -147,8 +144,7 @@ public class TArbol {
 				numSons++;
 			}
 		}
-		// Si es una hoja
-		else {
+		else { // Si es una hoja
 			setProfundidad(p);
 			Random rnd = new Random();
 			int terminal;
@@ -161,44 +157,33 @@ public class TArbol {
 				terminal = rnd.nextInt(Chromosome.terminales11.length);
 				valor = Chromosome.terminales11[terminal];
 			}
-			
 			esHoja = true;
 			numSons = 0;
-
 		}
-
 		setNumNodos(n);
-
 		return n;
 	}
 
 	// Creamos ramales hasta que se llegue por primera vez al máximo permitido
 	public void initGrow(int i, MultiplexType type_) {
-
 		int n = 0;
-
-		// Mientras no hayas llegado a la longitud final...
 		if (profundidad < max_prof) {
 			// Sigo creando ramales
 			setProfundidad(profundidad);
 			Random rnd = new Random();
 			int func = 0;
 
-			if (useIF) {
-				// Para poder seleccionar también el if
-				func = rnd.nextInt(Chromosome.funciones.length);
-			} else {
-				// -1 Para eliminar el IF que tenemos puesto al final
-				func = rnd.nextInt(Chromosome.funciones.length - 1);
-			}
+			if (useIF)// Para poder seleccionar también el if
+			func = rnd.nextInt(Chromosome.funciones.length);
+			else // -1 Para eliminar el IF que tenemos puesto al final 
+			func = rnd.nextInt(Chromosome.funciones.length - 1);
 
 			// Le ponemos el valor seleccionado
 			this.valor = Chromosome.funciones[func];
 			esRaiz = true;
 			n = creaHijos(profundidad, n, type_);
 		}
-		// Si he llegado al final...
-		else {
+		else {	// Si he llegado al final...
 			setProfundidad(profundidad);
 			Random rnd = new Random();
 			int terminal;
@@ -210,9 +195,7 @@ public class TArbol {
 				valor = Chromosome.terminales11[terminal];
 			}
 			esHoja = true;
-			// Y no creo más ramas ni nada
 		}
-
 		setNumNodos(n);
 	}
 
@@ -434,7 +417,7 @@ public class TArbol {
 		valor = aux;
 	}
 
-	public int getNumHijos() {
+	public int getNumSons() {
 		return numSons;
 	}
 

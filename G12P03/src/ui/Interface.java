@@ -218,6 +218,7 @@ public class Interface extends JFrame {
 		lblNumEntries_1_1.setFont(new Font("Georgia", Font.PLAIN, 18));
 		
 		IFCheckBox = new JCheckBox("Use Operator IF");
+		IFCheckBox.setSelected(true);
 		IFCheckBox.setFont(new Font("Georgia", Font.PLAIN, 14));
 		IFCheckBox.setBackground(Color.LIGHT_GRAY);
 		

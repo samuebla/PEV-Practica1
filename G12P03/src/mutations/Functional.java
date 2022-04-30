@@ -16,11 +16,9 @@ public class Functional extends Mutation {
 		double probability = params.mutProb;
 		
 		Random rnd = new Random();
-		for(int i = 0; i < poblation.size(); i++)
-		{
+		for(int i = 0; i < poblation.size(); i++) {
 			double prob = rnd.nextDouble();
-			if(prob < probability)
-			{
+			if(prob < probability) {
 				//Aumentamos el contador de mutaciones
             	params.numMutations++;				
 			            	
@@ -34,7 +32,6 @@ public class Functional extends Mutation {
 				//Con esto hacemos que el IF y el NOT no se puedan mutar, ya que no existiria otra opcion
 				//Con este metodo el array Funciones elimina los if y not y solo se guarda los AND/OR
 				if(tryChangeFunction(funciones)){
-					
 					//Cogemos una funcion cualquiera
 					int selecc_funcion = rnd.nextInt(funciones.size());
 					String val = "";
@@ -53,8 +50,6 @@ public class Functional extends Mutation {
 					
 					//Y añadimos el arbol al cromosoma
 					poblation.get(i).setArbol(a.copia());
-					
-					//Y no necesitamos evaluar aqui
 				}
 			}
 		}
@@ -65,21 +60,19 @@ public class Functional extends Mutation {
 
 	//Se encarga de encontrar funciones que se puedan mutar
 	//dejando así una lista solo de esas funciones
-	private boolean tryChangeFunction(ArrayList<TArbol> funciones) {
+	private boolean tryChangeFunction(ArrayList<TArbol> funtions) {
 		boolean existe = false;
 		ArrayList<TArbol> copia = new ArrayList<TArbol>();
 		
-		for(TArbol a : funciones){
+		for(TArbol a : funtions)
 			if(a.getValue().equals("OR") || a.getValue().equals("AND")){
 				copia.add(a.copia());
 				existe = true;
 			}
-		}
 		
-		funciones.clear();
 
-		for(TArbol a : copia)
-			funciones.add(a.copia());
+		funtions.clear();
+		for(TArbol a : copia) funtions.add(a.copia());
 		
 		return existe;
 	}
