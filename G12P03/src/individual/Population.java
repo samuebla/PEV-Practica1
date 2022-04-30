@@ -29,7 +29,7 @@ public class Population {
 			@SuppressWarnings("removal")
 			@Override
 		    public int compare(Chromosome c1, Chromosome c2) {
-		        return new Double(c2.getFitness()).compareTo(new Double(c1.getFitness()));
+		        return new Double(c1.getFitness()).compareTo(new Double(c2.getFitness()));
 		    }
 		});
 	}

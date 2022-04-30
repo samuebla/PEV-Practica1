@@ -2,38 +2,14 @@ package geneticAlgorithm;
 import java.util.ArrayList;
 import java.util.List;
 
-import crosses.Cross;
-import crosses.CrossTree;
-import functions.FunctMultiplexor;
-import functions.Function;
-import individual.Chromosome;
-import individual.Generation;
-import individual.Population;
-import mutations.Contraction;
-import mutations.Expansion;
-import mutations.Functional;
-import mutations.Hoist;
-import mutations.Mutation;
-import mutations.Permutation;
-import mutations.Terminal;
-import mutations.TreeSubtree;
-import selection.Selection;
-import selection.SelectionProbTournament;
-import selection.SelectionRemains;
-import selection.SelectionRoulette;
-import selection.SelectionStochastic;
-import selection.SelectionTournament;
-import selection.SelectionTruncation;
+import crosses.*;
+import functions.*;
+import individual.*;
+import mutations.*;
+import selection.*;
 import ui.Interface;
-import utils.CrossType;
-import utils.FunctionType;
-import utils.MutationType;
-import utils.Params;
-import utils.SelectionType;
-import utilsMultiplex.BloatingMethods;
-import utilsMultiplex.BloatingType;
-import utilsMultiplex.CreationType;
-import utilsMultiplex.MultiplexType;
+import utils.*;
+import utilsMultiplex.*;
 
 public class GeneticAlgorithm {
 	
@@ -102,6 +78,7 @@ public class GeneticAlgorithm {
 		double quantity = Math.ceil(sizePopulation * eliPercentage);
 		eliteSize = (int)quantity;
 		BloatingMethods.SetUpData(max_depth, creatType, multType, useIF);
+		BloatingMethods.setFunction(funct);
 		//INIT POPULATION
 		poblation = InitPopulation(sizePopulation, precision);
 		//INIT ELITE
@@ -119,6 +96,7 @@ public class GeneticAlgorithm {
 			poblation = Cross(selected);
 			poblation = Mutate();
 			poblation.sort();
+			Bloat();
 			if(elitism_) insertElite(elite);
 			totalFitness = Evaluate();
 			updateProgressBar(i * (100 / numGenerations) + 1);
@@ -181,6 +159,10 @@ public class GeneticAlgorithm {
         			maxAbs = generations.get(i).best;
         			sol = generations.get(i).sol;
         		}
+        		
+        		if(minAbs > generations.get(i).worst) {
+        			minAbs = generations.get(i).worst;
+        		}
         	}else {
         		if(maxAbs > generations.get(i).best) {
         			maxAbs = generations.get(i).best;
@@ -232,12 +214,10 @@ public class GeneticAlgorithm {
 		int best_pos = 0;
 		//Para cada gen, evaluamos su valor con la funcion F.
 		for(Chromosome c : poblation.getPopulation()) {
-			c.setFitness(c.evalua());
+			c.setFitness(funct.ejecutar(c));
 		}
 		
 		poblation.sort();
-		
-		Bloat();
 		
 		poblation.displaceFitness();
 		
@@ -260,7 +240,7 @@ public class GeneticAlgorithm {
 	}
 	
 	private void selectTypes() {
-		funct = new FunctMultiplexor(); //Compilation Purposes
+		funct = new FunctMultiplexor(multType_); //Compilation Purposes
 		
 		select = new SelectionRoulette(); //Compilation Purposes
 		switch (SelecType_) {
@@ -295,20 +275,8 @@ public class GeneticAlgorithm {
 			case Functional :
 				mut = new Functional();
 				break;
-			case TreeSubtree :
-				mut = new TreeSubtree();
-				break;
 			case Permutation :
 				mut = new Permutation();
-				break;
-			case Hoist :
-				mut = new Hoist();
-				break;
-			case Expansion :
-				mut = new Expansion();
-				break;
-			case Contraction :
-				mut = new Contraction();
 				break;
 		}
 	}

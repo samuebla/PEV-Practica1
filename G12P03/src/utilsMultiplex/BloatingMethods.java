@@ -2,6 +2,7 @@ package utilsMultiplex;
 
 import java.util.Random;
 
+import functions.Function;
 import individual.Chromosome;
 import individual.Population;
 
@@ -11,12 +12,17 @@ public class BloatingMethods {
 	static CreationType creat;
 	static MultiplexType multType;
 	static boolean useIf;
+	static Function funct;
 	
 	public static void SetUpData(int depth_, CreationType creat_, MultiplexType multType_, boolean useIf_) {
 		depth = depth_;
 		creat = creat_;
 		multType = multType_;
 		useIf = useIf_;
+	}
+	
+	public static void setFunction(Function fuct) {
+		funct = fuct;
 	}
 	public static void Tarpeian(Population poblation, double avarage_size, int factorProbability) {
 		double prob = 1 / (double)factorProbability;
@@ -35,7 +41,7 @@ public class BloatingMethods {
 				//Existe la probabilidad de que sea eliminado y reemplazado por otro
 				if(p < prob) {
 					Chromosome c = new Chromosome(depth, creat, useIf, multType);
-					c.setFitness(c.evalua());
+					c.setFitness(funct.ejecutar(c));
 					poblation.getPopulation().set(i,c);
 				}
 			}

@@ -43,7 +43,7 @@ public class Terminal extends Mutation {
 				String val = Chromosome.terminales[newTry];
 				
 				//Repetimos el proceso hasta que haya un terminal distinto al original
-				while(terminals.get(selecc_terminal).getValor().equals(val)){
+				while(terminals.get(selecc_terminal).getValue().equals(val)){
 					newTry = rnd.nextInt(Chromosome.terminales.length);
 					val = Chromosome.terminales[newTry];
 				}

@@ -28,6 +28,7 @@ import javax.swing.border.BevelBorder;
 
 import org.math.plot.Plot2DPanel;
 
+import functions.FunctMultiplexor;
 import geneticAlgorithm.GeneticAlgorithm;
 import individual.Chromosome;
 import utils.CrossType;
@@ -91,7 +92,7 @@ public class Interface extends JFrame {
 	 * Create the frame.
 	 */
 	public Interface() {
-		Chromosome.setUpData();
+		FunctMultiplexor.setUpData();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1080, 720);
@@ -415,7 +416,7 @@ public class Interface extends JFrame {
 		generationsLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
 		spinnerNumGenerations = new JSpinner();
-		spinnerNumGenerations.setModel(new SpinnerNumberModel(100, 10, 100, 1));
+		spinnerNumGenerations.setModel(new SpinnerNumberModel(200, 10, 600, 1));
 		GroupLayout gl_generationsPanel = new GroupLayout(generationsPanel);
 		gl_generationsPanel.setHorizontalGroup(
 			gl_generationsPanel.createParallelGroup(Alignment.LEADING)
@@ -451,7 +452,7 @@ public class Interface extends JFrame {
 		sizeLabel.setFont(new Font("Georgia", Font.PLAIN, 13));
 		
 		spinnerSizePopulation = new JSpinner();
-		spinnerSizePopulation.setModel(new SpinnerNumberModel(100, 2, 100, 1));
+		spinnerSizePopulation.setModel(new SpinnerNumberModel(200, 2, 600, 1));
 		GroupLayout gl_sizePanel = new GroupLayout(sizePanel);
 		gl_sizePanel.setHorizontalGroup(
 			gl_sizePanel.createParallelGroup(Alignment.LEADING)
@@ -660,7 +661,7 @@ public class Interface extends JFrame {
 		
 		mutationDropdown = new JComboBox();
 		mutationDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
-		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Terminal", "Functional", "TreeSubtree", "Permutation"}));
+		mutationDropdown.setModel(new DefaultComboBoxModel(new String[] {"Terminal", "Functional", "Permutation"}));
 		
 		GroupLayout gl_MutationPanel = new GroupLayout(MutationPanel);
 		gl_MutationPanel.setHorizontalGroup(
@@ -961,7 +962,7 @@ public class Interface extends JFrame {
 		solutionList.addItem("Best: " +  solutionBest);
 		solutionList.addItem("Worst: " +  solutionWorst);
 		
-		String expression = sol.getPhenotype() + "\nFitness: " + sol.getFitness() + "\n"; 
+		String expression = sol.getSolParsed() + "\nFitness: " + sol.getFitness() + "\n"; 
 		expressionField.setText(expression);
 		System.out.print("========================================");
 		System.out.print("\n" + expression + "\n");

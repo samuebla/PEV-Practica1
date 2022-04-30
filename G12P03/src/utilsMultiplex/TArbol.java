@@ -426,7 +426,7 @@ public class TArbol {
 		return p;
 	}
 
-	public String getValor() {
+	public String getValue() {
 		return valor;
 	}
 

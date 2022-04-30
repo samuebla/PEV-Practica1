@@ -40,7 +40,7 @@ public class Functional extends Mutation {
 					String val = "";
 					
 					//Cambia el OR por AND y viceversa
-					if(funciones.get(selecc_funcion).getValor().equals("OR"))
+					if(funciones.get(selecc_funcion).getValue().equals("OR"))
 						val = "AND";
 					else
 						val = "OR";
@@ -70,7 +70,7 @@ public class Functional extends Mutation {
 		ArrayList<TArbol> copia = new ArrayList<TArbol>();
 		
 		for(TArbol a : funciones){
-			if(a.getValor().equals("OR") || a.getValor().equals("AND")){
+			if(a.getValue().equals("OR") || a.getValue().equals("AND")){
 				copia.add(a.copia());
 				existe = true;
 			}
