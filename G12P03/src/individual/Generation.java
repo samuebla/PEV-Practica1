@@ -12,7 +12,6 @@ public class Generation {
 	public double avarage;
 	public Chromosome sol;
 	public Generation(List<Chromosome> population, double totalFitness) {
-		// TODO Auto-generated constructor stub
 		int size = population.size();
 		avarage = totalFitness / size;
 		best = population.get(size - 1).getFitness();

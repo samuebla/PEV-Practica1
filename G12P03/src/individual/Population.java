@@ -11,7 +11,6 @@ public class Population {
 	public boolean maximizePopulation;
 	
 	public Population() {
-		// TODO Auto-generated constructor stub
 		population_ = new ArrayList<Chromosome>();
 	}
 	

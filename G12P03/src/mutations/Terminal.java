@@ -30,7 +30,7 @@ public class Terminal extends Mutation {
 				
 				//Selecciona los terminales del árbol
 				ArrayList<TArbol> terminals = new ArrayList<TArbol>();
-				a.getTerminales(a.getSons(), terminals);
+				a.getTerminals(a.getSons(), terminals);
 				
 				//Cogemos un terminal aleatorio de todos los que hay
 				int select_terminal = rnd.nextInt(terminals.size());

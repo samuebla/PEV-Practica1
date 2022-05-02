@@ -11,14 +11,13 @@ public class CrossTree extends Cross {
 	final static double probability = 0.9; 
 		
 	@Override
-	public void cruzar(Chromosome padre1, Chromosome padre2, Object params) {
-		// TODO Auto-generated method stub
-		Chromosome son1 = padre1.copia();
-		Chromosome son2 = padre2.copia();
+	public void cruzar(Chromosome father1, Chromosome father2, Object params) {
+		Chromosome son1 = father1.copia();
+		Chromosome son2 = father2.copia();
 		
 		//Coleccion de nodos que almacena o bien terminales o bien funciones
-		ArrayList<TArbol> collectionNodes_1 = getSubTree(padre1.getTree());
-		ArrayList<TArbol> collectionNodes_2 = getSubTree(padre2.getTree());
+		ArrayList<TArbol> collectionNodes_1 = getSubTree(father1.getTree());
+		ArrayList<TArbol> collectionNodes_2 = getSubTree(father2.getTree());
 		
 		//Elegimos cualquier nodo de esas colecciones
 		int cutPoint_1 = (int) (Math.random()* collectionNodes_1.size());
@@ -50,7 +49,7 @@ public class CrossTree extends Cross {
 		
 		double prob = Math.random();
 		if(prob >= probability || nodes.size() == 0)
-			tree.getTerminales(tree.getSons(), nodes);
+			tree.getTerminals(tree.getSons(), nodes);
 		
 		return nodes;
 	}
@@ -60,6 +59,6 @@ public class CrossTree extends Cross {
 		int initialPos = 0;
 		if(tree.isRoot())
 			c.getTree().insertTerminal(sons, tree, cutPoint, initialPos);
-		else c.getTree().insertFuncion(sons, tree, cutPoint, initialPos);
+		else c.getTree().insertFunction(sons, tree, cutPoint, initialPos);
 	}
 }
