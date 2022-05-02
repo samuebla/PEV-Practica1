@@ -192,10 +192,11 @@ public class Interface extends JFrame {
 		startButton_1.setBackground(new Color(175, 238, 238));
 		
 		expressionField = new JTextArea();
+		expressionField.setLineWrap(true);
+		expressionField.setWrapStyleWord(true);
 		expressionField.setForeground(Color.BLACK);
 		expressionField.setBackground(Color.LIGHT_GRAY);
 		expressionField.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 18));
-		expressionField.setText("");
 		expressionField.setAlignmentY(TOP_ALIGNMENT);
 		expressionField.setEditable(false);
 		expressionField.setColumns(10);
@@ -242,9 +243,17 @@ public class Interface extends JFrame {
 		});
 		
 		
-		tarpeianSpinner = new JSpinner();
+		double minTar = 0.5;
+		double valueTar = 2.0;
+		double maxTar = 5.0;
+		double stepSizeTar = 0.1;
+		SpinnerNumberModel modelTar = new SpinnerNumberModel(valueTar, minTar, maxTar, stepSizeTar);
+		tarpeianSpinner = new JSpinner(modelTar);
 		tarpeianSpinner.setEnabled(true);
-		tarpeianSpinner.setModel(new SpinnerNumberModel(new Integer(2), new Integer(1), null, new Integer(1)));
+		JSpinner.NumberEditor editorTar = (JSpinner.NumberEditor) tarpeianSpinner.getEditor();
+		DecimalFormat formatTar = editorTar.getFormat();
+		formatTar.setMinimumFractionDigits(1);
+		
 		GroupLayout gl_entryTab = new GroupLayout(entryTab);
 		gl_entryTab.setHorizontalGroup(
 			gl_entryTab.createParallelGroup(Alignment.LEADING)
@@ -523,7 +532,7 @@ public class Interface extends JFrame {
 		selectionDropdown = new JComboBox();
 		selectionDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		selectionDropdown.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Aleatorio", "Torneo Determinista", "Restos", "Truncamiento", "Estocástico Universal", "Ranking"}));
-		
+		selectionDropdown.setSelectedIndex(SelectionType.Stochastic.ordinal());
 		selectionDropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        int select = selectionDropdown.getSelectedIndex();
@@ -694,6 +703,7 @@ public class Interface extends JFrame {
 		elitismPanel.setBackground(Color.LIGHT_GRAY);
 		
 		elitismCheckBox = new JCheckBox("Elitism (%)");
+		elitismCheckBox.setSelected(true);
 		elitismCheckBox.setFont(new Font("Georgia", Font.PLAIN, 14));
 		elitismCheckBox.setBackground(Color.LIGHT_GRAY);
 		
@@ -756,6 +766,7 @@ public class Interface extends JFrame {
 		creationTypeDropdown = new JComboBox();
 		creationTypeDropdown.setModel(new DefaultComboBoxModel(new String[] {"Grow", "Full", "Ramped & Half"}));
 		creationTypeDropdown.setToolTipText("");
+		creationTypeDropdown.setSelectedIndex(CreationType.Grow.ordinal());
 		creationTypeDropdown.setFont(new Font("Georgia", Font.PLAIN, 13));
 		GroupLayout gl_functionPanel_1 = new GroupLayout(functionPanel_1);
 		gl_functionPanel_1.setHorizontalGroup(
@@ -938,7 +949,7 @@ public class Interface extends JFrame {
 		index = bloatingDropdown.getSelectedIndex();
 		bloatType = BloatingType.values()[index];
 		
-		int factorBloatingTarpeian = (int) this.tarpeianSpinner.getValue();
+		float factorBloatingTarpeian = (float) ((double) this.tarpeianSpinner.getValue());
 		
 		gA.Evolute(sizePop, numGenerations,crossProb, mutProb, precision ,
 				f_type, s_type,c_type,m_type, elitism, eliPercentage, truncProb, multiplexType, creationType_, bloatType,factorBloatingTarpeian, maxDepth , useIF , betaValue);

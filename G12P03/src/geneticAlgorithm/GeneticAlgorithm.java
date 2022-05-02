@@ -39,7 +39,7 @@ public class GeneticAlgorithm {
 	private double totalFitness;
 	int maxDepth;
 	public boolean useIF_;
-	int tarpeianFactor_;
+	float tarpeianFactor_;
 	
 	public GeneticAlgorithm(Interface inter) {
 		interface_ = inter;
@@ -50,7 +50,7 @@ public class GeneticAlgorithm {
 	
 	public void Evolute(int sizePopulation, int numGenerations, double crossProb, double mutProb, double precision, 
 						FunctionType f_Type, SelectionType s_Type, CrossType c_Type, MutationType m_Type, boolean elitism, 
-						double eliPercentage, int truncProbability,MultiplexType multType, CreationType creatType, BloatingType bloatType, int tarpeianFactor, int max_depth, boolean useIF, double betaValue) {
+						double eliPercentage, int truncProbability,MultiplexType multType, CreationType creatType, BloatingType bloatType, float tarpeianFactor, int max_depth, boolean useIF, double betaValue) {
 		FunctType_ = f_Type;
 		SelecType_ = s_Type;
 		CrossType_ = c_Type;

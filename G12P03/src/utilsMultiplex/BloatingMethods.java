@@ -24,7 +24,7 @@ public class BloatingMethods {
 	public static void setFunction(Function fuct) {
 		funct = fuct;
 	}
-	public static void Tarpeian(Population poblation, double avarage_size, int factorProbability) {
+	public static void Tarpeian(Population poblation, double avarage_size, float factorProbability) {
 		double prob = 1 / (double)factorProbability;
 		Random rnd = new Random();
 		int populationThreshold = 4;
@@ -34,9 +34,9 @@ public class BloatingMethods {
 			//Si su tamaño es mayor que el de la media
 			double diff = a.getNumNodes() - avarage_size;
 			if(a.getNumNodes() > avarage_size){		
-				//Si se trata de los ultimos y su valor no es muy alto, no se borra
-				if((i > (poblation.getPopulation().size() - populationThreshold) && diff < sizeThreshold)) 
-					continue;
+//				//Si se trata de los ultimos y su valor no es muy alto, no se borra
+//				if((i > (poblation.getPopulation().size() - populationThreshold) && diff < sizeThreshold)) 
+//					continue;
 				double p = rnd.nextDouble();
 				//Existe la probabilidad de que sea eliminado y reemplazado por otro
 				if(p < prob) {

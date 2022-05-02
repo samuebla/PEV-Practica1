@@ -40,47 +40,60 @@ public class FunctMultiplexor extends Function {
 		ArrayList<String> func = c.getTree().toArray();
 		int lenght = soluciones[0].length;
 		
-		int fallos = 0;
+		int correctos = 0;
 		for (int i = 0; i < numSolutions; i++) {
 			ArrayList<String> f = parseFunction(func, i);
 			int res = recursiveEv(f, 0);
 			if (res == soluciones[i][lenght - 1])
-				fallos++;
+				correctos++;
 		}
-		return fallos;
+		return correctos;
 	}
 	
 	public int recursiveEv(ArrayList<String> func, int index) {
+		if(index >=func.size()) {
+			int n = 0;
+			return 0;
+		} 
+		
 		String function = func.get(index);
+		
 		int resul;
 		// Si tiene 3 hijos
 		if (function.equals("IF")) {
 			// Los guardamos en una variable
+			int condition = recursiveEv(func, index + 1);
 			int son1 = recursiveEv(func, index + 1);
-			int son2 = recursiveEv(func, index + 2);
-			int hijo3 = recursiveEv(func, index + 3);
+			int son2 = recursiveEv(func, index + 1);
 			// Si el primer hijo es 1 se hace lo del hijo siguiente
 			// Si es un 0 (else) se hace lo del hijo 3
-			if (son1 == 1) resul = son2;
-			else resul = hijo3;
+			if (condition == 1) resul = son1;
+			else resul = son2;
+			func.remove(index);
 		}
 		// Solo 1 y 1 = 1, si no es 0
 		else if (function.equals("AND")) {
 			int son1 = recursiveEv(func, index + 1);
-			int son2 = recursiveEv(func, index + 2);
+			int son2 = recursiveEv(func, index + 1);
 			if (son1 == 1 && son2 == 1)
 				resul = 1;
 			else
 				resul = 0;
+			func.remove(index);
+//			func.remove(index + 1);
+//			func.remove(index + 1);
 		}
 		// Solo 0 0 = 0, si no es 1
 		else if (function.equals("OR")) {
 			int son1 = recursiveEv(func, index + 1);
-			int son2 = recursiveEv(func, index + 2);
+			int son2 = recursiveEv(func, index + 1);
 			if (son1 == 1 || son2 == 1)
 				resul = 1;
 			else
 				resul = 0;
+			func.remove(index);
+//			func.remove(index + 1);
+//			func.remove(index + 1);
 		}
 		// 1 = 0 y 0 = 1
 		else if (function.equals("NOT")) {
@@ -89,11 +102,15 @@ public class FunctMultiplexor extends Function {
 				resul = 0;
 			else
 				resul = 1;
+			func.remove(index);
+//			func.remove(index + 1);
 		}
 		// Si es un terminal
-		else
+		else {
 			// Parseamos el resultado a INT y fuera
 			resul = Integer.parseInt(function);
+			func.remove(index);
+		}
 		return resul;
 	}
 	
@@ -122,13 +139,13 @@ public class FunctMultiplexor extends Function {
 			case "A1": 
 				return 1;
 			case "D0": 
-				return 2;
-			case "D1": 
-				return 3;
-			case "D2": 
-				return 4;
-			case "D3":
 				return 5;
+			case "D1": 
+				return 4;
+			case "D2": 
+				return 3;
+			case "D3":
+				return 2;
 			}
 			return 0;
 		}
@@ -142,21 +159,21 @@ public class FunctMultiplexor extends Function {
 			case "A2": 
 				return 2;
 			case "D0": 
-				return 3;
-			case "D1": 
-				return 4;
-			case "D2":
-				return 5;
-			case "D3": 
-				return 6;
-			case "D4": 
-				return 7;
-			case "D5":
-				return 8;
-			case "D6":
-				return 9;
-			case "D7":
 				return 10;
+			case "D1": 
+				return 9;
+			case "D2":
+				return 8;
+			case "D3": 
+				return 7;
+			case "D4": 
+				return 6;
+			case "D5":
+				return 5;
+			case "D6":
+				return 4;
+			case "D7":
+				return 3;
 			}
 			return 0;
 		}
