@@ -46,7 +46,7 @@ public class Functional extends Mutation {
 					funciones.get(selecc_funcion).setValor(val);
 					
 					//Inserta la nueva función en el árbol
-					a.insertFuncion(a.getSons(), funciones.get(selecc_funcion), selecc_funcion, 0);					
+					a.insertFunction(a.getSons(), funciones.get(selecc_funcion), selecc_funcion, 0);					
 					
 					//Y añadimos el arbol al cromosoma
 					poblation.get(i).setArbol(a.copia());
@@ -60,21 +60,23 @@ public class Functional extends Mutation {
 
 	//Se encarga de encontrar funciones que se puedan mutar
 	//dejando así una lista solo de esas funciones
-	private boolean tryChangeFunction(ArrayList<TArbol> funtions) {
-		boolean existe = false;
-		ArrayList<TArbol> copia = new ArrayList<TArbol>();
+	private boolean tryChangeFunction(ArrayList<TArbol> functions) {
+		boolean canChange = false;
+		ArrayList<TArbol> aux = new ArrayList<TArbol>();
 		
-		for(TArbol a : funtions)
+		for(TArbol a : functions)
+			//Para comprobar si se puede cambiar o no
 			if(a.getValue().equals("OR") || a.getValue().equals("AND")){
-				copia.add(a.copia());
-				existe = true;
+				aux.add(a.copia());
+				canChange = true;
 			}
 		
-
-		funtions.clear();
-		for(TArbol a : copia) funtions.add(a.copia());
+		//Limpiamos para quitar los Not y los IF
+		functions.clear();
+		//Y metemos solo las copias
+		for(TArbol a : aux) functions.add(a.copia());
 		
-		return existe;
+		return canChange;
 	}
 
 }

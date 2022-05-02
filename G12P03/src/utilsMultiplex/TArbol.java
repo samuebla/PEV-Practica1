@@ -327,7 +327,7 @@ public class TArbol {
 		return n;
 	}
 
-	public void getTerminales(ArrayList<TArbol> hijos, ArrayList<TArbol> nodos) {
+	public void getTerminals(ArrayList<TArbol> hijos, ArrayList<TArbol> nodos) {
 
 		for (int i = 0; i < hijos.size(); i++) {
 			// Si es una hoja...
@@ -338,7 +338,7 @@ public class TArbol {
 			// Si no he llegado al final
 			else {
 				// Seguimos indagando
-				getTerminales(hijos.get(i).getSons(), nodos);
+				getTerminals(hijos.get(i).getSons(), nodos);
 			}
 		}
 	}
@@ -389,7 +389,7 @@ public class TArbol {
 	}
 
 	// Parecido al inserTerminal pero sin necesitar llegar al final del arbol
-	public int insertFuncion(ArrayList<TArbol> list_hijos, TArbol mutated, int index, int pos) {
+	public int insertFunction(ArrayList<TArbol> list_hijos, TArbol mutated, int index, int pos) {
 		int p = pos;
 		for (int i = 0; i < list_hijos.size() && p != -1; i++) {
 			// Si no es hoja y he llegado al lugar donde quiero cambiar el arbol
@@ -403,7 +403,7 @@ public class TArbol {
 			else if (list_hijos.get(i).esRaiz && (p != index)) {
 				// Seguimos avanzando por los hijos
 				p++;
-				p = insertFuncion(list_hijos.get(i).hijos, mutated, index, p);
+				p = insertFunction(list_hijos.get(i).hijos, mutated, index, p);
 			}
 		}
 		return p;
